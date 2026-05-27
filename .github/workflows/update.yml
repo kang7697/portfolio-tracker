@@ -1,0 +1,76 @@
+name: 自動更新投資組合報表
+
+on:
+  schedule:
+    # 台股更新：每個交易日 15:05 台灣時間 = UTC 07:05
+    - cron: '5 7 * * 1-5'
+    # 美股更新：每個交易日 06:00 台灣時間 = UTC 22:00（前一天）
+    - cron: '0 22 * * 1-5'
+
+  # 允許手動觸發
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: '更新模式 (tw / us / all)'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - tw
+          - us
+          - all
+
+jobs:
+  update-tw:
+    name: 台股收盤更新（15:05 台灣時間）
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'workflow_dispatch' && github.event.inputs.mode != 'us' ||
+      github.event.schedule == '5 7 * * 1-5'
+
+    steps:
+      - name: Checkout 程式碼
+        uses: actions/checkout@v4
+
+      - name: 設定 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 執行台股更新
+        run: python update_prices.py tw
+
+      - name: 提交並推送更新結果
+        run: |
+          git config --global user.name 'Portfolio Bot'
+          git config --global user.email 'bot@portfolio.local'
+          git add portfolio_tracker_v3.html
+          git diff --staged --quiet || git commit -m "🇹🇼 台股自動更新 $(TZ='Asia/Taipei' date '+%Y/%m/%d %H:%M')"
+          git push
+
+  update-us:
+    name: 美股收盤更新（06:00 台灣時間）
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'workflow_dispatch' && github.event.inputs.mode != 'tw' ||
+      github.event.schedule == '0 22 * * 1-5'
+
+    steps:
+      - name: Checkout 程式碼
+        uses: actions/checkout@v4
+
+      - name: 設定 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 執行美股更新
+        run: python update_prices.py us
+
+      - name: 提交並推送更新結果
+        run: |
+          git config --global user.name 'Portfolio Bot'
+          git config --global user.email 'bot@portfolio.local'
+          git add portfolio_tracker_v3.html
+          git diff --staged --quiet || git commit -m "🇺🇸 美股自動更新 $(TZ='Asia/Taipei' date '+%Y/%m/%d %H:%M')"
+          git push
