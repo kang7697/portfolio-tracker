@@ -4,16 +4,18 @@ on:
   schedule:
     - cron: '5 7 * * 1-5'
     - cron: '0 22 * * 1-5'
+    - cron: '0 12 * * 1-5'
   workflow_dispatch:
     inputs:
       mode:
-        description: '更新模式 (tw / us / all)'
+        description: '更新模式 (tw / us / fund / all)'
         required: true
         default: 'all'
         type: choice
         options:
           - tw
           - us
+          - fund
           - all
 
 jobs:
@@ -21,7 +23,8 @@ jobs:
     name: 台股收盤更新（15:05 台灣時間）
     runs-on: ubuntu-latest
     if: |
-      github.event_name == 'workflow_dispatch' && github.event.inputs.mode != 'us' ||
+      github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'tw' ||
+      github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'all' ||
       github.event.schedule == '5 7 * * 1-5'
     steps:
       - uses: actions/checkout@v4
@@ -37,20 +40,13 @@ jobs:
           git add portfolio_tracker_v3.html
           git diff --staged --quiet || git commit -m "🇹🇼 台股自動更新 $(TZ='Asia/Taipei' date '+%Y/%m/%d %H:%M')"
           git push
-      - name: 部署到 Netlify
-        run: |
-          npm install -g netlify-cli
-          netlify deploy --prod \
-            --dir . \
-            --site ${{ secrets.NETLIFY_SITE_ID }} \
-            --auth ${{ secrets.NETLIFY_TOKEN }} \
-            --message "台股自動更新"
 
   update-us:
     name: 美股收盤更新（06:00 台灣時間）
     runs-on: ubuntu-latest
     if: |
-      github.event_name == 'workflow_dispatch' && github.event.inputs.mode != 'tw' ||
+      github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'us' ||
+      github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'all' ||
       github.event.schedule == '0 22 * * 1-5'
     steps:
       - uses: actions/checkout@v4
@@ -66,11 +62,25 @@ jobs:
           git add portfolio_tracker_v3.html
           git diff --staged --quiet || git commit -m "🇺🇸 美股自動更新 $(TZ='Asia/Taipei' date '+%Y/%m/%d %H:%M')"
           git push
-      - name: 部署到 Netlify
+
+  update-fund:
+    name: 基金淨值更新（20:00 台灣時間）
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'fund' ||
+      github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'all' ||
+      github.event.schedule == '0 12 * * 1-5'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 執行基金淨值更新
+        run: python update_prices.py fund
+      - name: 提交並推送
         run: |
-          npm install -g netlify-cli
-          netlify deploy --prod \
-            --dir . \
-            --site ${{ secrets.NETLIFY_SITE_ID }} \
-            --auth ${{ secrets.NETLIFY_TOKEN }} \
-            --message "美股自動更新"
+          git config --global user.name 'Portfolio Bot'
+          git config --global user.email 'bot@portfolio.local'
+          git add portfolio_tracker_v3.html
+          git diff --staged --quiet || git commit -m "💼 基金淨值自動更新 $(TZ='Asia/Taipei' date '+%Y/%m/%d %H:%M')"
+          git push
