@@ -146,7 +146,7 @@ def run_tw():
         s   = '+' if pnl >= 0 else ''
         chg_cc = 'up' if prices.get(tid, d['cost']) >= d['cost'] else 'dn'
 
-        # 更新總覽表格該行的收盤、市值、損益（用精確的成本均價定位）
+        # 更新總覽表格格式（用精確的成本均價定位）
         cost_str = f'${d["cost"]}'
         pattern = (rf'(<td[^>]*>{re.escape(cost_str)}</td><td[^>]*>\$?)[\d,.]+'
                    rf'(</td><td[^>]*>)[^<]+(</td><td[^>]*>[\d,]+</td><td[^>]*>)[\d,]+'
@@ -194,7 +194,7 @@ def run_tw():
     content = re.sub(r'持倉總覽 ｜ \d{4}/\d{2}/\d{2}[^<]+',
                      f'持倉總覽 ｜ {date_str} 台股收盤更新', content)
     content = re.sub(r'資料基準：[\d/]+（美股）/ [\d/]+（台股）',
-                     f'資料基準：{_get_us_date(content)}（美股）/ {date_str}（台股）',
+                     f'資料基準：{-get_us_date(content)}（美股）/ {date_str}（台股）',
                      content)
 
     save(content)
@@ -247,7 +247,7 @@ def run_us():
         replacement = (f'\\g<1>${p:.2f}'
                        f'</td><td class="{cc}">${mv:,.0f}</td>\n'
                        f'                <td class="{cc}">{s}${abs(pnl):,.0f}'
-                       f'</td><td class="{cc}">{s}{abs(pct):.1f}%')
+                       f'</td><td class="{cc}">{s}{abs(us_pct):.1f}%')
         content = re.sub(pattern, replacement, content, count=1)
 
     # 更新 tfoot
@@ -270,7 +270,7 @@ def run_us():
 
     # 更新總覽卡片
     content = re.sub(
-        r'美股\d+/\d+參考市值</div><div class="tot-val up">\$[\d,]+</div><div class="tot-sub">[^<]+</div>',
+        r'美股\d)/\d+參考市值</div><div class="tot-val up">\$[\d,]+</div><div class="tot-sub">[^<]+</div>',
         f'美股{mmdd}參考市值</div><div class="tot-val up">${us_mv:,.0f}</div><div class="tot-sub">Yahoo Finance {date_str}</div>',
         content
     )
