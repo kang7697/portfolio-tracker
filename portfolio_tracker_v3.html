@@ -154,7 +154,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
 <div class="topbar">
   <div>
     <div class="topbar-title">【全球股票、基金及大宗商品投資分析及建議】</div>
-    <div style="font-size:11px;opacity:.6;margin-top:2px">🇺🇸 美股 10支（含BE） · 🇹🇼 台股 11支 · 💼 基金 5支 · 護城河 · EPS預測 · 投行目標 · 財報分析</div>
+    <div style="font-size:11px;opacity:.6;margin-top:2px">🇺🇸 美股 9支 · 🇹🇼 台股 11支 · 💼 基金 5支 · 護城河 · EPS預測 · 投行目標 · 財報分析</div>
   </div>
   <div class="topbar-meta"><span id="dt"></span><br>資料基準：2026/06/01（美股）/ 2026/06/02（台股） ｜ 風格：平衡偏積極 ｜ Claude in Chrome 自動更新</div>
 </div>
@@ -190,9 +190,11 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   <a href="javascript:void(0)" onclick="return go('f1',this)">安聯城市</a>
   <a href="javascript:void(0)" onclick="return go('f2',this)">PIMCO強化</a>
   <a href="javascript:void(0)" onclick="return go('f3',this)">PIMCO穩定</a>
-  <a href="javascript:void(0)" onclick="return go('f4',this)">安聯AI+美盛</a>
+  <a href="javascript:void(0)" onclick="return go('f4',this)">安聯AI</a>
+  <a href="javascript:void(0)" onclick="return go('f5',this)">美盛凱利</a>
   <div class="nav-sep">📅</div>
   <a href="javascript:void(0)" onclick="return go('sched',this)">排程</a>
+  <a href="javascript:void(0)" onclick="return go('profit',this)">獲利統計</a>
 </div>
 
 
@@ -201,21 +203,22 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
 <!-- ══ OVERVIEW ══ -->
 <div id="p-ov" class="panel act">
   <div style="font-size:16px;font-weight:700;font-family:Georgia,serif;padding-bottom:10px;border-bottom:2px solid var(--ink);margin-bottom:14px">
-    持倉總覽 ｜ 2026/06/02 台股+美股收盤更新</div>
+    持倉總覽 ｜ 2026/06/02 台股+美股收盤更新
+  </div>
   <div class="totals-grid">
     <div class="tot"><div class="tot-label">美股成本合計</div><div class="tot-val nv">$13,472</div><div class="tot-sub">9支個股（含TSLA）· USD</div></div>
     <div class="tot"><div class="tot-label">美股6/1參考市值</div><div class="tot-val up">$13,635</div><div class="tot-sub">tw.stock.yahoo.com 5/29 昨收確認</div></div>
     <div class="tot"><div class="tot-label">美股浮動損益</div><div class="tot-val up">+1,592</div>
         <div class="tot-sub">+13.9%</div></div>
     <div class="tot"><div class="tot-label">台股成本合計</div><div class="tot-val nv">NT$2,437,850</div><div class="tot-sub">11支個股/ETF</div></div>
-    <div class="tot"><div class="tot-label">台股6/2參考市值</div><div class="tot-val up">NT$2,289,910</div><div class="tot-sub">Yahoo股市 6/2 14:30</div></div>
+    <div class="tot"><div class="tot-label">台股6/2參考市值</div><div class="tot-val up">NT$3,278,530</div><div class="tot-sub">Yahoo股市 6/2 14:30</div></div>
     <div class="tot"><div class="tot-label">台股浮動損益</div><div class="tot-val up">+NT$840,680</div><div class="tot-sub">+34.5%</div></div>
     <div class="tot"><div class="tot-label">基金合計現值</div><div class="tot-val up">USD 91,559</div><div class="tot-sub">5支基金·含息損益+$5,165</div></div>
     <div class="tot"><div class="tot-label">⚠️ 最緊急監控</div><div class="tot-val fl">PIMCO雙基金</div><div class="tot-sub">本金$86,021·升息>50%·NAV承壓</div></div>
   </div>
 
   <div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:14px;margin-bottom:14px">
-    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px">🇺🇸 美股持倉一覽（2026/06/1 收盤 · Yahoo股市昨收確認）</div>
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px">🇺🇸 美股持倉一覽（2026/06/01 收盤 · Yahoo股市昨收確認）</div>
     <table>
       <thead><tr><th>代號</th><th>股數</th><th>成本均價</th><th>成本總額</th><th>6/1收盤</th><th>參考市值</th><th>浮動損益</th><th>報酬率</th><th>主題</th></tr></thead>
       <tbody>
@@ -223,6 +226,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
         <tr><td><strong>COHR</strong></td><td>6</td><td>$235.67</td><td>$1,414</td><td class="up">$361.47</td><td class="up">$2,256</td><td class="up">+$843</td><td class="up">+59.6%</td><td><span class="tag t-b">AI光互連</span></td></tr>
         <tr style="background:#eef7f1"><td><strong>TSLA</strong> <span class="new-badge">新增</span></td><td>5</td><td>$387.58</td><td>$1,938</td><td class="up">$435.79</td><td class="up">$2,092</td><td class="up">+$154</td><td class="up">+7.9%</td><td><span class="tag t-b">EV/自駕</span></td></tr>
         <tr><td><strong>TSM</strong></td><td>6</td><td>$330.46</td><td>$1,983</td><td class="up">$418.45</td><td class="up">$2,443</td><td class="up">+$460</td><td class="up">+23.2%</td><td><span class="tag t-b">AI晶片</span></td></tr>
+        <tr><td><strong>BE</strong></td><td>2</td><td>$275.02</td><td>$550</td><td class="up">$285.00</td><td class="up">$570</td><td class="up">+$20</td><td class="up">+3.6%</td><td><span class="tag t-g">氫能</span></td></tr>
         <tr><td><strong>BE</strong></td><td>2</td><td>$275.02</td><td>$550</td><td class="up">$285.00</td><td class="up">$570</td><td class="up">+$20</td><td class="up">+3.6%</td><td><span class="tag t-g">氫能</span></td></tr>
         <tr><td><strong>ORCL</strong></td><td>4</td><td>$161.24</td><td>$645</td><td class="up">$225.78</td><td class="up">$764</td><td class="up">+$119</td><td class="up">+18.4%</td><td><span class="tag t-b">AI企業雲</span></td></tr>
         <tr><td><strong>EOSE</strong></td><td>40</td><td>$7.83</td><td>$313</td><td class="up">$8.43</td><td class="up">$331</td><td class="up">+$18</td><td class="up">+5.8%</td><td><span class="tag t-a">儲能</span></td></tr>
@@ -244,26 +248,26 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
     <table>
       <thead><tr><th>代號</th><th>名稱</th><th>股數</th><th>成本均價</th><th>6/2收盤</th><th>漲跌幅</th><th>成本總額</th><th>參考市值</th><th>浮動損益</th><th>報酬率</th></tr></thead>
       <tbody>
-        <tr style="background:#eef7f1"><td><strong>3481</strong></td><td>群創光電⚡漲停</td><td>3,000</td><td>$25.39</td><td class="up">$56.2</td><td class="up">+0.18%⚡</td><td>76,170</td><td class="up">168,300</td><td class="up">+92,130</td><td class="up">+121.0%</td></tr>
-        <tr><td><strong>2313</strong></td><td>華通電腦</td><td>1,000</td><td>$222.82</td><td class="up">$270.5</td><td class="up">+9.85%</td><td>222,820</td><td class="up">282,000</td><td class="up">+59,180</td><td class="up">+26.6%</td></tr>
-        <tr><td><strong>00990A</strong></td><td>主動元大AI新經濟</td><td>7,000</td><td>$11.84</td><td class="up">$20.17</td><td class="up">-0.15%</td><td>82,880</td><td class="up">141,400</td><td class="up">+58,520</td><td class="up">+70.6%</td></tr>
-        <tr><td><strong>6488</strong></td><td>環球晶 ⚡已出清</td><td>1,000</td><td>$656.93</td><td class="dn">$940</td><td class="dn">-7.39%</td><td>656,930</td><td class="up">950,000</td><td class="up">+358,070</td><td class="up">+54.5%</td></tr>
-        <tr><td><strong>2359</strong></td><td>所羅門</td><td>2,000</td><td>$124.43</td><td class="up">$143.5</td><td class="up">-4.65%</td><td>248,860</td><td class="up">301,000</td><td class="up">+52,140</td><td class="up">+21.0%</td></tr>
-        <tr><td><strong>00922</strong></td><td>國泰台灣領袖50</td><td>11,000</td><td>$29.03</td><td class="up">$40.10</td><td class="up">-0.02%</td><td>319,330</td><td class="up">441,210</td><td class="up">+121,880</td><td class="up">+38.2%</td></tr>
-        <tr><td><strong>00882</strong></td><td>中信中國高股息</td><td>28,000</td><td>$12.68</td><td class="up">$15.87</td><td class="up">+0.89%</td><td>355,040</td><td class="up">440,440</td><td class="up">+85,400</td><td class="up">+24.1%</td></tr>
-        <tr><td><strong>009816</strong></td><td>凱基台灣TOP 50</td><td>6,000</td><td>$10.25</td><td class="up">$15.43</td><td class="up">+0.19%</td><td>61,500</td><td class="up">92,400</td><td class="up">+30,900</td><td class="up">+50.2%</td></tr>
-        <tr><td><strong>8070</strong></td><td>長華電材</td><td>1,000</td><td>$43.06</td><td class="up">$58.0</td><td class="up">+9.89%</td><td>43,060</td><td class="up">52,800</td><td class="up">+9,740</td><td class="up">+22.6%</td></tr>
-        <tr><td><strong>00955</strong></td><td>中信日本商社</td><td>20,000</td><td>$15.57</td><td class="up">$14.66</td><td class="up">-0.54%</td><td>311,400</td><td class="dn">294,800</td><td class="dn">16,600</td><td class="dn">5.3%</td></tr>
-        <tr style="background:#fdf5e6"><td><strong class="fl">00631L</strong></td><td>元大台灣50正2⚠️槓桿</td><td>2,000</td><td>$29.93</td><td class="up">$37.91</td><td class="up">+0.34%</td><td>59,860</td><td class="up">75,560</td><td class="up">+15,700</td><td class="up">+26.2%</td></tr>
+        <tr style="background:#eef7f1"><td><strong>3481</strong></td><td>群創光電⚡漲停</td><td>3,000</td><td>$25.39</td><td class="up">$56.2</td><td class="up">+9.91%⚡</td><td>76,170</td><td class="up">153,000</td><td class="up">+76,830</td><td class="up">+100.9%</td></tr>
+        <tr><td><strong>2313</strong></td><td>華通電腦</td><td>1,000</td><td>$222.82</td><td class="up">$270.5</td><td class="up">+9.85%</td><td>222,820</td><td class="up">284,500</td><td class="up">+61,680</td><td class="up">+27.7%</td></tr>
+        <tr><td><strong>00990A</strong></td><td>主動元大AI新經濟</td><td>7,000</td><td>$11.84</td><td class="up">$20.17</td><td class="up">+4.78%</td><td>82,880</td><td class="up">141,050</td><td class="up">+58,170</td><td class="up">+70.2%</td></tr>
+        <tr><td><strong>6488</strong></td><td>環球晶 ⚡已出清</td><td>1,000</td><td>$656.93</td><td class="up">$1,015</td><td class="up">+9.49%🔥</td><td>656,930</td><td class="up">1,015,000</td><td class="up">+358,070</td><td class="up">+54.5%</td></tr>
+        <tr><td><strong>2359</strong></td><td>所羅門</td><td>2,000</td><td>$124.43</td><td class="up">$143.5</td><td class="up">+4.38%</td><td>248,860</td><td class="up">286,000</td><td class="up">+37,140</td><td class="up">+14.9%</td></tr>
+        <tr><td><strong>00922</strong></td><td>國泰台灣領袖50</td><td>11,000</td><td>$29.03</td><td class="up">$40.10</td><td class="up">+3.42%</td><td>319,330</td><td class="up">436,040</td><td class="up">+116,710</td><td class="up">+36.6%</td></tr>
+        <tr><td><strong>00882</strong></td><td>中信中國高股息</td><td>28,000</td><td>$12.68</td><td class="up">$15.87</td><td class="up">+2.15%</td><td>355,040</td><td class="up">438,760</td><td class="up">+83,720</td><td class="up">+23.6%</td></tr>
+        <tr><td><strong>009816</strong></td><td>凱基台灣TOP 50</td><td>6,000</td><td>$10.25</td><td class="up">$15.43</td><td class="up">+2.70%</td><td>61,500</td><td class="up">91,200</td><td class="up">+29,700</td><td class="up">+48.3%</td></tr>
+        <tr><td><strong>8070</strong></td><td>長華電材</td><td>1,000</td><td>$43.06</td><td class="up">$52.50</td><td class="up">+3.14%</td><td>43,060</td><td class="up">52,500</td><td class="up">+9,440</td><td class="up">+21.9%</td></tr>
+        <tr><td><strong>00955</strong></td><td>中信日本商社</td><td>20,000</td><td>$15.57</td><td class="up">$14.66</td><td class="up">+1.52%</td><td>311,400</td><td class="dn">306,600</td><td class="dn">-4,800</td><td class="dn">-1.5%</td></tr>
+        <tr style="background:#fdf5e6"><td><strong class="fl">00631L</strong></td><td>元大台灣50正2⚠️槓桿</td><td>2,000</td><td>$29.93</td><td class="up">$36.94</td><td class="up">+7.17%</td><td>59,860</td><td class="up">73,880</td><td class="up">+14,020</td><td class="up">+23.4%</td></tr>
       </tbody>
       <tfoot>
         <tr style="font-weight:700;background:#f5f4f0">
-          <td colspan="4">台股合計（11支）</td><td colspan="2"></td><td>2,437,850</td><td class="up">2,289,910</td><td class="up">+508,990</td><td class="up">+28.6%</td>
+          <td colspan="4">台股合計（11支）</td><td colspan="2"></td><td>2,437,850</td><td class="up">3,278,530</td><td class="up">+840,680</td><td class="up">+34.5%</td>
         </tr>
       </tfoot>
     </table>
   </div>
-
+</div>
 
 <!-- ══ AG ══ -->
 <div id="p-ag" class="panel">
@@ -274,15 +278,15 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
       <div class="mkt-tag">NYSE · 白銀/黃金 · 墨西哥/美國礦區</div>
     </div>
     <div class="pch-right">
-      <div class="pch-price up">$21.08 <span style="font-size:13px">▲+5.88%</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:3px">6/1 收盤  tw.stock.yahoo.com/quote/AG | 52W: $5.83–$32.04</div>
+      <div class="pch-price dn">$19.90 <span style="font-size:13px">▼-1.1%</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">5/22收盤 tw.stock.yahoo.com/quote/AG | 52W: $5.83–$32.04</div>
       <div style="margin-top:4px"><span class="tag t-a">白銀</span> <span class="tag t-a">油價連動</span></div>
     </div>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$20.11</div><div class="pnl-sub">110 股 | 成本$2,212</div></div>
-    <div class="pnl-card dn-bg"><div class="pnl-label">6/1 收盤</div><div class="pnl-val up">收盤1.08</div><div class="pnl-sub">Yahoo股市確認</div></div>
-    <div class="pnl-card dn-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+<div class="pnl-label">浮動損益</div><div class="pnl-val 07</div><div class="pnl-sub">-1.1% · 小幅虧損</div></div>
+    <div class="pnl-card dn-bg"><div class="pnl-label">5/22 收盤</div><div class="pnl-val dn">$19.90</div><div class="pnl-sub">Yahoo股市確認</div></div>
+    <div class="pnl-card dn-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val dn">-$23</div><div class="pnl-sub">-1.1% · 小幅虧損</div></div>
     <div class="pnl-card"><div class="pnl-label">損益平衡點</div><div class="pnl-val nv">$20.11</div><div class="pnl-sub">需回升+1.1%</div></div>
     <div class="pnl-card up-bg"><div class="pnl-label">分析師目標均值</div><div class="pnl-val up">$27.85</div><div class="pnl-sub">+40%上行空間</div></div>
     <div class="pnl-card"><div class="pnl-label">白銀現貨</div><div class="pnl-val fl">~$33/oz</div><div class="pnl-sub">關注$35突破</div></div>
@@ -317,15 +321,15 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
       <div class="mkt-tag">NYSE · 數據中心光學</div>
     </div>
     <div class="pch-right">
-      <div class="pch-price dn">$361.47 <span style="font-size:13px">▼-4.11%</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:3px">6/1 收盤  Robinhood | 52W: $73.66–$413</div>
+      <div class="pch-price up">$377.57 <span style="font-size:13px">▲+60.2%</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">5/22收盤 Robinhood | 52W: $73.66–$413</div>
       <div style="margin-top:4px"><span class="tag t-b">AI光互連</span></div>
     </div>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$235.67</div><div class="pnl-sub">6 股 | 成本$1,414</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">6/1 收盤</div><div class="pnl-val dn"></div><div class="pnl-val 61.47</div><div class="pnl-sub">6/1收盤 Yahoo股市</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+$755</div><div class="pnl-sub">+59.6% · 美股最大獲利</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">5/22 收盤</div><div class="pnl-val up">$377.57</div><div class="pnl-sub">5/27收盤 Yahoo股市</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+$843</div><div class="pnl-sub">+59.6% · 美股最大獲利</div></div>
     <div class="pnl-card"><div class="pnl-label">最高目標價</div><div class="pnl-val up">$425</div><div class="pnl-sub">Rosenblatt</div></div>
     <div class="pnl-card"><div class="pnl-label">Q3 FY26財報</div><div class="pnl-val up">$1.81B</div><div class="pnl-sub">超預期</div></div>
     <div class="pnl-card"><div class="pnl-label">NVIDIA持股</div><div class="pnl-val up">已確認</div><div class="pnl-sub">5/13 NVDA揭露</div></div>
@@ -349,7 +353,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   📌 部分獲利：股價達$400 → 建議獲利了結2–3股（留核心倉）<br>
   📌 持有：NVDA確認持股COHR → 強力背書，核心倉繼續持有<br>
   📌 停損：AI資本支出三大廠同步下調 + COHR跌破$280 → 評估減持</div>
-
+</div>
 
 <!-- ══ TSM ══ -->
 <div id="p-tsm" class="panel">
@@ -360,15 +364,15 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
       <div class="mkt-tag">NYSE · 晶圓代工 · AI晶片製造壟斷者</div>
     </div>
     <div class="pch-right">
-      <div class="pch-price up">$418.45 <span style="font-size:13px">▲+4.11%</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:3px">6/1 收盤  Robinhood | 52W: $134.25–$498.83</div>
+      <div class="pch-price up">$412.32 <span style="font-size:13px">▲+24.7%</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">5/22收盤 Robinhood | 52W: $134.25–$498.83</div>
       <div style="margin-top:4px"><span class="tag t-b">AI晶片</span> <span class="tag t-a">中美貿易</span></div>
     </div>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$330.46</div><div class="pnl-sub">6 股 | 成本$1,983</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">6/1 收盤</div><div class="pnl-val up">up18.45</div><div class="pnl-sub">Yahoo股市 6/1收盤</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+$528</div><div class="pnl-sub">+23.2%</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">5/22 收盤</div><div class="pnl-val up">$404.52</div><div class="pnl-sub">Yahoo股市 5/26收盤</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+$460</div><div class="pnl-sub">+23.2%</div></div>
     <div class="pnl-card"><div class="pnl-label">N2製程</div><div class="pnl-val up">量產中</div><div class="pnl-sub">NVDA/Apple/AMD滿載</div></div>
     <div class="pnl-card"><div class="pnl-label">CoWoS封裝</div><div class="pnl-val fl">瓶頸改善</div><div class="pnl-sub">AI晶片核心工藝</div></div>
     <div class="pnl-card"><div class="pnl-label">台海風險</div><div class="pnl-val fl">監控中</div><div class="pnl-sub">川習會後暫穩</div></div>
@@ -392,7 +396,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   📌 持有：AI晶片代工壟斷地位不變 → 核心倉長期持有<br>
   📌 加碼：CoWoS月產能突破30K片公告 + AI訂單能見度延伸至2027 → 可加碼<br>
   📌 減持：NDAA立法含N3製程條款通過 → 評估減持ADR</div>
-
+</div>
 
 <!-- ══ TSLA 新增 ══ -->
 <div id="p-tsla" class="panel">
@@ -403,18 +407,18 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
       <div class="mkt-tag">NASDAQ · EV · FSD · Robotaxi · Optimus</div>
     </div>
     <div class="pch-right">
-      <div class="pch-price dn">$435.79 <span style="font-size:13px">▼-1.44%</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:3px">6/1 收盤  Robinhood | 52W: $273.21–$498.83</div>
+      <div class="pch-price up">$433.59 <span style="font-size:13px">▲+11.9%</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">5/22收盤 Robinhood | 52W: $273.21–$498.83</div>
       <div style="margin-top:4px"><span class="tag t-b">EV/自駕</span> <span class="tag t-b">AI機器人</span></div>
     </div>
   </div>
   <div style="background:#eef7f1;border:1px solid #99d0b0;border-radius:4px;padding:8px 12px;margin-bottom:10px;font-size:11px">
-    <strong>✅ 新增持倉：成本$387.58 × 5股 = $1,938 | 6/1收盤$432.33 | 浮盈+$224（+11.5%）</strong>
+    <strong>✅ 新增持倉：成本$387.58 × 5股 = $1,938 | 5/22收盤$432.33 | 浮盈+$224（+11.5%）</strong>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$387.58</div><div class="pnl-sub">5 股 | 成本$1,938</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">6/1 收盤</div><div class="pnl-val dn">dn35.79</div><div class="pnl-sub">Robinhood確認</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+up41</div><div class="pnl-sub">+7.9%</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">5/22 收盤</div><div class="pnl-val up">$418.40</div><div class="pnl-sub">Robinhood確認</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+$154</div><div class="pnl-sub">+7.9%</div></div>
     <div class="pnl-card"><div class="pnl-label">損益平衡點</div><div class="pnl-val nv">$387.58</div><div class="pnl-sub">已超越+7.9%</div></div>
     <div class="pnl-card"><div class="pnl-label">FSD狀態</div><div class="pnl-val fl">V13推進中</div><div class="pnl-sub">Robotaxi Austin 6月</div></div>
     <div class="pnl-card"><div class="pnl-label">Optimus</div><div class="pnl-val up">量產籌備</div><div class="pnl-sub">2025年底目標1萬台</div></div>
@@ -442,7 +446,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   📌 部分獲利：TSLA突破$480（52W高點附近）→ 考慮獲利了結1–2股<br>
   📌 停損：Robotaxi重大事故或監管全面叫停 + TSLA跌破$340 → 評估停損<br>
   ⚠️ 注意Musk專注SpaceX IPO期間對TSLA管理層注意力分散的風險</div>
-
+</div>
 
 <!-- ══ UUUU ══ -->
 <div id="p-uuuu" class="panel">
@@ -453,18 +457,18 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
       <div class="mkt-tag">NYSE American · 美國唯一鈾+稀土雙線企業</div>
     </div>
     <div class="pch-right">
-      <div class="pch-price dn">$18.22 <span style="font-size:13px">▼-1.19%</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:3px">6/1 收盤  Robinhood | 52W: $4.36–$27.90 | 200MA: $17.57</div>
+      <div class="pch-price fl">$18.40 <span style="font-size:13px">▼-11.8%</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">5/22收盤 Robinhood | 52W: $4.36–$27.90 | 200MA: $17.57</div>
       <div style="margin-top:4px"><span class="tag t-r">稀土供應</span> <span class="tag t-a">核能/鈾礦</span></div>
     </div>
   </div>
   <div style="background:#fffbe6;border:1px solid #e6c800;border-radius:4px;padding:8px 12px;margin-bottom:10px;font-size:11px">
-    <strong>⚡ 成本$20.86 × 121股 = $2,524 | 6/1收盤$18.40（-11.8%浮虧）| 持續監控ASM投票進度</strong>
+    <strong>⚡ 成本$20.86 × 121股 = $2,524 | 5/27收盤$18.40（-11.8%浮虧）| 持續監控ASM投票進度</strong>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card dn-bg"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$20.86</div><div class="pnl-sub">121 股 | 成本$2,524</div></div>
-    <div class="pnl-card fl-bg"><div class="pnl-label">6/1 收盤</div><div class="pnl-val dn"><div class="pnl-label">8.22</div><div class="pnl-sub">大漲+9.4%！Robinhood確認</div></div>
-    <div class="pnl-card dn-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val dn">">19</div><div class="pnl-sub">-13.0%（已從-20.2%改善）</div></div>
+    <div class="pnl-card fl-bg"><div class="pnl-label">5/22 收盤</div><div class="pnl-val fl">$18.15</div><div class="pnl-sub">大漲+9.4%！Robinhood確認</div></div>
+    <div class="pnl-card dn-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val dn">-$328</div><div class="pnl-sub">-13.0%（已從-20.2%改善）</div></div>
     <div class="pnl-card"><div class="pnl-label">損益平衡點</div><div class="pnl-val fl">$20.86</div><div class="pnl-sub">需再回升+15.0%</div></div>
     <div class="pnl-card up-bg"><div class="pnl-label">HC Wainwright目標</div><div class="pnl-val up">$29</div><div class="pnl-sub">Strong Buy</div></div>
     <div class="pnl-card up-bg"><div class="pnl-label">8位分析師均值</div><div class="pnl-val up">$27.2</div><div class="pnl-sub">+50%上行空間</div></div>
@@ -511,15 +515,15 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
       <div class="mkt-tag">NASDAQ · 非鋰儲能 · IRA補貼</div>
     </div>
     <div class="pch-right">
-      <div class="pch-price dn">$8.43 <span style="font-size:13px">▼-6.26%</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:3px">6/1 收盤  Robinhood | 52W: $3.69–$19.86</div>
+      <div class="pch-price up">$8.73 <span style="font-size:13px">▲+2.9%</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">5/22收盤 Robinhood | 52W: $3.69–$19.86</div>
       <div style="margin-top:4px"><span class="tag t-a">儲能</span> <span class="tag t-a">IRA補貼</span></div>
     </div>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$7.83</div><div class="pnl-sub">40 股 | 成本$313</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">6/1 收盤</div><div class="pnl-val dn">$8.43</div><div class="pnl-sub">Yahoo股市 6/1收盤</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+up4</div><div class="pnl-sub">+5.8% · 倉位小</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">5/27 收盤</div><div class="pnl-val up">$8.73</div><div class="pnl-sub">Yahoo股市 5/27收盤</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+$18</div><div class="pnl-sub">+5.8% · 倉位小</div></div>
     <div class="pnl-card"><div class="pnl-label">IRA補貼狀態</div><div class="pnl-val fl">持續中</div><div class="pnl-sub">核心支撐</div></div>
   </div>
   <div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:14px;margin-bottom:14px">
@@ -535,7 +539,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   <div class="trig"><strong>觸發條件（成本$7.83，浮盈+5.8%，倉位小）：</strong><br>
   📌 持有：IRA補貼未削減、油價維持高位 → 儲能需求支撐<br>
   📌 停損：IRA儲能補貼遭立法削減 + EOSE跌破$5.50 → 評估停損</div>
-
+</div>
 
 <!-- ══ NBIS ══ -->
 <div id="p-nbis" class="panel">
@@ -546,15 +550,15 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
       <div class="mkt-tag">NASDAQ · AI算力租賃 · Neocloud</div>
     </div>
     <div class="pch-right">
-      <div class="pch-price up">$231.09 <span style="font-size:13px">▲+2.11%</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:3px">6/1 收盤  Yahoo Finance | 52W: 低→$208.06</div>
+      <div class="pch-price up">$226.34 <span style="font-size:13px">▲+160.5%</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">5/22收盤 Yahoo Finance | 52W: 低→$208.06</div>
       <div style="margin-top:4px"><span class="tag t-b">AI雲端</span> <span class="tag t-b">Neocloud</span></div>
     </div>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$86.88</div><div class="pnl-sub">3 股 | 成本$261</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">6/1 收盤</div><div class="pnl-val up">收盤31.09</div><div class="pnl-sub">Yahoo股市 6/1收盤</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+</div>32</div><div class="pnl-sub">+146.8% · 最大比例獲利</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">5/29 收盤</div><div class="pnl-val up">$231.09</div><div class="pnl-sub">Yahoo股市 5/27收盤</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+$383</div><div class="pnl-sub">+146.8% · 最大比例獲利</div></div>
     <div class="pnl-card up-bg"><div class="pnl-label">Q1 2026 營收</div><div class="pnl-val up">$399M</div><div class="pnl-sub">YoY +684%</div></div>
     <div class="pnl-card"><div class="pnl-label">NVDA投資</div><div class="pnl-val up">$20億</div><div class="pnl-sub">策略背書</div></div>
     <div class="pnl-card"><div class="pnl-label">Bloom Energy合作</div><div class="pnl-val up">新簽約</div><div class="pnl-sub">AI數據中心電力</div></div>
@@ -572,8 +576,8 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   <div class="trig"><strong>觸發條件（成本$86.88，浮盈+146.8%，為比例最大獲利部位）：</strong><br>
   📌 持有：AI算力租賃需求持續爆發 + NVDA背書 → 核心倉位持有<br>
   📌 部分獲利：NBIS達$250+ → 考慮獲利了結1股<br>
-  📌 停損：AI資本支出大廠同步削減 + NBIS跌破$150 → 評估減持
-
+  📌 停損：AI資本支出大廠同步削減 + NBIS跌破$150 → 評估減持</div>
+</div>
 
 <!-- ══ ONDS ══ -->
 <div id="p-onds" class="panel">
@@ -584,15 +588,15 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
       <div class="mkt-tag">NASDAQ · 政府合約 · 國防應用</div>
     </div>
     <div class="pch-right">
-      <div class="pch-price dn">$13.22 <span style="font-size:13px">▼-0.23%</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:3px">6/1 收盤  Robinhood | 最小倉位</div>
+      <div class="pch-price up">$9.77 <span style="font-size:13px">▲+9.1%</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">5/22收盤 Robinhood | 最小倉位</div>
       <div style="margin-top:4px"><span class="tag t-x">工業無人機</span></div>
     </div>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$8.96</div><div class="pnl-sub">20 股 | 成本$179</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">6/1 收盤</div><div class="pnl-val dn"><div class="pnl-label">3.22</div><div class="pnl-sub">Yahoo股市 6/1收盤</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+$85</div><div class="pnl-sub">+2.5% · 倉位極小</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">5/27 收盤</div><div class="pnl-val up">$9.77</div><div class="pnl-sub">Yahoo股市 5/27收盤</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+$4</div><div class="pnl-sub">+2.5% · 倉位極小</div></div>
   </div>
   <div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:14px;margin-bottom:14px">
   <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px">🏰 護城河 · EPS預測 · 投行目標 · 財報分析</div>
@@ -617,15 +621,15 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
       <div class="mkt-tag">NYSE · OCI雲端 · AI工作負載</div>
     </div>
     <div class="pch-right">
-      <div class="pch-price up">$225.78 <span style="font-size:13px">▲+10.84%</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:3px">6/1 收盤  Robinhood | 52W: $134.57–$345.72</div>
+      <div class="pch-price up">$193.06 <span style="font-size:13px">▲+19.7%</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">5/22收盤 Robinhood | 52W: $134.57–$345.72</div>
       <div style="margin-top:4px"><span class="tag t-b">AI企業雲</span></div>
     </div>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$161.24</div><div class="pnl-sub">4 股 | 成本$645</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">6/1 收盤</div><div class="pnl-val up">收盤25.78</div><div class="pnl-sub">Yahoo股市 6/1收盤</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+up58</div><div class="pnl-sub">+18.4%</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">5/22 收盤</div><div class="pnl-val up">$192.08</div><div class="pnl-sub">Yahoo股市 5/26收盤</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+$119</div><div class="pnl-sub">+18.4%</div></div>
     <div class="pnl-card"><div class="pnl-label">OCI雲業務</div><div class="pnl-val up">加速中</div><div class="pnl-sub">FY27收入預估$86.3B</div></div>
   </div>
   <div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:14px;margin-bottom:14px">
@@ -642,49 +646,10 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   📌 持有：OCI雲業務訂單積壓持續成長 → 核心長線邏輯完整<br>
   📌 加碼：FY27指引超$90B + OCI市佔率突破10% → 可小幅加碼<br>
   📌 停損：ORCL跌破$150（接近成本附近）且AI雲業務指引下調 → 評估停損</div>
-
-
-<!-- ══ 台股 ETF ══ -->
-<div 
-<div id="p-be" class="panel">
-  <div class="pch">
-    <div class="pch-left">
-      <div class="ticker">BE</div>
-      <div class="fullname">Bloom Energy Corp. — 氫能燃料電池</div>
-      <div class="mkt-tag">NYSE · AI數據中心電力 · 固態氧化物燃料電池</div>
-    </div>
-    <div class="pch-right">
-      <div class="pch-price up">$285.00 <span style="font-size:13px">▲+3.63%</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:3px">6/1 收盤 tw.stock.yahoo.com/quote/BE | 52W: $10.95–$348.25</div>
-      <div style="margin-top:4px"><span class="tag t-g">氫能</span> <span class="tag t-b">AI數據中心</span></div>
-    </div>
-  </div>
-  <div class="pnl-grid">
-    <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$275.02</div><div class="pnl-sub">2 股 | 成本$550</div></div>
-    <div class="pnl-card"><div class="pnl-label">6/1 收盤</div><div class="pnl-val up">收盤85</div><div class="pnl-sub">Yahoo股市昨收確認</div></div>
-    <div class="pnl-card"><div class="pnl-label">參考市值</div><div class="pnl-val up">$570</div><div class="pnl-sub">2 股 × $285.00</div></div>
-    <div class="pnl-card"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+up0</div><div class="pnl-sub">+3.6% 含息報酬</div></div>
-  </div>
-  <div class="section-block">
-    <div class="section-title">📊 持倉摘要</div>
-    <div style="font-size:13px;line-height:1.8;padding:8px 0">
-      <div>・成本：$275.02 × 2股 = <strong>$550.04</strong></div>
-      <div>・6/1 收盤：<strong>$285.00</strong>（+3.63%）</div>
-      <div>・浮動損益：<strong>+$19.96（+3.6%）</strong></div>
-      <div>・主題：AI數據中心不斷電電源、氫能燃料電池</div>
-    </div>
-  </div>
-  <div class="section-block">
-    <div class="section-title">🔍 投資邏輯</div>
-    <div style="font-size:12px;line-height:1.8;color:var(--ink);padding:8px 0">
-      <div>・全球固態氧化物燃料電池（SOFC）龍頭，技術壁壘高</div>
-      <div>・AI數據中心電力需求暴增，BE提供可靠不斷電方案</div>
-      <div>・Oracle、Microsoft等大型數據中心客戶</div>
-      <div>・台灣市場積極擴張，政策綠能支持</div>
-    </div>
-  </div>
 </div>
 
+<!-- ══ 台股 ETF ══ -->
+<div id="p-be" class="panel"><div class="pch"><div class="pch-left"><div class="ticker">BE</div><div class="fullname">Bloom Energy Corp. — 氫能燃料電池</div></div><div class="pch-right"><div class="pch-price up">$285.00 <span style="font-size:13px">▲+3.63%</span></div><div style="font-size:11px;color:var(--muted)">6/1收盤 tw.stock.yahoo.com/quote/BE</div></div></div><div class="pnl-grid"><div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$275.02</div><div class="pnl-sub">2股|$550</div></div><div class="pnl-card"><div class="pnl-label">6/1收盤</div><div class="pnl-val up">$285.00</div><div class="pnl-sub">Yahoo昨收</div></div><div class="pnl-card"><div class="pnl-label">市值</div><div class="pnl-val up">$570</div><div class="pnl-sub">2×$285</div></div><div class="pnl-card"><div class="pnl-label">損益</div><div class="pnl-val up">+$20</div><div class="pnl-sub">+3.6%</div></div></div></div>
 <div id="p-t631" class="panel">
   <div class="pch">
     <div class="pch-left">
@@ -693,14 +658,14 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
       <div class="mkt-tag">台灣證券交易所 · 每日重置槓桿 · 高波動</div>
     </div>
     <div class="pch-right">
-      <div class="pch-price up">$37.91 <span style="font-size:13px">▲+0.34%</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:3px">6/2 收盤  Yahoo股市確認</div>
+      <div class="pch-price up">$34.56 <span style="font-size:13px">▲+15.5%</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">5/22收盤 Yahoo股市確認</div>
     </div>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$29.93</div><div class="pnl-sub">2,000 股 | 成本NT$59,860</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">6/2 收盤</div><div class="pnl-val up"></div><div class="pnl-val 7.91</div><div class="pnl-sub">Yahoo股市 5/25 14:30</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+NT<div class="pnl-label">浮動損益</div><div class="pnl-val 5,960</div><div class="pnl-sub">+15.5%</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">5/22 收盤</div><div class="pnl-val up">$34.56</div><div class="pnl-sub">Yahoo股市 5/25 14:30</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+NT$9,260</div><div class="pnl-sub">+15.5%</div></div>
     <div class="pnl-card dn-bg"><div class="pnl-label">槓桿耗損</div><div class="pnl-val dn">長期持有虧損</div><div class="pnl-sub">每日重置機制</div></div>
   </div>
   <div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:14px;margin-bottom:14px">
@@ -718,17 +683,15 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   📌 停損：大盤單日跌幅>3% → 注意槓桿放大效果，評估是否出場</div>
 </div>
 
-<div 
-</div>
-id="p-t922" class="panel">
+<div id="p-t922" class="panel">
   <div class="pch">
     <div class="pch-left"><div class="ticker">00922</div><div class="fullname">國泰台灣領袖50 — 台股最大ETF倉位</div><div class="mkt-tag">台灣證券交易所 · 月配息 · TSM為最大成分</div></div>
-    <div class="pch-right"><div class="pch-price dn">$40.10 <span style="font-size:13px">▼-0.02%</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">6/2 收盤  Yahoo股市 14:30（+4.42%）連3漲</div></div>
+    <div class="pch-right"><div class="pch-price up">$38.49 <span style="font-size:13px">▲+32.6%</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">5/25收盤 Yahoo股市 14:30（+4.42%）連3漲</div></div>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$29.03</div><div class="pnl-sub">11,000 股 | NT$319,330</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">6/2 收盤</div><div class="pnl-val dn">dn0.1</div><div class="pnl-sub">Yahoo股市 5/25 14:30</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+NT<div class="pnl-label">浮動損益</div><div class="pnl-val 21,770</div><div class="pnl-sub">+32.6% · 連3漲</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">5/25 收盤</div><div class="pnl-val up">$38.49</div><div class="pnl-sub">Yahoo股市 5/25 14:30</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+NT$104,060</div><div class="pnl-sub">+32.6% · 連3漲</div></div>
   </div>
   <div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:14px;margin-bottom:14px">
   <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px">🏰 護城河 · EPS預測 · 投行目標 · 財報分析</div>
@@ -738,17 +701,15 @@ id="p-t922" class="panel">
   <div class="btn-row"><button class="btn pri" onclick="gen('t922')">⚡ 生成今日分析</button><button class="btn" onclick="genSig('t922','00922')">📡 技術信號</button></div>
 </div>
 
-<div 
-</div>
-id="p-t882" class="panel">
+<div id="p-t882" class="panel">
   <div class="pch">
     <div class="pch-left"><div class="ticker">00882</div><div class="fullname">中信中國高股息 — 台股第二大倉位</div><div class="mkt-tag">台灣證券交易所 · 中港高股息 · 月配息</div></div>
-    <div class="pch-right"><div class="pch-price up">$15.87 <span style="font-size:13px">▲+0.89%</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">6/2 收盤  Yahoo股市 14:30（-0.44%）港股今日休市</div></div>
+    <div class="pch-right"><div class="pch-price up">$15.72 <span style="font-size:13px">▲+24.0%</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">5/25收盤 Yahoo股市 14:30（-0.44%）港股今日休市</div></div>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$12.68</div><div class="pnl-sub">28,000 股 | NT$355,040</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">6/2 收盤</div><div class="pnl-val up"><div class="pnl-label">5.87</div><div class="pnl-sub">Yahoo股市確認</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+NT$89,320</div><div class="pnl-sub">+24.0% · 港股今日休市</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">5/22 收盤</div><div class="pnl-val up">$15.79</div><div class="pnl-sub">Yahoo股市確認</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+NT$85,120</div><div class="pnl-sub">+24.0% · 港股今日休市</div></div>
     <div class="pnl-card"><div class="pnl-label">關稅風險</div><div class="pnl-val fl">11月到期</div><div class="pnl-sub">川習會後暫穩</div></div>
   </div>
   <div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:14px;margin-bottom:14px">
@@ -759,17 +720,15 @@ id="p-t882" class="panel">
   <div class="btn-row"><button class="btn pri" onclick="gen('t882')">⚡ 生成今日分析</button><button class="btn" onclick="genSig('t882','00882')">📡 技術信號</button></div>
 </div>
 
-<div 
-</div>
-id="p-t955" class="panel">
+<div id="p-t955" class="panel">
   <div class="pch">
     <div class="pch-left"><div class="ticker">00955</div><div class="fullname">中信日本商社 — 日本商社+大宗商品</div><div class="mkt-tag">台灣OTC · 日本五大商社 · 大宗商品連動</div></div>
-    <div class="pch-right"><div class="pch-price dn">$14.66 <span style="font-size:13px">▼-0.54%</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">6/2 收盤  Yahoo股市 14:30（-0.45%）油價跌商社承壓</div></div>
+    <div class="pch-right"><div class="pch-price up">$15.55 <span style="font-size:13px">▼-0.1%</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">5/25收盤 Yahoo股市 14:30（-0.45%）油價跌商社承壓</div></div>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$15.57</div><div class="pnl-sub">20,000 股 | NT$311,400</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">6/2 收盤</div><div class="pnl-val dn"><div class="pnl-label">4.66</div><div class="pnl-sub">Yahoo股市確認</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val dn">NT<div class="pnl-label">浮動損益</div><div class="pnl-val 8,200</div><div class="pnl-sub">-0.1% · 油價跌商社承壓</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">5/22 收盤</div><div class="pnl-val up">$15.62</div><div class="pnl-sub">Yahoo股市確認</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val dn">-NT$400</div><div class="pnl-sub">-0.1% · 油價跌商社承壓</div></div>
     <div class="pnl-card"><div class="pnl-label">日本10Y殖利率</div><div class="pnl-val fl">2.60%</div><div class="pnl-sub">29年高 · 日圓升值壓力</div></div>
   </div>
   <div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:14px;margin-bottom:14px">
@@ -780,19 +739,15 @@ id="p-t955" class="panel">
   <div class="btn-row"><button class="btn pri" onclick="gen('t955')">⚡ 生成今日分析</button><button class="btn" onclick="genSig('t955','00955')">📡 技術信號</button></div>
 </div>
 
-<div </div>
-<div 
-</div>
-</div>
-id="p-t9816" class="panel">
+<div id="p-t9816" class="panel">
   <div class="pch">
     <div class="pch-left"><div class="ticker">009816</div><div class="fullname">凱基台灣TOP 50</div><div class="mkt-tag">台灣證券交易所 · 台灣大型股指數</div></div>
-    <div class="pch-right"><div class="pch-price up">$15.43 <span style="font-size:13px">▲+0.19%</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">6/2 收盤  Yahoo股市 14:30（+4.02%）連3漲</div></div>
+    <div class="pch-right"><div class="pch-price up">$14.76 <span style="font-size:13px">▲+44.0%</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">5/25收盤 Yahoo股市 14:30（+4.02%）連3漲</div></div>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$10.25</div><div class="pnl-sub">6,000 股 | NT$61,500</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">6/2 收盤</div><div class="pnl-val up"><div class="pnl-label">5.43</div><div class="pnl-sub">Yahoo股市 5/25 14:30</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+NT">1,080</div><div class="pnl-sub">+44.0%</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">5/22 收盤</div><div class="pnl-val up">$14.76</div><div class="pnl-sub">Yahoo股市 5/25 14:30</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+NT$27,060</div><div class="pnl-sub">+44.0%</div></div>
   </div>
   <div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:14px;margin-bottom:14px">
   <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px">🏰 護城河 · EPS預測 · 投行目標 · 財報分析</div>
@@ -802,17 +757,15 @@ id="p-t9816" class="panel">
   <div class="btn-row"><button class="btn pri" onclick="gen('t9816')">⚡ 生成今日分析</button></div>
 </div>
 
-<div 
-</div>
-id="p-t990" class="panel">
+<div id="p-t990" class="panel">
   <div class="pch">
     <div class="pch-left"><div class="ticker">00990A</div><div class="fullname">主動元大AI新經濟 — 主動式AI/科技ETF</div><div class="mkt-tag">台灣證券交易所 · 主動選股 · AI/科技</div></div>
-    <div class="pch-right"><div class="pch-price dn">$20.17 <span style="font-size:13px">▼-0.15%</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">6/2 收盤  Yahoo股市 14:30（+5.23%）連4漲</div></div>
+    <div class="pch-right"><div class="pch-price up">$19.50 <span style="font-size:13px">▲+64.7%</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">5/25收盤 Yahoo股市 14:30（+5.23%）連4漲</div></div>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$11.84</div><div class="pnl-sub">7,000 股 | NT$82,880</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">6/2 收盤</div><div class="pnl-val dn">收盤0.17</div><div class="pnl-sub">Yahoo股市 5/25 14:30</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+NT$58,310</div><div class="pnl-sub">+64.7% · 連4漲</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">5/22 收盤</div><div class="pnl-val up">$19.50</div><div class="pnl-sub">Yahoo股市 5/25 14:30</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+NT$53,620</div><div class="pnl-sub">+64.7% · 連4漲</div></div>
   </div>
   <div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:14px;margin-bottom:14px">
   <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px">🏰 護城河 · EPS預測 · 投行目標 · 財報分析</div>
@@ -825,12 +778,12 @@ id="p-t990" class="panel">
 <div id="p-t2313" class="panel">
   <div class="pch">
     <div class="pch-left"><div class="ticker">2313</div><div class="fullname">華通電腦 — 高階PCB · AI伺服器</div><div class="mkt-tag">台灣證券交易所 · AI伺服器PCB · 蘋果供應鏈</div></div>
-    <div class="pch-right"><div class="pch-price dn">$270.5 <span style="font-size:13px">▼-3.05%</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">6/2 收盤  Yahoo股市 14:30（+7.37%）</div></div>
+    <div class="pch-right"><div class="pch-price up">$298.5 <span style="font-size:13px">▲+34.0%</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">5/25收盤 Yahoo股市 14:30（+7.37%）</div></div>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$222.82</div><div class="pnl-sub">1,000 股 | NT$222,820</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">6/2 收盤</div><div class="pnl-val dn">收盤70.5</div><div class="pnl-sub">Yahoo股市 5/25 14:30</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+NT</div>7,680</div><div class="pnl-sub">+34.0%</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">5/22 收盤</div><div class="pnl-val up">$298.5</div><div class="pnl-sub">Yahoo股市 5/25 14:30</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+NT$75,680</div><div class="pnl-sub">+34.0%</div></div>
     <div class="pnl-card"><div class="pnl-label">追蹤指標</div><div class="pnl-val fl">月營收</div><div class="pnl-sub">每月10日前後公布</div></div>
   </div>
   <div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:14px;margin-bottom:14px">
@@ -839,17 +792,17 @@ id="p-t990" class="panel">
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-t2313">點擊生成...</div></div>
   <div class="btn-row"><button class="btn pri" onclick="gen('t2313')">⚡ 生成今日分析</button><button class="btn" onclick="genSig('t2313','2313')">📡 技術信號</button></div>
-
+</div>
 
 <div id="p-t2359" class="panel">
   <div class="pch">
     <div class="pch-left"><div class="ticker">2359</div><div class="fullname">所羅門 — 機器人/AI視覺</div><div class="mkt-tag">台灣證券交易所 · 工業自動化 · 機器人</div></div>
-    <div class="pch-right"><div class="pch-price dn">$143.5 <span style="font-size:13px">▼-4.65%</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">6/2 收盤  Yahoo股市 14:30（+0.35%）連3漲</div></div>
+    <div class="pch-right"><div class="pch-price up">$141.5 <span style="font-size:13px">▲+13.7%</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">5/25收盤 Yahoo股市 14:30（+0.35%）連3漲</div></div>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$124.43</div><div class="pnl-sub">2,000 股 | NT$248,860</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">6/2 收盤</div><div class="pnl-val dn"><div class="pnl-label">43.5</div><div class="pnl-sub">Yahoo股市 5/25 14:30</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+NT">8,140</div><div class="pnl-sub">+13.7%</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">5/22 收盤</div><div class="pnl-val up">$141.5</div><div class="pnl-sub">Yahoo股市 5/25 14:30</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+NT$34,140</div><div class="pnl-sub">+13.7%</div></div>
   </div>
   <div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:14px;margin-bottom:14px">
   <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px">🏰 護城河 · EPS預測 · 投行目標 · 財報分析</div>
@@ -859,20 +812,18 @@ id="p-t990" class="panel">
   <div class="btn-row"><button class="btn pri" onclick="gen('t2359')">⚡ 生成今日分析</button><button class="btn" onclick="genSig('t2359','2359')">📡 技術信號</button></div>
 </div>
 
-<div 
-</div>
-id="p-t3481" class="panel">
+<div id="p-t3481" class="panel">
   <div class="pch">
     <div class="pch-left"><div class="ticker">3481</div><div class="fullname">群創光電 — 面板轉型FOPLP封裝</div><div class="mkt-tag">台灣證券交易所 · 面板/先進封裝 · 低基期轉型</div></div>
-    <div class="pch-right"><div class="pch-price up">$56.2 <span style="font-size:13px">▲+0.18%</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">6/2 收盤 </div></div>
+    <div class="pch-right"><div class="pch-price up">$49.10 <span style="font-size:13px">▲+93.4%⚡漲停</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">5/25漲停 Yahoo股市 14:30（+9.97%）連3漲</div></div>
   </div>
   <div style="background:#eef7f1;border:1px solid #99d0b0;border-radius:4px;padding:8px 12px;margin-bottom:10px;font-size:11px">
     <strong>⚡ 5/25再度漲停$49.10（+9.97%），連3漲停！成本$25.39浮盈+93.4%（+NT$71,130）</strong>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$25.39</div><div class="pnl-sub">3,000 股 | NT$76,170</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">6/2 收盤</div><div class="pnl-val up">">6.2</div><div class="pnl-sub">Yahoo股市 5/25 14:30</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+NT$92,430</div><div class="pnl-sub">+93.4% · 台股最大浮盈</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">5/22 收盤（漲停）</div><div class="pnl-val up">$49.10</div><div class="pnl-sub">Yahoo股市 5/25 14:30</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+NT$71,130</div><div class="pnl-sub">+93.4% · 台股最大浮盈</div></div>
     <div class="pnl-card"><div class="pnl-label">FOPLP進度</div><div class="pnl-val up">量產出貨</div><div class="pnl-sub">先進封裝轉型確立</div></div>
     <div class="pnl-card"><div class="pnl-label">2010年以來新高</div><div class="pnl-val up">$49.10</div><div class="pnl-sub">16年最高</div></div>
     <div class="pnl-card"><div class="pnl-label">外資買超</div><div class="pnl-val up">98,089張</div><div class="pnl-sub">5/21外資大量回補</div></div>
@@ -892,11 +843,11 @@ id="p-t3481" class="panel">
 <div id="p-t6488" class="panel">
   <div class="pch">
     <div class="pch-left"><div class="ticker">6488</div><div class="fullname">環球晶 — 晶圓材料 · 台股最大單一個股倉位</div><div class="mkt-tag">台灣OTC · 矽晶圓 · TSM主要供應商</div></div>
-    <div class="pch-right"><div class="pch-price dn">$940 <span style="font-size:13px">▼-7.39%</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">6/2 追蹤 </div></div>
+    <div class="pch-right"><div class="pch-price up">$788 <span style="font-size:13px">▲+20.0%⚡漲停</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">5/25漲停 Yahoo股市 14:30（+9.90%）連3漲</div></div>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$656.93</div><div class="pnl-sub">1,000 股 | NT$656,930</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">6/2 收盤</div><div class="pnl-val dn">$940</div><div class="pnl-sub">Yahoo股市 5/25 14:30 ⚡漲停</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">5/22 收盤</div><div class="pnl-val up">$788</div><div class="pnl-sub">Yahoo股市 5/25 14:30 ⚡漲停</div></div>
     <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+NT$131,070</div><div class="pnl-sub">+20.0% · 最大單一倉位</div></div>
     <div class="pnl-card"><div class="pnl-label">12吋產線</div><div class="pnl-val up">滿載</div><div class="pnl-sub">客戶需求顯著改善</div></div>
     <div class="pnl-card"><div class="pnl-label">4月EPS</div><div class="pnl-val up">$8.85</div><div class="pnl-sub">Siltronic評價利益</div></div>
@@ -917,12 +868,12 @@ id="p-t3481" class="panel">
 <div id="p-t8070" class="panel">
   <div class="pch">
     <div class="pch-left"><div class="ticker">8070</div><div class="fullname">長華電材 — 高階PCB銅箔基板</div><div class="mkt-tag">台灣OTC · PCB材料 · AI伺服器供應鏈</div></div>
-    <div class="pch-right"><div class="pch-price up">$58.0 <span style="font-size:13px">▲+9.89%</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">6/2 收盤  Yahoo股市 14:30（+3.23%）連4漲</div></div>
+    <div class="pch-right"><div class="pch-price up">$46.35 <span style="font-size:13px">▲+7.6%</span></div><div style="font-size:11px;color:var(--muted);margin-top:3px">5/25收盤 Yahoo股市 14:30（+3.23%）連4漲</div></div>
   </div>
   <div class="pnl-grid">
     <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$43.06</div><div class="pnl-sub">1,000 股 | NT$43,060</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">6/2 收盤</div><div class="pnl-val up">">8</div><div class="pnl-sub">Yahoo股市 5/25 14:30</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+NT<div class="pnl-label">浮動損益</div><div class="pnl-val 4,940</div><div class="pnl-sub">+7.6% · 連4漲</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">5/25 收盤</div><div class="pnl-val up">$46.35</div><div class="pnl-sub">Yahoo股市 5/25 14:30</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+NT$3,290</div><div class="pnl-sub">+7.6% · 連4漲</div></div>
   </div>
   <div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:14px;margin-bottom:14px">
   <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px">🏰 護城河 · EPS預測 · 投行目標 · 財報分析</div>
@@ -941,8 +892,8 @@ id="p-t3481" class="panel">
       <div class="mkt-tag">月配息 · AI+城市科技 · 中長線看多</div>
     </div>
     <div class="pch-right">
-      <div class="pch-price up">USD 11.5171 <span style="font-size:13px">▲+29.1%含息</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:3px">參考淨值 2026/06/1 淨值 </div>
+      <div class="pch-price up">USD 11.1075 <span style="font-size:13px">▲+27.64%含息</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">參考淨值 2026/05/21</div>
     </div>
   </div>
   <div class="pnl-grid">
@@ -968,12 +919,12 @@ id="p-t3481" class="panel">
   <div class="pch">
     <div class="pch-left">
       <div class="ticker" style="font-size:15px;color:var(--dn)">PIMCO 強化月收息 ⚠️</div>
-      <div class="fullname">PIMCO多元收益債券基金 — 強化月收息 | 00840024</div>
+      <div class="fullname">PIMCO多元收益債券基金-M級-USD-月收息強化股份 | 00840024</div>
       <div class="mkt-tag">月配息 · 高收益債/多元收益 · 升息高風險</div>
     </div>
     <div class="pch-right">
-      <div class="pch-price up">USD 9.2900 <span style="font-size:13px">▲+15.8%</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:3px">參考淨值 2026/06/1 淨值 </div>
+      <div class="pch-price fl">USD 7.94 <span style="font-size:13px">NAV承壓</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">參考淨值 2026/05/21</div>
     </div>
   </div>
   <div style="background:var(--dn-bg);border:1px solid #f0a0a0;border-radius:4px;padding:8px 12px;margin-bottom:10px;font-size:11px;color:var(--dn)">
@@ -1003,12 +954,12 @@ id="p-t3481" class="panel">
   <div class="pch">
     <div class="pch-left">
       <div class="ticker" style="font-size:15px;color:var(--dn)">PIMCO 穩定月收息 ⚠️</div>
-      <div class="fullname">PIMCO多元收益債券基金 — 穩定月收息 | 00840032</div>
+      <div class="fullname">PIMCO多元收益債券基金-M級-USD-穩定月收息股份 | 00840032</div>
       <div class="mkt-tag">月配息 · 投資級債/多元收益 · 升息風險</div>
     </div>
     <div class="pch-right">
-      <div class="pch-price dn">USD 9.0500 <span style="font-size:13px">▼-5.8%</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:3px">參考淨值 2026/06/1 淨值 </div>
+      <div class="pch-price fl">USD 9.3 <span style="font-size:13px">NAV承壓</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">參考淨值 2026/05/21</div>
     </div>
   </div>
   <div style="background:var(--dn-bg);border:1px solid #f0a0a0;border-radius:4px;padding:8px 12px;margin-bottom:10px;font-size:11px;color:var(--dn)">
@@ -1042,8 +993,8 @@ id="p-t3481" class="panel">
       <div class="mkt-tag">累積不配息 · AI主題 + 全球基礎建設</div>
     </div>
     <div class="pch-right">
-      <div class="pch-price up">USD 43.5670 <span style="font-size:13px">▲+27.0%</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:3px">參考淨值 2026/06/1 淨值 </div>
+      <div class="pch-price up">合計浮盈 +USD 432.55</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">參考淨值 2026/05/21</div>
     </div>
   </div>
 
@@ -1089,29 +1040,10 @@ id="p-t3481" class="panel">
   📌 持有：油價高位有利基礎建設現金流，但高利率持續承壓<br>
   📌 第二筆（申購淨值$21.68）目前略虧-1.71%，等待基建需求回升<br>
   📌 贖回條件：NAV跌破$19（第一筆成本）且高利率路徑延長至2027+ → 評估贖回</div>
-
-
-<!-- ══ 排程 ══ -->
-<div <div id="p-f5" class="panel">
-  <div class="pch">
-    <div class="pch-left">
-      <div class="ticker">美盛凱利基建</div>
-      <div class="fullname">ClearBridge Infrastructure Value Fund — 美盛凱利</div>
-      <div class="mkt-tag">基金代碼: wea84 · MoneyDJ · 全球基礎建設</div>
-    </div>
-    <div class="pch-right">
-      <div class="pch-price up">USD 20.7500 <span style="font-size:13px">▼-1.7%</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:3px">6/1 淨值 MoneyDJ確認 | 本金USD 5,000</div>
-      <div style="margin-top:4px"><span class="tag t-b">基礎建設</span> <span class="tag t-g">月配息</span></div>
-    </div>
-  </div>
-  <div class="pnl-grid">
-    <div class="pnl-card"><div class="pnl-label">買入本金</div><div class="pnl-val nv">USD 5,000</div><div class="pnl-sub">代碼: wea84</div></div>
-    <div class="pnl-card"><div class="pnl-label">6/1 淨值</div><div class="pnl-val dn">USD 20.7500</div><div class="pnl-sub">MoneyDJ 2026/06/01</div></div>
-    <div class="pnl-card"><div class="pnl-label">參考現值</div><div class="pnl-val dn">USD 4,914</div><div class="pnl-sub">236.831 單位 × 20.7500</div></div>
-    <div class="pnl-card"><div class="pnl-label">浮動損益</div><div class="pnl-val dn">-USD 86</div><div class="pnl-sub">-1.72% 含息報酬</div></div>
-  </div>
 </div>
+
+<div id="p-f5" class="panel"><div class="pch"><div class="pch-left"><div class="ticker">美盛凱利基建</div><div class="fullname">ClearBridge Infrastructure Value Fund</div></div><div class="pch-right"><div class="pch-price dn">USD 20.7500 <span style="font-size:13px">▼-1.7%</span></div><div style="font-size:11px;color:var(--muted)">6/1淨值 MoneyDJ</div></div></div><div class="pnl-grid"><div class="pnl-card"><div class="pnl-label">本金</div><div class="pnl-val nv">USD 5,000</div><div class="pnl-sub">wea84</div></div><div class="pnl-card"><div class="pnl-label">6/1淨值</div><div class="pnl-val dn">USD 20.75</div><div class="pnl-sub">MoneyDJ</div></div><div class="pnl-card"><div class="pnl-label">現值</div><div class="pnl-val dn">USD 4,914</div><div class="pnl-sub">236.831單位</div></div><div class="pnl-card"><div class="pnl-label">損益</div><div class="pnl-val dn">-USD 86</div><div class="pnl-sub">-1.72%</div></div></div></div>
+<!-- ══ 排程 ══ -->
 <div id="p-sched" class="panel">
   <div style="font-size:16px;font-weight:700;font-family:Georgia,serif;padding-bottom:10px;border-bottom:2px solid var(--ink);margin-bottom:14px">📅 更新排程 · 重要事件</div>
   <div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:14px;margin-bottom:12px">
@@ -1119,7 +1051,7 @@ id="p-t3481" class="panel">
     <table><thead><tr><th>市場</th><th>更新時間</th><th>資料來源</th><th>方式</th></tr></thead>
     <tbody>
       <tr><td>🇹🇼 台股 11支</td><td><strong>每日 15:00</strong></td><td>Yahoo股市（Claude in Chrome直接讀取）</td><td>自動抓取</td></tr>
-      <tr><td>🇺🇸 美股 10支（含BE）</td><td><strong>每日凌晨 6–7時</strong></td><td>Yahoo股市（tw.stock.yahoo.com）</td><td>搜尋確認</td></tr>
+      <tr><td>🇺🇸 美股 9支</td><td><strong>每日凌晨 6–7時</strong></td><td>Robinhood（搜尋結果）/ Yahoo Finance</td><td>搜尋確認</td></tr>
       <tr><td>🇺🇸 AG</td><td><strong>每日凌晨 6–7時</strong></td><td>tw.stock.yahoo.com/quote/AG</td><td>Claude in Chrome</td></tr>
     </tbody></table>
   </div>
@@ -1147,54 +1079,7 @@ id="p-t3481" class="panel">
   </div>
 </div>
 
-
-
-
-<div id="p-profit" class="panel">
-  <div class="pch-header">
-    <div class="pch-left">
-      <div class="pch-title">💰 已實現獲利統計</div>
-      <div class="pch-subtitle">已出清持倉・每日更新後市追蹤</div>
-    </div>
-    <div class="pch-right">
-      <div class="pch-price up">+NT$358,070 <span style="font-size:13px">▲台股已實現獲利</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:3px">台股累計已實現獲利</div>
-    </div>
-  </div>
-  <div style="padding:16px">
-    <table class="ptable" style="width:100%;margin-bottom:16px">
-      <thead><tr><th>代號</th><th>名稱</th><th>買入均價</th><th>股數</th><th>買入成本</th><th>賣出價</th><th>賣出金額</th><th class="r">已實現獲利</th><th class="r">報酬率</th><th>備注</th></tr></thead>
-      <tbody>
-        <tr>
-          <td><strong style="color:var(--up)">6488</strong></td>
-          <td>環球晶圓</td><td>$656.93</td><td>1,000</td>
-          <td>NT$656,930</td>
-          <td class="up">$1,015（漲停）</td>
-          <td class="up">NT$1,015,000</td>
-          <td class="r up">+NT$358,070</td>
-          <td class="r up">+54.5%</td>
-          <td>2026/05/29 漲停出清・連6漲</td>
-        </tr>
-      </tbody>
-      <tfoot><tr><td colspan="7"><strong>台股已實現獲利合計</strong></td><td class="r up"><strong>+NT$358,070</strong></td><td class="r up"><strong>+54.5%</strong></td><td></td></tr></tfoot>
-    </table>
-    <div style="padding:14px;background:var(--up-bg);border-radius:8px;border-left:4px solid var(--up);margin-bottom:16px">
-      <div style="font-weight:700;color:var(--up);margin-bottom:6px">🏆 環球晶操作紀錄</div>
-      <div style="font-size:12px;line-height:1.8">
-        <div>・買入：$656.93 × 1,000股 = NT$656,930</div>
-        <div>・賣出：$1,015 × 1,000股 = NT$1,015,000（2026/05/29 漲停賣出）</div>
-        <div>・連6根漲停，+54.5%；賣出後 6/1 回落至 $950（-6.4%）</div>
-        <div style="margin-top:6px;color:var(--muted)">※ 持續追蹤，等待下次進場機會</div>
-      </div>
-    </div>
-    <div style="padding:14px;background:var(--card);border-radius:8px;border:1px solid var(--border)">
-      <div style="font-weight:600;margin-bottom:8px">📊 環球晶後市追蹤（已出清）</div>
-      <div style="font-size:12px;color:var(--muted)">
-        賣出收盤：$1,015（2026/05/29）｜ 6/1 收盤：$950（-7.39%）｜ 賣出後累計下跌 -6.4%
-      </div>
-    </div>
-  </div>
-</div>
+<div id="p-profit" class="panel"><div class="pch"><div class="pch-left"><div class="ticker" style="font-size:16px">💰已實現獲利</div><div class="fullname">已出清持倉紀錄</div></div><div class="pch-right"><div class="pch-price up">+NT$358,070 <span style="font-size:13px">▲已實現</span></div><div style="font-size:11px;color:var(--muted)">2026/05/29環球晶漲停出清</div></div></div><div style="padding:16px"><table class="ptable" style="width:100%"><thead><tr><th>代號</th><th>名稱</th><th>均價</th><th>股數</th><th>成本</th><th>賣出價</th><th>賣出金額</th><th>獲利</th><th>報酬率</th><th>備注</th></tr></thead><tbody><tr><td><strong>6488</strong></td><td>環球晶圓</td><td>$656.93</td><td>1,000</td><td>NT$656,930</td><td>$1,015漲停</td><td>NT$1,015,000</td><td class="up">+NT$358,070</td><td class="up">+54.5%</td><td>連6漲停</td></tr></tbody></table></div></div>
 <script>
 document.getElementById('dt').textContent = new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
 
@@ -1275,26 +1160,26 @@ YouTube：https://www.youtube.com/watch?v=0ceBL2XtRsY
 請在每次分析中對照上述郭哲榮觀點，評估持倉標的是否符合其選股邏輯，並整合進操作建議。`;
 
 const HOLDINGS = {
-  ag:    {name:'AG（First Majestic Silver）',cost:'$20.11/股×110股=成本$2,212',note:'白銀礦業；6/1收盤$19.90（-1.1%浮虧）；分析師目標均值$27.85；白銀現貨~$33/oz；微幅虧損持有中'},
-  cohr:  {name:'COHR（Coherent Corp）',cost:'$235.67/股×6股=成本$1,414',note:'AI光互連；6/1收盤$381.00（+61.7%浮盈）；NVDA確認持股；即將加入S&P500！；最高目標$425（Rosenblatt）'},
-  tsm:   {name:'TSM（台積電ADR）',cost:'$330.46/股×6股=成本$1,983',note:'晶圓代工；6/1收盤$404.52（+22.4%浮盈）；N2/CoWoS滿載；BofA維持買入'},
-  tsla:  {name:'TSLA（Tesla）',cost:'$387.58/股×5股=成本$1,938',note:'電動車/自動駕駛；6/1收盤$426.01（+9.9%浮盈）；Robotaxi Austin 6月；FSD V13推進；Optimus量產籌備'},
-  uuuu:  {name:'UUUU（Energy Fuels）',cost:'$20.86/股×121股=成本$2,524',note:'稀土+鈾礦；6/1收盤$18.04（-13.5%浮虧）；ASM收購股東投票進行中；Q1營收$35.8M/YoY+112%；現金$921M；HC Wainwright目標$29'},
-  eose:  {name:'EOSE（Eos Energy）',cost:'$7.83/股×40股=成本$313',note:'鋅基儲能；6/1收盤$8.06（+2.9%浮盈）；IRA補貼為核心支撐；倉位小'},
-  nbis:  {name:'NBIS（Nebius Group）',cost:'$86.88/股×3股=成本$261',note:'AI雲端基礎設施；6/1收盤$214.77（+147.2%浮盈）；Q1營收$399M/YoY+684%；NVDA投資$20億；Bloom Energy合作'},
-  onds:  {name:'ONDS（Ondas Holdings）',cost:'$8.96/股×20股=成本$179',note:'工業無人機/鐵路自動化；6/1收盤$9.06（+1.1%浮盈）；政府合約為主；最小倉位'},
-  orcl:  {name:'ORCL（Oracle）',cost:'$161.24/股×4股=成本$645',note:'AI企業雲；6/1收盤$192.08（+19.1%浮盈）；OCI雲業務加速；FY27收入預估$86.3B'},
-  t631:  {name:'00631L（元大台灣50正2）',cost:'NT$29.93/股×2,000股=成本NT$59,860',note:'2倍槓桿ETF每日重置；6/1收盤$34.56（+15.5%浮盈）；連3漲+17.11%；注意槓桿耗損長期持有風險'},
-  t922:  {name:'00922（國泰台灣領袖50）',cost:'NT$29.03/股×11,000股=成本NT$319,330',note:'台股最大ETF倉位；月配息；6/1收盤$38.49（+32.6%浮盈，+NT$104,060）；連3漲；TSM為最大成分'},
-  t882:  {name:'00882（中信中國高股息）',cost:'NT$12.68/股×28,000股=成本NT$355,040',note:'台股最大金額獲利部位；中港高股息；6/1收盤$15.79（+24.5%，+NT$87,080）；11月關稅休戰到期風險'},
-  t955:  {name:'00955（中信日本商社）',cost:'NT$15.57/股×20,000股=成本NT$311,400',note:'日本商社+大宗商品；6/1收盤$15.62（+0.3%浮盈）；日債10Y 2.6%（29年高）；日圓升值壓力'},
-  t9816: {name:'009816（凱基台灣TOP 50）',cost:'NT$10.25/股×6,000股=成本NT$61,500',note:'台灣大型股指數ETF；6/1收盤$14.19（+38.4%浮盈）'},
+  ag:    {name:'AG（First Majestic Silver）',cost:'$20.11/股×110股=成本$2,212',note:'白銀礦業；5/22收盤$19.90（-1.1%浮虧）；分析師目標均值$27.85；白銀現貨~$33/oz；微幅虧損持有中'},
+  cohr:  {name:'COHR（Coherent Corp）',cost:'$235.67/股×6股=成本$1,414',note:'AI光互連；5/22收盤$381.00（+61.7%浮盈）；NVDA確認持股；即將加入S&P500！；最高目標$425（Rosenblatt）'},
+  tsm:   {name:'TSM（台積電ADR）',cost:'$330.46/股×6股=成本$1,983',note:'晶圓代工；5/26收盤$404.52（+22.4%浮盈）；N2/CoWoS滿載；BofA維持買入'},
+  tsla:  {name:'TSLA（Tesla）',cost:'$387.58/股×5股=成本$1,938',note:'電動車/自動駕駛；5/26收盤$426.01（+9.9%浮盈）；Robotaxi Austin 6月；FSD V13推進；Optimus量產籌備'},
+  uuuu:  {name:'UUUU（Energy Fuels）',cost:'$20.86/股×121股=成本$2,524',note:'稀土+鈾礦；5/26收盤$18.04（-13.5%浮虧）；ASM收購股東投票進行中；Q1營收$35.8M/YoY+112%；現金$921M；HC Wainwright目標$29'},
+  eose:  {name:'EOSE（Eos Energy）',cost:'$7.83/股×40股=成本$313',note:'鋅基儲能；5/26收盤$8.06（+2.9%浮盈）；IRA補貼為核心支撐；倉位小'},
+  nbis:  {name:'NBIS（Nebius Group）',cost:'$86.88/股×3股=成本$261',note:'AI雲端基礎設施；5/26收盤$214.77（+147.2%浮盈）；Q1營收$399M/YoY+684%；NVDA投資$20億；Bloom Energy合作'},
+  onds:  {name:'ONDS（Ondas Holdings）',cost:'$8.96/股×20股=成本$179',note:'工業無人機/鐵路自動化；5/26收盤$9.06（+1.1%浮盈）；政府合約為主；最小倉位'},
+  orcl:  {name:'ORCL（Oracle）',cost:'$161.24/股×4股=成本$645',note:'AI企業雲；5/26收盤$192.08（+19.1%浮盈）；OCI雲業務加速；FY27收入預估$86.3B'},
+  t631:  {name:'00631L（元大台灣50正2）',cost:'NT$29.93/股×2,000股=成本NT$59,860',note:'2倍槓桿ETF每日重置；5/25收盤$34.56（+15.5%浮盈）；連3漲+17.11%；注意槓桿耗損長期持有風險'},
+  t922:  {name:'00922（國泰台灣領袖50）',cost:'NT$29.03/股×11,000股=成本NT$319,330',note:'台股最大ETF倉位；月配息；5/25收盤$38.49（+32.6%浮盈，+NT$104,060）；連3漲；TSM為最大成分'},
+  t882:  {name:'00882（中信中國高股息）',cost:'NT$12.68/股×28,000股=成本NT$355,040',note:'台股最大金額獲利部位；中港高股息；5/22收盤$15.79（+24.5%，+NT$87,080）；11月關稅休戰到期風險'},
+  t955:  {name:'00955（中信日本商社）',cost:'NT$15.57/股×20,000股=成本NT$311,400',note:'日本商社+大宗商品；5/22收盤$15.62（+0.3%浮盈）；日債10Y 2.6%（29年高）；日圓升值壓力'},
+  t9816: {name:'009816（凱基台灣TOP 50）',cost:'NT$10.25/股×6,000股=成本NT$61,500',note:'台灣大型股指數ETF；5/22收盤$14.19（+38.4%浮盈）'},
   t990:  {name:'00990A（主動元大AI新經濟）',cost:'NT$11.84/股×7,000股=成本NT$82,880',note:'主動式AI/科技ETF；5/22大漲+4.87%收$18.53（+56.5%浮盈，+NT$46,830）；連3漲'},
   t2313: {name:'2313（華通電腦）',cost:'NT$222.82/股×1,000股=成本NT$222,820',note:'高階PCB；AI伺服器需求驅動；5/25大漲+7.37%收$298.5（+34.0%浮盈）；連3漲+17.06%；追蹤月營收'},
   t2359: {name:'2359（所羅門）',cost:'NT$124.43/股×2,000股=成本NT$248,860',note:'機器人/AI視覺；5/22大漲+5.22%收$141.0（+13.3%浮盈）；連2漲'},
   t3481: {name:'3481（群創光電）',cost:'NT$25.39/股×3,000股=成本NT$76,170',note:'面板轉型FOPLP；5/25漲停+9.97%收$49.10（+93.4%浮盈，+NT$71,130）；連3漲停；郭哲榮看好持倉續抱'},
   t6488: {name:'6488（環球晶）',cost:'NT$656.93/股×1,000股=成本NT$656,930',note:'台股最大單一個股倉位；晶圓材料；5/25漲停$788（+20.0%浮盈）；連3漲；郭哲榮：處置照樣噴持股續抱'},
-  t8070: {name:'8070（長華電材）',cost:'NT$43.06/股×1,000股=成本NT$43,060',note:'高階PCB銅箔；6/1收盤$44.90（+4.3%浮盈）；連3漲'},
+  t8070: {name:'8070（長華電材）',cost:'NT$43.06/股×1,000股=成本NT$43,060',note:'高階PCB銅箔；5/22收盤$44.90（+4.3%浮盈）；連3漲'},
   f1:    {name:'安聯智慧城市AMg-USD（00040124）',cost:'本金USD 318 | 35.432單位 | 申購均價~$8.98',note:'AI+城市科技月配息；參考淨值$11.1075（5/21）；參考現值$393.56；含息損益+$87.9（+27.64%）；不含息+$75.56（+23.76%）；累積配息$12.34；中長線看多'},
   f2:    {name:'PIMCO多元收益M級-USD月收息強化（00840024）',cost:'本金USD 50,000 | 6,226.65單位',note:'⚠️最高風險：Fed升息機率>50%、CPI 3.8%、美債10Y 4.59%，NAV $7.94（5/21）持續承壓；參考現值$49,439.60；含息損益+$2,137.17（+4.27%）；不含息-$560.4（-1.12%）；累積配息$2,697.57；6月FOMC確認升息應立即評估減碼；最大單一基金風險部位'},
   f3:    {name:'PIMCO多元收益M級-USD穩定月收息（00840032）',cost:'本金USD 36,021 | 3,748.283單位',note:'⚠️升息風險：NAV $9.3（5/21）；參考現值$34,859.03；含息損益+$1,574.27（+4.37%）；不含息-$1,161.97（-3.23%）；累積配息$2,736.24；PIMCO兩支合計本金$86,021為組合最大風險'},
@@ -1445,7 +1330,7 @@ const FUNDAMENTALS = {
     eps: { hist: [{q:'2024Q3',v:1.02},{q:'2024Q4',v:1.15},{q:'2025Q1',v:1.08},{q:'2025Q2',v:1.28}], forecast: [{y:'2026E',v:1.50},{y:'2027E',v:1.75},{y:'2028E',v:2.00}] },
     targets: [{firm:'NAV（5/22）',pt:38.49,rating:'成分股決定'},{firm:'分析師共識',pt:38,rating:'Outperform'}],
     fair: 'NT$34–42（台灣50成分加權本益比 18–22x）',
-    earnings: { rev:'AUM：約 NT$1,200億', eps:'6/1 收盤 NT$38.49（+32.6%）', margin:'費用率 0.43%/年（低費用）', guide:'台積電/聯發科佔半數，AI晶片週期是最大驅動力' }
+    earnings: { rev:'AUM：約 NT$1,200億', eps:'5/25 收盤 NT$38.49（+32.6%）', margin:'費用率 0.43%/年（低費用）', guide:'台積電/聯發科佔半數，AI晶片週期是最大驅動力' }
   },
   t882: {
     moat: { level: '無（指數工具）', score: 1, pillars: ['中港高股息曝險','月配息','低相關性分散'], pillars_neg: ['中國政策風險','關稅風險','人民幣匯率'], color: '#BA7517',
@@ -1453,7 +1338,7 @@ const FUNDAMENTALS = {
     eps: { hist: [{q:'2024Q3',v:0.52},{q:'2024Q4',v:0.61},{q:'2025Q1',v:0.55},{q:'2025Q2',v:0.63}], forecast: [{y:'2026E',v:0.68},{y:'2027E',v:0.72},{y:'2028E',v:0.78}] },
     targets: [{firm:'NAV（5/22）',pt:15.79,rating:'中性'},{firm:'關稅風險情境',pt:13.5,rating:'下行風險'}],
     fair: 'NT$14–17（含息報酬率 5–7%，依中港市場估值）',
-    earnings: { rev:'AUM：約 NT$2,100億（台股最大中港ETF）', eps:'6/1 收盤 NT$15.79（+24.5%）', margin:'費用率 0.60%/年', guide:'⚠️ 2026/11 關稅休戰到期；中港成分股政策監管持續監控' }
+    earnings: { rev:'AUM：約 NT$2,100億（台股最大中港ETF）', eps:'5/22 收盤 NT$15.79（+24.5%）', margin:'費用率 0.60%/年', guide:'⚠️ 2026/11 關稅休戰到期；中港成分股政策監管持續監控' }
   },
   t955: {
     moat: { level: '無（指數工具）', score: 1, pillars: ['日本五大商社曝險','大宗商品連動','日圓避險'], pillars_neg: ['日圓升值壓力','日本10Y利率上升','高利率承壓'], color: '#7F77DD',
@@ -1461,7 +1346,7 @@ const FUNDAMENTALS = {
     eps: { hist: [{q:'2024Q3',v:0.38},{q:'2024Q4',v:0.41},{q:'2025Q1',v:0.39},{q:'2025Q2',v:0.43}], forecast: [{y:'2026E',v:0.46},{y:'2027E',v:0.50},{y:'2028E',v:0.55}] },
     targets: [{firm:'NAV（5/22）',pt:15.62,rating:'中性'},{firm:'日圓升值情境',pt:14.5,rating:'下行'},{firm:'大宗商品多頭',pt:18,rating:'樂觀'}],
     fair: 'NT$14–18（日商社本益比 9–12x，加台灣溢價）',
-    earnings: { rev:'追蹤：日本五大商社等權重指數', eps:'6/1 收盤 NT$15.62（+0.3%）', margin:'費用率 0.65%/年', guide:'日本10Y 2.60%為29年高；日圓走勢是關鍵變數；巴菲特持續加碼背書' }
+    earnings: { rev:'追蹤：日本五大商社等權重指數', eps:'5/22 收盤 NT$15.62（+0.3%）', margin:'費用率 0.65%/年', guide:'日本10Y 2.60%為29年高；日圓走勢是關鍵變數；巴菲特持續加碼背書' }
   },
   t9816: {
     moat: { level: '無（指數工具）', score: 1, pillars: ['台灣大型股寬基','低費用率','流動性佳'], pillars_neg: ['追蹤誤差','成分調整滯後'], color: '#1D9E75',
@@ -1469,7 +1354,7 @@ const FUNDAMENTALS = {
     eps: { hist: [{q:'2024Q3',v:0.38},{q:'2024Q4',v:0.42},{q:'2025Q1',v:0.40},{q:'2025Q2',v:0.48}], forecast: [{y:'2026E',v:0.58},{y:'2027E',v:0.68},{y:'2028E',v:0.78}] },
     targets: [{firm:'NAV（5/22）',pt:14.19,rating:'成分股決定'},{firm:'合理NAV（AI多頭）',pt:15.5,rating:'樂觀'}],
     fair: 'NT$13–16（台灣大型股本益比 17–21x）',
-    earnings: { rev:'AUM：約 NT$280億', eps:'6/1 收盤 NT$14.19（+38.4%）', margin:'費用率 0.45%/年', guide:'台積電佔比30%+，AI晶片週期決定績效上限' }
+    earnings: { rev:'AUM：約 NT$280億', eps:'5/22 收盤 NT$14.19（+38.4%）', margin:'費用率 0.45%/年', guide:'台積電佔比30%+，AI晶片週期決定績效上限' }
   },
   t990: {
     moat: { level: '窄（主動選股優勢）', score: 2, pillars: ['主動AI選股','元大投信量化模型','AI新經濟賽道佈局'], pillars_neg: ['主動管理費較高','選股失誤風險','新基金歷史短'], color: '#185FA5',
@@ -1477,7 +1362,7 @@ const FUNDAMENTALS = {
     eps: { hist: [{q:'2025Q1',v:0.68},{q:'2025Q2',v:0.85},{q:'2025Q3',v:1.02},{q:'2025Q4',v:1.18}], forecast: [{y:'2026E',v:1.50},{y:'2027E',v:1.90},{y:'2028E',v:2.30}] },
     targets: [{firm:'NAV（5/22）',pt:18.53,rating:'主動管理'},{firm:'AI多頭目標',pt:22,rating:'樂觀'}],
     fair: 'NT$16–22（AI主題溢價，成長型本益比 20–28x）',
-    earnings: { rev:'AUM：約 NT$120億（快速成長）', eps:'6/1 收盤 NT$18.53（+56.5%）', margin:'費用率 0.85%/年（主動管理費）', guide:'AI半導體+伺服器供應鏈為核心配置；選股模型季度調整' }
+    earnings: { rev:'AUM：約 NT$120億（快速成長）', eps:'5/22 收盤 NT$18.53（+56.5%）', margin:'費用率 0.85%/年（主動管理費）', guide:'AI半導體+伺服器供應鏈為核心配置；選股模型季度調整' }
   },
 };
 
@@ -1771,7 +1656,7 @@ function renderFundamentals(id) {
         <span style="flex:1;height:1px;background:#e8e4dc"></span>
       </div>
       ${html}
-    `;
+    </div>`;
   }).join('');
 }
 
