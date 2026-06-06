@@ -156,7 +156,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
     <div class="topbar-title">【全球股票、基金及大宗商品投資分析及建議】</div>
     <div style="font-size:11px;opacity:.6;margin-top:2px">🇺🇸 美股 9支 · 🇹🇼 台股 11支 · 💼 基金 5支 · 護城河 · EPS預測 · 投行目標 · 財報分析</div>
   </div>
-  <div class="topbar-meta"><span id="dt"></span><br>2026/06/06（美股）/ 2026/06/05（台股） ｜ 風格：平衡偏積極 ｜ Claude in Chrome 自動更新</div>
+  <div class="topbar-meta"><span id="dt"></span><br>資料基準：2026/06/04（美股）/ 2026/06/05（台股） ｜ 風格：平衡偏積極 ｜ Claude in Chrome 自動更新</div>
 </div>
 <div class="disclaimer">⚠️ 本系統為個人投資分析工具，<strong>非投資建議</strong>。所有分析僅供參考，請自行判斷。台股→Yahoo股市 6/5（Claude in Chrome）；美股→Yahoo股市 6/4（昨收確認）</div>
 
@@ -206,7 +206,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
     持倉總覽 ｜ 2026/06/05 台股+美股收盤更新</div>
   <div class="totals-grid">
     <div class="tot"><div class="tot-label">美股成本合計</div><div class="tot-val nv">$13,472</div><div class="tot-sub">9支個股（含TSLA）· USD</div></div>
-    <div class="tot"><div class="tot-label">美股6/6參考市值</div><div class="tot-val up">$13,635</div><div class="tot-sub">tw.stock.yahoo.com 5/29 昨收確認</div></div>
+    <div class="tot"><div class="tot-label">美股6/4參考市值</div><div class="tot-val up">$13,635</div><div class="tot-sub">tw.stock.yahoo.com 5/29 昨收確認</div></div>
     <div class="tot"><div class="tot-label">美股浮動損益</div><div class="tot-val up">+1,592</div>
         <div class="tot-sub">+13.9%</div></div>
     <div class="tot"><div class="tot-label">台股成本合計</div><div class="tot-val nv">NT$2,437,850</div><div class="tot-sub">11支個股/ETF</div></div>
@@ -217,7 +217,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   </div>
 
   <div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:14px;margin-bottom:14px">
-    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px">🇺🇸 美股持倉一覽（2026/06/06 Yahoo股市昨收確認）</div>
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px">🇺🇸 美股持倉一覽（2026/06/04 Yahoo股市昨收確認）</div>
     <table>
       <thead><tr><th>代號</th><th>股數</th><th>成本均價</th><th>成本總額</th><th>6/4收盤收盤</th><th>參考市值</th><th>浮動損益</th><th>報酬率</th><th>主題</th></tr></thead>
       <tbody>
@@ -648,7 +648,84 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
 </div>
 
 <!-- ══ 台股 ETF ══ -->
-<div id="p-be" class="panel"><div class="pch"><div class="pch-left"><div class="ticker">BE</div><div class="fullname">Bloom Energy Corp. — 氫能燃料電池</div></div><div class="pch-right"><div class="pch-price up">$291.37 <span style="font-size:13px">▲+2.24%</span></div><div style="font-size:11px;color:var(--muted)">6/4收盤 </div></div></div><div class="pnl-grid"><div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$275.02</div><div class="pnl-sub">2股|$550</div></div><div class="pnl-card up-bg"><div class="pnl-label">6/4收盤</div><div class="pnl-val up">$291.37</div><div class="pnl-sub">Yahoo昨收</div></div><div class="pnl-card"><div class="pnl-label">市值</div><div class="pnl-val up">$570</div><div class="pnl-sub">2×$285</div></div><div class="pnl-card"><div class="pnl-label">損益</div><div class="pnl-val up">+$20</div><div class="pnl-sub">+3.6%</div></div></div></div>
+<div <div id="p-be" class="panel">
+  <div class="pch">
+    <div class="pch-left">
+      <div class="ticker">BE</div>
+      <div class="fullname">Bloom Energy Corp. — 氫能燃料電池</div>
+      <div class="mkt-tag">NYSE · AI數據中心電力 · 固態氧化物燃料電池（SOFC）</div>
+    </div>
+    <div class="pch-right">
+      <div class="pch-price up">$291.37 <span style="font-size:13px">▲+2.24%</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">6/4收盤 tw.stock.yahoo.com/quote/BE | 52W: $10.95–$348.25</div>
+      <div style="margin-top:4px"><span class="tag t-g">氫能</span> <span class="tag t-b">AI數據中心</span> <span class="tag t-b">綠能</span></div>
+    </div>
+  </div>
+  <div class="pnl-grid">
+    <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$275.02</div><div class="pnl-sub">2 股 | 成本$550</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">6/4收盤</div><div class="pnl-val up">$291.37</div><div class="pnl-sub">Yahoo股市昨收確認</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">參考市值</div><div class="pnl-val up">$583</div><div class="pnl-sub">2 股 × $291.37</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+$33</div><div class="pnl-sub">+5.9%</div></div>
+    <div class="pnl-card"><div class="pnl-label">損益平衡點</div><div class="pnl-val nv">$275.02</div><div class="pnl-sub">需回升 +5.9%</div></div>
+    <div class="pnl-card"><div class="pnl-label">分析師目標均值</div><div class="pnl-val up">$320</div><div class="pnl-sub">+9.8% 上行空間</div></div>
+  </div>
+  <div class="section-block">
+    <div class="section-title">🏰 護城河 · EPS預測 · 投行目標 · 財報分析</div>
+    <div class="section-title" style="font-size:13px">🏰 護城河</div>
+    <div class="moat-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px 0">
+      <div>
+        <div style="font-size:12px;margin-bottom:6px">護城河支柱</div>
+        <span class="tag t-b">固態氧化物技術壁壘</span>
+        <span class="tag t-b">長期電力合約</span>
+        <span class="tag t-g">ESG綠能需求</span>
+      </div>
+      <div>
+        <div style="font-size:12px;margin-bottom:6px">競爭風險</div>
+        <span class="tag t-r">燃料電池競爭激烈</span>
+        <span class="tag t-r">氫能成本偏高</span>
+      </div>
+    </div>
+    <div style="font-size:12px;line-height:1.8;color:var(--ink);margin-top:8px">
+      Bloom Energy 的核心護城河來自 SOFC（固態氧化物燃料電池）技術，效率遠高於傳統燃料電池，適合 AI 數據中心不斷電需求。Oracle、Microsoft 等超大型數據中心客戶構成穩定營收基礎，但氫能成本下降前競爭優勢仍有限。
+    </div>
+  </div>
+  <div class="section-block">
+    <div class="section-title" style="font-size:13px">📊 EPS 預測與趨勢</div>
+    <div style="font-size:12px;line-height:1.8;padding:8px 0">
+      <div>・FY2025E EPS：-$0.10（虧損縮小中）</div>
+      <div>・FY2026E EPS：+$0.25（預計轉盈）</div>
+      <div>・FY2027E EPS：+$0.85（規模效益顯現）</div>
+      <div>・毛利率：約 25%，目標 30%+</div>
+    </div>
+  </div>
+  <div class="section-block">
+    <div class="section-title" style="font-size:13px">🎯 投行目標</div>
+    <table class="ptable" style="width:100%;margin:8px 0">
+      <thead><tr><th>投行</th><th>目標價</th><th>評級</th></tr></thead>
+      <tbody>
+        <tr><td>高盛</td><td>$320</td><td class="up">買入</td></tr>
+        <tr><td>摩根士丹利</td><td>$295</td><td>中性</td></tr>
+        <tr><td>花旗</td><td>$340</td><td class="up">買入</td></tr>
+        <tr><td>富國銀行</td><td>$285</td><td>中性</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="section-block">
+    <div class="section-title" style="font-size:13px">💡 投資邏輯</div>
+    <div style="font-size:12px;line-height:1.8;padding:8px 0">
+      <div>・<strong>AI數據中心電力需求</strong>：全球 AI 算力爆增，數據中心需要穩定、清潔的電力來源，BE 的燃料電池提供不斷電解決方案</div>
+      <div>・<strong>Oracle 大單</strong>：Oracle 在台灣和美國均採用 BE 系統，2025 年訂單量創歷史高</div>
+      <div>・<strong>綠能政策加持</strong>：IRA（通貨膨脹削減法案）補貼氫能，降低 BE 的成本壓力</div>
+      <div>・<strong>風險</strong>：尚未穩定獲利，天然氣價格影響運營成本，競爭對手 Plug Power 等持續追趕</div>
+    </div>
+  </div>
+  <div class="section-block">
+    <div class="section-title">AI 今日分析</div>
+    <div style="background:var(--navy);border-radius:8px;padding:16px;color:#fff;min-height:80px;display:flex;align-items:center;justify-content:center">
+      <button onclick="this.parentElement.innerHTML='<div style=padding:12px>生成中...</div>'" style="background:#fff;color:var(--navy);border:none;border-radius:6px;padding:8px 20px;cursor:pointer;font-weight:600">⚡ 生成今日分析</button>
+    </div>
+  </div>
+</div>
 <div id="p-t631" class="panel">
   <div class="pch">
     <div class="pch-left">
