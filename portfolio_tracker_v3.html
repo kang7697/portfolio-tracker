@@ -674,7 +674,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
     <div class="pch-right">
       <div class="pch-price up">$291.37 <span style="font-size:13px">▲+2.24%</span></div>
       <div style="font-size:11px;color:var(--muted);margin-top:3px">6/4收盤 tw.stock.yahoo.com/quote/BE | 52W: $10.95–$348.25</div>
-      <div style="margin-top:4px"><span class="tag t-g">氫能</span> <span class="tag t-b">AI數據中心</span> <span class="tag t-g">綠能</span></div>
+      <div style="margin-top:4px"><span class="tag t-g">氫能</span> <span class="tag t-b">AI數據中心</span></div>
     </div>
   </div>
   <div class="pnl-grid">
@@ -683,26 +683,21 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
     <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+$33</div><div class="pnl-sub">+5.9%</div></div>
     <div class="pnl-card"><div class="pnl-label">分析師目標均值</div><div class="pnl-val up">$320</div><div class="pnl-sub">Rosenblatt最高$350</div></div>
   </div>
-  <div class="section-block">
-    <div class="section-title">🏰 護城河 · EPS預測 · 投行目標 · 財報分析</div>
-    <div style="font-size:12px;color:var(--muted)">載入中...</div>
+  <div class="ai-wrap">
+    <div class="ai-label">🏰 護城河 · EPS預測 · 投行目標 · 財報分析</div>
+    <div class="ai-out idle" id="o-be"></div>
   </div>
-  <div class="section-block">
-    <div class="section-title">AI 今日分析</div>
-    <div style="background:var(--navy);border-radius:8px;padding:16px;color:#fff;display:flex;align-items:center;justify-content:center;min-height:60px">
-      <button onclick="this.parentElement.innerHTML='生成中...'" style="background:#fff;color:var(--navy);border:none;border-radius:6px;padding:8px 20px;cursor:pointer;font-weight:600">⚡ 生成今日分析</button>
-    </div>
+  <div class="btn-row">
+    <button class="btn pri" onclick="gen('be')">⚡ 生成今日分析</button>
+    <button class="btn" onclick="genSig('be','BE')">📡 技術信號</button>
   </div>
-  <div class="section-block">
-    <div class="section-title">📡 技術信號</div>
-    <div class="trig" style="font-size:12px;line-height:1.8">
-      <strong>觸發條件（成本$275.02，浮盈+5.9%）：</strong><br>
-      📌 持有：AI數據中心訂單持續放量，Oracle/Microsoft大客戶關係穩固<br>
-      📌 部分獲利：股價達$330 → 考慮獲利了結1股<br>
-      📌 停損：跌破$250（成本-9%）+ 大單取消 → 評估停損
-    </div>
+  <div class="trig">
+    <strong>觸發條件（成本$275.02，浮盈+5.9%）：</strong><br>
+    📌 持有：AI數據中心訂單持續放量，Oracle/Microsoft大客戶關係穩固<br>
+    📌 部分獲利：股價達$330（分析師目標均值附近）→ 考慮獲利了結1股<br>
+    📌 停損：跌破$250（成本-9%）+ 大單取消 → 評估停損
   </div>
-  <div class="section-block">
+  <div class="section-block" style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px">
     <div class="section-title">📊 歷史估值（EV/EBITDA）</div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0">
       <div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最高</div><div class="pnl-val nv" style="font-size:13px">N/A（多為負）</div></div>
