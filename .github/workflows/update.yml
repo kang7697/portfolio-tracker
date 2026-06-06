@@ -1,0 +1,40 @@
+name: Auto Update Prices
+on:
+  schedule:
+    - cron: '5 7 * * 1-5'
+    - cron: '5 22 * * 1-5'
+    - cron: '5 12 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'tw/us/fund/all'
+        default: 'all'
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Determine mode
+        id: mode
+        run: |
+          HOUR=$(TZ='Asia/Taipei' date +%H)
+          M='${{ github.event.inputs.mode }}'
+          if [ -n "$M" ] && [ "$M" != 'null' ]; then echo "mode=$M" >> $GITHUB_OUTPUT
+          elif [ "$HOUR" = '15' ]; then echo 'mode=tw' >> $GITHUB_OUTPUT
+          elif [ "$HOUR" = '06' ]; then echo 'mode=us' >> $GITHUB_OUTPUT
+          elif [ "$HOUR" = '20' ]; then echo 'mode=fund' >> $GITHUB_OUTPUT
+          else echo 'mode=all' >> $GITHUB_OUTPUT; fi
+      - name: Run update
+        run: python update_prices.py ${{ steps.mode.outputs.mode }}
+      - name: Commit and push
+        run: |
+          git config user.name 'GitHub Actions'
+          git config user.email 'actions@github.com'
+          git add portfolio_tracker_v3.html
+          git diff --staged --quiet || git commit -m 'auto update'
+          git push
