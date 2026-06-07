@@ -77,15 +77,22 @@ def upd(h, pid, price, pct, dl):
     nxt = h.find('\n<div id="p-', idx+10)
     b = nxt if nxt > 0 else idx+5000
     s = h[idx:b]
-    ar = '▲' if pct >= 0 else '▼'; cc = 'up' if pct >= 0 else 'dn'; sg = '+' if pct >= 0 else ''
-    ps = f'${price}'
+    ar = '▲' if pct >= 0 else '▼'
+    cc = 'up' if pct >= 0 else 'dn'
+    sg = '+' if pct >= 0 else ''
+    price_str = f'${price}'
+    # 1. 更新 pch-price 大標題
     s = re.sub(r'class="pch-price [^"]*">[^<]+<span[^>]*>[^<]*</span></div>',
-               f'class="pch-price {cc}">{ps} <span style="font-size:13px">{ar}{sg}{abs(pct):.2f}%</span></div>', s, 1)
+               'class="pch-price ' + cc + '">' + price_str + ' <span style="font-size:13px">' + ar + sg + str(abs(pct)) + '%</span></div>', s, 1)
+    # 2. 更新 pch-subtitle 日期
     s = re.sub(r'(<div style="font-size:11px[^>]*>)\d+/\d+[^<]*(收盤|淨值|追蹤)[^|<]*',
-               f'\\g<1>{dl}收盤 ', s, 1)
-    s = re.sub(r'(<div class="pnl-label">)\d+/\d+(\s*收盤</div>)', f'\\g<1>{dl}\\g<2>', s, 1)
-    s = re.sub(r'(pnl-label">\d+/\d+\s*收盤</div>\s*<div class="pnl-val )[^"]*">\$[\d.]+',
-               f'\\g<1>{cc}">{ps}', s, 1)
+               r'\g<1>' + dl + '收盤 ', s, 1)
+    # 3. 只更新「收盤」那張 pnl-card 的日期標籤
+    s = re.sub(r'(<div class="pnl-label">)\d+/\d+(\s*收盤</div>)',
+               r'\g<1>' + dl + r'\g<2>', s, 1)
+    # 4. 只更新「收盤」那張 pnl-card 的 pnl-val（精確匹配：日期+收盤後面的val）
+    s = re.sub(r'(pnl-label">\d+/\d+\s*收盤</div>\s*<div class="pnl-val )[^"]*(">)\$[\d.]+',
+               r'\g<1>' + cc + r'\g<2>' + price_str, s, 1)
     return h[:idx] + s + h[b:]
 
 def run_tw():
@@ -133,7 +140,7 @@ def run_fund():
         s = re.sub(r'class="pch-price [^"]*">USD [\d.]+[^<]*<span[^>]*>[^<]*</span></div>',
                    f'class="pch-price up">USD {nav} <span style="font-size:13px">▲</span></div>', s, 1)
         s = re.sub(r'(<div style="font-size:11px[^>]*>)\d+/\d+[^<]*(淨值)[^<]*',
-                   f'\\g<1>{dl}淨值 MoneyDJ', s, 1)
+                   r'\g<1>' + dl + '淨值 MoneyDJ', s, 1)
         h = h[:idx] + s + h[b:]
         print(f'  {fid}: NAV={nav}')
     HTML.write_text(h, 'utf-8'); print('FUND done')
