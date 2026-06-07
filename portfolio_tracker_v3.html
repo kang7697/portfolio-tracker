@@ -688,9 +688,9 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
     <div class="ai-out idle" id="o-be"></div>
   </div>
   <div class="btn-row">
-    <button class="btn pri" onclick="gen('be')">&#x26A1; 生成今日分析</button>
-    <button class="btn" onclick="genSig('be','BE')">&#x1F4E1; 技術信號</button>
-    <button class="btn" onclick="genScenario('be')">&#x1F4CA; 三情境</button>
+    <button class="btn pri" onclick="renderFundamentals('be')">&#x26A1; 生成今日分析</button>
+    <button class="btn" onclick="callClaude('be','BE','技術信號')">&#x1F4E1; 技術信號</button>
+    <button class="btn" onclick="callClaude('be','BE','三情境')">&#x1F4CA; 三情境</button>
   </div>
   <div class="trig">
     <strong>觸發條件（成本$275.02，浮號-4.1%）：</strong><br>
@@ -1444,7 +1444,23 @@ const FUNDAMENTALS = {
     targets: [{firm:'NAV（5/22）',pt:18.53,rating:'主動管理'},{firm:'AI多頭目標',pt:22,rating:'樂觀'}],
     fair: 'NT$16–22（AI主題溢價，成長型本益比 20–28x）',
     earnings: { rev:'AUM：約 NT$120億（快速成長）', eps:'5/22 收盤 NT$18.53（+56.5%）', margin:'費用率 0.85%/年（主動管理費）', guide:'AI半導體+伺服器供應鏈為核心配置；選股模型季度調整' }
-  },
+  },,
+  be: {
+    moat: { level: '中等', score: 3, pillars: ['固態氧化物燃料電池技術壁壘', '長期電力合約', 'Oracle/Microsoft大客戶'], pillars_neg: ['燃料電池競爭激烈', '氮能成本偏高', '尚未穩定獲利'], color: '#16A34A',
+      desc: 'Bloom Energy 的核心護城河來自 SOFC（固態氧化物燃料電池）技術，效率遠高於傳統燃料電池，適合 AI 數據中心不斷電需求。Oracle、Microsoft 等超大型數據中心客戶構成穩定營收基礎，但氮能成本下降前競爭優勢仍有限。' },
+    eps: {
+      hist: [{q:'2024Q2',v:-0.06},{q:'2024Q3',v:-0.02},{q:'2024Q4',v:0.01},{q:'2025Q1',v:0.04}],
+      forecast: [{y:'2025E',v:-0.10},{y:'2026E',v:0.25},{y:'2027E',v:0.85}]
+    },
+    targets: [
+      {firm:'高盛',pt:320,rating:'Buy'},
+      {firm:'摩根士丹利',pt:295,rating:'Neutral'},
+      {firm:'花旗',pt:340,rating:'Buy'},
+      {firm:'Rosenblatt',pt:350,rating:'Buy'}
+    ],
+    fair: [{v:180},{v:190},{v:200},{v:210},{v:220},{v:230},{v:240},{v:250},{v:260},{v:270},{v:280},{v:290},{v:300},{v:310},{v:320},{v:330},{v:340}],
+    earnings: {rev:'2025Q1 revenue $388M（YoY+21%）',eps:'EPS $0.03（非 GAAP）',margin:'毛利率 26.8%',guide:'2025全年營收目標 $1.6-1.7B，AI數據中心訂單持續增加'}
+  }
 };
 
 // ── 護城河六邊形雷達圖 ──
