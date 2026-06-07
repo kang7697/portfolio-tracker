@@ -16,14 +16,18 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Install dependencies
+        run: pip install yfinance requests
       - name: Determine mode
         id: mode
         run: |
           HOUR=$(TZ='Asia/Taipei' date +%H)
-          M='${{ github.event.inputs.mode }}'
+          M="${{ github.event.inputs.mode }}"
           if [ -n "$M" ] && [ "$M" != 'null' ]; then echo "mode=$M" >> $GITHUB_OUTPUT
           elif [ "$HOUR" = '15' ]; then echo 'mode=tw' >> $GITHUB_OUTPUT
           elif [ "$HOUR" = '06' ]; then echo 'mode=us' >> $GITHUB_OUTPUT
@@ -36,5 +40,7 @@ jobs:
           git config user.name 'GitHub Actions'
           git config user.email 'actions@github.com'
           git add portfolio_tracker_v3.html
-          git diff --staged --quiet || git commit -m 'auto update'
+          git diff --staged --quiet && echo 'No changes' && exit 0
+          git commit -m 'auto update'
+          git pull --rebase origin main
           git push
