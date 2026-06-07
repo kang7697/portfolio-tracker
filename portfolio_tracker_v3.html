@@ -226,7 +226,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
         <tr style="background:#eef7f1"><td><strong>TSLA</strong> <span class="new-badge">新增</span></td><td>5</td><td>$387.58</td><td>$1,938</td><td class="up">$435.79</td><td class="up">$2,092</td><td class="up">+$154</td><td class="up">+7.9%</td><td><span class="tag t-b">EV/自駕</span></td></tr>
         <tr><td><strong>TSM</strong></td><td>6</td><td>$330.46</td><td>$1,983</td><td class="up">$418.45</td><td class="up">$2,443</td><td class="up">+$460</td><td class="up">+23.2%</td><td><span class="tag t-b">AI晶片</span></td></tr>
         <tr><td><strong>BE</strong></td><td>2</td><td>$275.02</td><td>$550</td><td class="up">$285.00</td><td class="up">$570</td><td class="up">+$20</td><td class="up">+3.6%</td><td><span class="tag t-g">氫能</span></td></tr>
-        <tr><td><strong>BE</strong></td><td>2</td><td>$275.02</td><td>$550</td><td class="up">$285.00</td><td class="up">$570</td><td class="up">+$20</td><td class="up">+3.6%</td><td><span class="tag t-g">氫能</span></td></tr>
+        
         <tr><td><strong>ORCL</strong></td><td>4</td><td>$161.24</td><td>$645</td><td class="up">$225.78</td><td class="up">$764</td><td class="up">+$119</td><td class="up">+18.4%</td><td><span class="tag t-b">AI企業雲</span></td></tr>
         <tr><td><strong>EOSE</strong></td><td>40</td><td>$7.83</td><td>$313</td><td class="up">$8.43</td><td class="up">$331</td><td class="up">+$18</td><td class="up">+5.8%</td><td><span class="tag t-a">儲能</span></td></tr>
         <tr><td><strong>ONDS</strong></td><td>20</td><td>$8.96</td><td>$179</td><td class="up">$13.22</td><td class="up">$184</td><td class="up">+$4</td><td class="up">+2.5%</td><td><span class="tag t-x">無人機</span></td></tr>
@@ -673,41 +673,33 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
     </div>
     <div class="pch-right">
       <div class="pch-price up">$291.37 <span style="font-size:13px">▲+2.24%</span></div>
-      <div style="font-size:11px;color:var(--muted);margin-top:3px">6/4收盤 tw.stock.yahoo.com/quote/BE | 52W: $10.95–$348.25</div>
-      <div style="margin-top:4px"><span class="tag t-g">氫能</span> <span class="tag t-b">AI數據中心</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">6/4收盤 tw.stock.yahoo.com/quote/BE | 52W: <div style="font-size:11px;color:var(--muted);margin-top:3px">0.95–$348.25</div>
+      <div style="margin-top:4px"><span class="tag t-b">AI企業雲</span></div>
     </div>
   </div>
   <div class="pnl-grid">
-    <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$275.02</div><div class="pnl-sub">2 股 | 成本$550</div></div>
-    <div class="pnl-card up-bg"><div class="pnl-label">6/4收盤</div><div class="pnl-val up">$291.37</div><div class="pnl-sub">Yahoo股市昨收確認</div></div>
+    <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv"></div>
+<div class="ai-wrap">75.02</div><div class="pnl-sub">2 股 | 成本$550</div></div>
+    <div class="pnl-card up-bg"><div class="pnl-label">6/4收盤</div><div class="pnl-val up"></div>
+<div class="ai-wrap">91.37</div><div class="pnl-sub">Yahoo股市昨收確認</div></div>
     <div class="pnl-card up-bg"><div class="pnl-label">浮動損益</div><div class="pnl-val up">+$33</div><div class="pnl-sub">+5.9%</div></div>
     <div class="pnl-card"><div class="pnl-label">分析師目標均值</div><div class="pnl-val up">$320</div><div class="pnl-sub">Rosenblatt最高$350</div></div>
   </div>
-  <div class="ai-wrap">
-    <div class="ai-label">🏰 護城河 · EPS預測 · 投行目標 · 財報分析</div>
-    <div class="ai-out idle" id="o-be"></div>
-  </div>
+<div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-be">點擊生成...</div></div>
   <div class="btn-row">
     <button class="btn pri" onclick="gen('be')">⚡ 生成今日分析</button>
     <button class="btn" onclick="genSig('be','BE')">📡 技術信號</button>
+    <button class="btn" onclick="genSc('orcl','ORCL','AI企業雲')">📊 三情境</button>
   </div>
   <div class="trig">
-    <strong>觸發條件（成本$275.02，浮盈+5.9%）：</strong><br>
+    <strong>觸發條件（成本</div>75.02，浮盈+5.9%）：</strong><br>
     📌 持有：AI數據中心訂單持續放量，Oracle/Microsoft大客戶關係穩固<br>
     📌 部分獲利：股價達$330 → 考慮獲利了結1股<br>
-    📌 停損：跌破$250（成本-9%）+ 大單取消 → 評估停損
-  </div>
-  <div class="section-block" style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px">
-    <div class="section-title">📊 歷史估值（EV/EBITDA）</div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0">
-      <div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最高</div><div class="pnl-val nv" style="font-size:13px">N/A（多為負）</div></div>
-      <div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最低</div><div class="pnl-val dn" style="font-size:13px">N/A</div></div>
-      <div class="pnl-card" style="text-align:center"><div class="pnl-label">5年均值</div><div class="pnl-val nv" style="font-size:13px">N/A（多虧損）</div></div>
-    </div>
-    <div style="font-size:11px;color:var(--muted);line-height:1.6">💡 2024年EBITDA開始轉正，目前~80x，AI數據中心電力需求是主要驅動力</div>
-    <div style="font-size:10px;color:var(--muted);margin-top:3px">資料來源：MacroTrends · stockanalysis · GuruFocus</div>
+    📌 停損：跌破</div>50（成本-9%）+ 大單取消 → 評估停損
   </div>
 </div>
+
+<!-- ══ 台股 ETF ══ -->
 <div id="p-t631" class="panel">
   <div class="pch">
     <div class="pch-left">
