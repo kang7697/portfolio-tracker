@@ -38,20 +38,15 @@ def fetch_prices(symbols):
     results = {}
     try:
         data = yf.download(' '.join(symbols), period='5d', interval='1d', progress=False, auto_adjust=True)
-        if hasattr(data.columns, 'levels'):
-            closes = data['Close']
-        else:
-            closes = data[['Close']]
-            closes.columns = symbols
+        closes = data['Close'] if hasattr(data.columns, 'levels') else data[['Close']].rename(columns={'Close': symbols[0]})
         for sym in symbols:
             try:
                 vals = closes[sym].dropna()
                 if len(vals) >= 2:
                     p = round(float(vals.iloc[-1]), 2)
                     prev = round(float(vals.iloc[-2]), 2)
-                    pct = round((p - prev) / prev * 100, 2)
-                    results[sym] = {'p': p, 'c': pct}
-                    print(f'  {sym}: ${p} ({pct:+.2f}%)')
+                    results[sym] = {'p': p, 'c': round((p - prev) / prev * 100, 2)}
+                    print(f'  {sym}: ${p} ({results[sym]["c"]:+.2f}%)')
             except Exception as e:
                 print(f'  {sym}: {e}')
     except Exception as e:
@@ -60,9 +55,10 @@ def fetch_prices(symbols):
 
 def fetch_nav(code):
     import urllib.request
-    url = f'https://www.moneydj.com/funddj/ya/yp010001.djhtm?a={code}'
     try:
-        req = urllib.request.Request(url, headers={'User-Agent':'Mozilla/5.0','Referer':'https://www.moneydj.com/'})
+        req = urllib.request.Request(
+            f'https://www.moneydj.com/funddj/ya/yp010001.djhtm?a={code}',
+            headers={'User-Agent':'Mozilla/5.0','Referer':'https://www.moneydj.com/'})
         with urllib.request.urlopen(req, timeout=20) as r:
             html = r.read().decode('utf-8','replace')
         m = re.search(r'\d{4}/\d{2}/\d{2}[^<]*</td>\s*<td[^>]*>\s*([\d.]+)\s*</td>', html)
@@ -72,27 +68,35 @@ def fetch_nav(code):
     return None
 
 def upd(h, pid, price, pct, dl):
+    """更新個股分頁：重建收盤pnl-card，不用regex避免HTML污染"""
     idx = h.find(f'id="p-{pid}"')
     if idx < 0: return h
-    nxt = h.find('\n<div id="p-', idx+10)
-    b = nxt if nxt > 0 else idx+5000
+    nxt = h.find('\n<div id="p-', idx + 10)
+    b = nxt if nxt > 0 else idx + 5000
     s = h[idx:b]
     ar = '▲' if pct >= 0 else '▼'
     cc = 'up' if pct >= 0 else 'dn'
     sg = '+' if pct >= 0 else ''
-    price_str = f'${price}'
-    # 1. 更新 pch-price 大標題
-    s = re.sub(r'class="pch-price [^"]*">[^<]+<span[^>]*>[^<]*</span></div>',
-               'class="pch-price ' + cc + '">' + price_str + ' <span style="font-size:13px">' + ar + sg + str(abs(pct)) + '%</span></div>', s, 1)
+    ps = f'${price}'
+    pct_str = f'{ar}{sg}{abs(pct):.2f}%'
+    # 1. 更新 pch-price
+    s = re.sub(
+        r'class="pch-price [^"]*">[^<]+<span[^>]*>[^<]*</span></div>',
+        f'class="pch-price {cc}">{ps} <span style="font-size:13px">{pct_str}</span></div>',
+        s, 1)
     # 2. 更新 pch-subtitle 日期
-    s = re.sub(r'(<div style="font-size:11px[^>]*>)\d+/\d+[^<]*(收盤|淨值|追蹤)[^|<]*',
-               r'\g<1>' + dl + '收盤 ', s, 1)
-    # 3. 只更新「收盤」那張 pnl-card 的日期標籤
-    s = re.sub(r'(<div class="pnl-label">)\d+/\d+(\s*收盤</div>)',
-               r'\g<1>' + dl + r'\g<2>', s, 1)
-    # 4. 只更新「收盤」那張 pnl-card 的 pnl-val（精確匹配：日期+收盤後面的val）
-    s = re.sub(r'(pnl-label">\d+/\d+\s*收盤</div>\s*<div class="pnl-val )[^"]*(">)\$[\d.]+',
-               r'\g<1>' + cc + r'\g<2>' + price_str, s, 1)
+    s = re.sub(
+        r'(<div style="font-size:11px[^>]*>)\d+/\d+[^<]*(收盤|淨值|追蹤)[^|<]*',
+        rf'\g<1>{dl}收盤 ', s, 1)
+    # 3. 重建整張收盤 pnl-card（找到後整張替換，不拆開修改）
+    bg = 'up-bg' if pct >= 0 else 'dn-bg'
+    new_card = (f'<div class="pnl-card {bg}">'
+                f'<div class="pnl-label">{dl}收盤</div>'
+                f'<div class="pnl-val {cc}">{ps}</div>'
+                f'<div class="pnl-sub">Yahoo股市昨收確認</div></div>')
+    s = re.sub(
+        r'<div class="pnl-card[^"]*"><div class="pnl-label">\d+/\d+\s*收盤</div>[\s\S]*?</div>\s*</div>',
+        new_card, s, 1)
     return h[:idx] + s + h[b:]
 
 def run_tw():
@@ -135,12 +139,14 @@ def run_fund():
         if not nav: continue
         idx = h.find(f'id="p-{fid}"')
         if idx < 0: continue
-        nxt = h.find('\n<div id="p-', idx+10); b = nxt if nxt > 0 else idx+3000
+        nxt = h.find('\n<div id="p-', idx + 10); b = nxt if nxt > 0 else idx + 3000
         s = h[idx:b]
-        s = re.sub(r'class="pch-price [^"]*">USD [\d.]+[^<]*<span[^>]*>[^<]*</span></div>',
-                   f'class="pch-price up">USD {nav} <span style="font-size:13px">▲</span></div>', s, 1)
-        s = re.sub(r'(<div style="font-size:11px[^>]*>)\d+/\d+[^<]*(淨值)[^<]*',
-                   r'\g<1>' + dl + '淨值 MoneyDJ', s, 1)
+        s = re.sub(
+            r'class="pch-price [^"]*">USD [\d.]+[^<]*<span[^>]*>[^<]*</span></div>',
+            f'class="pch-price up">USD {nav} <span style="font-size:13px">▲</span></div>', s, 1)
+        s = re.sub(
+            r'(<div style="font-size:11px[^>]*>)\d+/\d+[^<]*(淨值)[^<]*',
+            rf'\g<1>{dl}淨值 MoneyDJ', s, 1)
         h = h[:idx] + s + h[b:]
         print(f'  {fid}: NAV={nav}')
     HTML.write_text(h, 'utf-8'); print('FUND done')
