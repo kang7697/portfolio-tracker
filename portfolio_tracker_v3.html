@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DO<li><a onclick="return go('t1802')" href="#">1802</a></li>CTYPE html>
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
@@ -219,7 +219,8 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   <div style="background:var(--card);border:1px solid var(--border);border-radius:5px;padding:14px;margin-bottom:14px">
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px">🇺🇸 美股持倉一覽（2026/06/13 Yahoo股市昨收確認）</div>
     <table>
-      <thead><tr><th>代號</th><th>股數</th><th>成本均價</th><th>成本總額</th><th>6/4收盤收盤</th><th>參考市值</th><th>浮動損益</th><th>報酬率</th><th>主題</th></tr></thead>
+      <thead><tr><th>代號</th><th>股數</th><th>成本均價</th><th>成本總額</th><th>6/4收盤收盤</th><th>參考市值</th><th>浮動損益</th><th>報酬率</th><th>主題</th></tr>
+      <tr id="row-t1802"><td><strong>1802</strong></td><td>台玻</td><td>4,000</td><td>$64.99</td><td>$259,960</td><td class="up" id="cl-t1802">$64.99</td><td id="mv-t1802">$259,960</td><td id="pnl-t1802" class="">+$0</td><td id="pp-t1802" class="">+0.0%</td><td><span class="tag t-g">AI PCB基板</span></td></tr></thead>
       <tbody>
         <tr><td><strong>NBIS</strong></td><td>3</td><td>$86.88</td><td>$261</td><td class="up">$210.23</td><td class="up">$644</td><td class="up">+$383</td><td class="up">+146.8%</td><td><span class="tag t-b">AI雲端</span></td></tr>
         <tr><td><strong>COHR</strong></td><td>6</td><td>$235.67</td><td>$1,414</td><td class="up">$361.47</td><td class="up">$2,256</td><td class="up">+$843</td><td class="up">+59.6%</td><td><span class="tag t-b">AI光互連</span></td></tr>
@@ -966,6 +967,53 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
 </div>
 
 <!-- ══ 基金 ══ -->
+
+<div id="p-t1802" class="panel">
+  <div class="pch">
+    <div class="pch-left">
+      <div class="ticker">1802</div>
+      <div class="fullname">台灣玻璃工業 — 電子級玻纖布</div>
+      <div class="mkt-tag">TWSE · AI PCB基板 · Low DK/Low CTE玻纖布</div>
+    </div>
+    <div class="pch-right">
+      <div class="pch-price nv">$64.99 <span style="font-size:13px">—</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">6/12收盘 tw.stock.yahoo.com/quote/1802.TW</div>
+      <div style="margin-top:4px"><span class="tag t-g">AI PCB基板</span> <span class="tag t-b">玻纖布</span></div>
+    </div>
+  </div>
+  <div class="pnl-grid">
+    <div class="pnl-card"><div class="pnl-label">成本均價</div><div class="pnl-val nv">$64.99</div><div class="pnl-sub">4,000 股 | 成本$259,960</div></div>
+    <div class="pnl-card"><div class="pnl-label">6/12收盘</div><div class="pnl-val nv">$64.99</div><div class="pnl-sub">Yahoo股市昨收確認</div></div>
+    <div class="pnl-card"><div class="pnl-label">浮動損益</div><div class="pnl-val nv">$0</div><div class="pnl-sub">0.0%</div></div>
+    <div class="pnl-card"><div class="pnl-label">目標價</div><div class="pnl-val up">$90</div><div class="pnl-sub">三期擴產完成後</div></div>
+  </div>
+  <div id="fund-t1802" style="font-size:12px"></div>
+  <div class="ai-wrap">
+    <div class="ai-label">AI 今日分析</div>
+    <div class="ai-out idle" id="o-t1802">點擊生成...</div>
+  </div>
+  <div class="btn-row">
+    <button class="btn pri" onclick="renderFundamentals('t1802')">&#x26A1; 生成今日分析</button>
+    <button class="btn" onclick="callClaude('t1802','1802','技術信號')">&#x1F4E1; 技術信號</button>
+    <button class="btn" onclick="callClaude('t1802','1802','三情境')">&#x1F4CA; 三情境</button>
+  </div>
+  <div class="trig">
+    <strong>觸發條件（成本$64.99，4張）：</strong><br>
+    📌 持有：三期擴產進行中，2027年完工後高階布產能大增，AI伺服器PCB需求持續放量<br>
+    📌 部分獲利：股價達$90 → 考慮獲利了1張（1,000股）<br>
+    📌 停損：跌破$52（成本-20%）或中國競爭加劇 → 評估停損
+  </div>
+  <div class="section-block" style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px">
+    <div class="section-title">📊 歷史估値（本益比 P/E）</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0">
+      <div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最高</div><div class="pnl-val up" style="font-size:13px">45x（2024）</div></div>
+      <div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最低</div><div class="pnl-val dn" style="font-size:13px">8x（2019）</div></div>
+      <div class="pnl-card" style="text-align:center"><div class="pnl-label">5年均値</div><div class="pnl-val nv" style="font-size:13px">~20x</div></div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);line-height:1.6">💡 2025全年EPS -0.2元（虧損），2026Q1 EPS +0.2元已轉盈，PE開始有意義。目前股價$64.99為公唱已高纺纖布擴產領磨期</div>
+    <div style="font-size:10px;color:var(--muted);margin-top:3px">資料來源：Win投資 · Goodinfo · 公報</div>
+  </div>
+</div>
 <div id="p-f1" class="panel">
   <div class="pch">
     <div class="pch-left">
@@ -1764,4 +1812,19 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 </body>
-</html>
+</html,
+  t1802: {
+    moat: { level: '中等', score: 3, pillars: ['高階玻纖布技術壁壘', '全球市占率40%', 'Low DK/Low CTE認證壁壘'], pillars_neg: ['中國競爭風險', '門眠纖扖郵期', '2025全年虧損'], color: '#2563EB',
+      desc: '台玻深耕電子級玻纖布約20年，全球市占率18-20%，高階布約40%装中緊追日東紴50%。Low DK、Low CTE已通過三款認證，AI伺服器PCB基板需求主要受益者。三期擴產計畫中，2027年完工後產能大幅腐升。' },
+    eps: {
+      hist: [{q:'2024Q2',v:-0.12},{q:'2024Q3',v:-0.08},{q:'2024Q4',v:-0.05},{q:'2025Q1',v:0.20}],
+      forecast: [{y:'2026E',v:0.80},{y:'2027E',v:2.50},{y:'2028E',v:4.20}]
+    },
+    targets: [
+      {firm:'元大證券',pt:85,rating:'買進'},
+      {firm:'凱豐證券',pt:80,rating:'買進'},
+      {firm:'共識均値',pt:82,rating:'買進'}
+    ],
+    fair: [{v:52},{v:56},{v:60},{v:65},{v:70},{v:75},{v:80},{v:85},{v:90}],
+    earnings: {rev:'五月營收NT$9.1億（YoY+42%）',eps:'2026Q1 EPS +0.2元（已轉盈）',margin:'寫利率回升中',guide:'三期擴產計畫，第三期2027年完工，再投入NT$20億'}
+  }>
