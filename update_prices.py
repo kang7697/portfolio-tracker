@@ -87,7 +87,7 @@ def upd(h, pid, price, pct, dl):
         s, 1)
     # 2. 更新 pch-subtitle 日期
     s = re.sub(
-        r'(<div style="font-size:11px[^>]*>)\d+/\d+[^<]*(收盤|淨值|追蹤)[^|<]*',
+        r'(<div style="font-size:11px[^>]*>)\d+/\d+[^<]*(收[盤盘]|淨值|追蹤)[^|<]*',
         rf'\g<1>{dl}收盤 ', s, 1)
     # 3. 重建整張收盤 pnl-card（找到後整張替換，不拆開修改）
     bg = 'up-bg' if pct >= 0 else 'dn-bg'
@@ -96,7 +96,7 @@ def upd(h, pid, price, pct, dl):
                 f'<div class="pnl-val {cc}">{ps}</div>'
                 f'<div class="pnl-sub">Yahoo股市昨收確認</div></div>')
     s = re.sub(
-        r'<div class="pnl-card[^"]*"><div class="pnl-label">\d+/\d+\s*收盤</div>[\s\S]*?</div>\s*</div>',
+        r'<div class="pnl-card[^"]*"><div class="pnl-label">\d+/\d+\s*收[盤盘]</div>[\s\S]*?</div>\s*</div>',
         new_card, s, 1)
     return h[:idx] + s + h[b:]
 
