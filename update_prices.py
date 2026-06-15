@@ -15,6 +15,7 @@ TW = {
     't3481':{'symbol':'3481.TW','shares':3000,'ct':76170},
     't8070':{'symbol':'8070.TWO','shares':1000,'ct':43060},
     't6488':{'symbol':'6488.TWO','shares':0,'ct':0},
+    't1802':{'symbol':'1802.TW','shares':4000,'ct':259960},
 }
 US = {
     'ag':{'symbol':'AG','shares':110,'ct':2212},
