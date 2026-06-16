@@ -127,8 +127,9 @@ def run_us():
         h = upd(h, tid, info['p'], info['c'], dl)
     h = re.sub(r'美股[\d/]+參考市值', f'美股{dl}參考市值', h)
     h = re.sub(r'美股持倉一覽（[^）]+）', f'美股持倉一覽（{ds} Yahoo股市昨收確認）', h)
-    h = re.sub(r'<th>\d+/\d+收盤</th><th>參考市值', f'<th>{dl}收盤</th><th>參考市值', h)
+    h = re.sub(r'<th>\d+/\d+收[盤盘]</th><th>參考市值', f'<th>{dl}收盤</th><th>參考市值', h)
     h = re.sub(r'資料基準：[\d/]+（美股[^）]*）', f'資料基準：{ds}（美股）', h)
+    h = re.sub(r'美股[\d/]+參考市值', f'美股{dl}參考市值', h)
     HTML.write_text(h, 'utf-8'); print('US done')
 
 def run_fund():
