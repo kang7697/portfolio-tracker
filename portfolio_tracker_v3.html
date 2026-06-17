@@ -1328,7 +1328,7 @@ async function callClaude(prompt, maxT=1200) {
   throw new Error(JSON.stringify(d));
 }
 
-function setLoading(id){ const e=document.getElementById('o-'+id); if(!e) return; e.className='ai-out'; e.innerHTML='\x3cspan class=\"spin\"\x3e\x3c/span\x3eAI分析生成中...'; }
+function setLoading(id){ const e=document.getElementById('o-'+id); if(!e) return; e.className='ai-out'; e.innerHTML='<span class="spin"></span>AI分析生成中...'; }
 function setResult(id,txt){ const e=document.getElementById('o-'+id); if(!e) return; e.className='ai-out'; e.textContent=txt; }
 function setErr(id,msg){ const e=document.getElementById('o-'+id); if(!e) return; e.className='ai-out err'; e.textContent='⚠️ '+msg; }
 
