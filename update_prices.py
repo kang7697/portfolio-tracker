@@ -68,38 +68,76 @@ def fetch_nav(code):
         print(f'MoneyDJ {code}: {e}')
     return None
 
-def upd(h, pid, price, pct, dl):
-    """更新個股分頁：重建收盤pnl-card，不用regex避免HTML污染"""
+def upd(h, pid, price, pct, dl, avg_cost=0, shares=0):
+    """更新個股分頁：收盤card + 浮動損益card + table row"""
     idx = h.find(f'id="p-{pid}"')
     if idx < 0: return h
     nxt = h.find('\n<div id="p-', idx + 10)
     b = nxt if nxt > 0 else idx + 5000
     s = h[idx:b]
-    ar = '▲' if pct >= 0 else '▼'
+    ar = '\u25b2' if pct >= 0 else '\u25bc'
     cc = 'up' if pct >= 0 else 'dn'
     sg = '+' if pct >= 0 else ''
     ps = f'${price}'
     pct_str = f'{ar}{sg}{abs(pct):.2f}%'
-    # 1. 更新 pch-price
+    # 1. pch-price
     s = re.sub(
         r'class="pch-price [^"]*">[^<]+<span[^>]*>[^<]*</span></div>',
         f'class="pch-price {cc}">{ps} <span style="font-size:13px">{pct_str}</span></div>',
         s, 1)
-    # 2. 更新 pch-subtitle 日期
+    # 2. pch-subtitle
     s = re.sub(
-        r'(<div style="font-size:11px[^>]*>)\d+/\d+[^<]*(收[盤盘]|淨值|追蹤)[^|<]*',
-        rf'\g<1>{dl}收盤 ', s, 1)
-    # 3. 重建整張收盤 pnl-card（找到後整張替換，不拆開修改）
+        r'(<div style="font-size:11px[^>]*>)\d+/\d+[^<]*(\u6536[\u76d8\u76e4]|\u51c8\u5024|\u8ffd\u8e64)[^|<]*',
+        rf'\g<1>{dl}\u6536\u76e4 ', s, 1)
+    # 3. 收盤 pnl-card
     bg = 'up-bg' if pct >= 0 else 'dn-bg'
-    new_card = (f'<div class="pnl-card {bg}">'
-                f'<div class="pnl-label">{dl}收盤</div>'
-                f'<div class="pnl-val {cc}">{ps}</div>'
-                f'<div class="pnl-sub">Yahoo股市昨收確認</div></div>')
+    new_card = ('<div class="pnl-card ' + bg + '">'
+             + '<div class="pnl-label">' + dl + '\u6536\u76e4</div>'
+             + '<div class="pnl-val ' + cc + '">' + ps + '</div>'
+             + '<div class="pnl-sub">Yahoo\u80a1\u5e02\u6628\u6536\u78ba\u8a8d</div></div>')
     s = re.sub(
-        r'<div class="pnl-card[^"]*"><div class="pnl-label">\d+/\d+[^<]*收[盤盘][^<]*</div>[\s\S]*?</div>\s*</div>',
+        r'<div class="pnl-card[^"]*"><div class="pnl-label">\d+/\d+[^<]*\u6536[\u76d8\u76e4][^<]*</div>[\s\S]*?</div>\s*</div>',
         new_card, s, 1)
-    return h[:idx] + s + h[b:]
-
+    # 4. 浮動損益 pnl-card
+    if avg_cost > 0 and shares > 0:
+        pnl_val = round((price - avg_cost) * shares)
+        pnl_pct = round((price - avg_cost) / avg_cost * 100, 2)
+        pnl_cc = 'up' if pnl_val >= 0 else 'dn'
+        pnl_bg = 'up-bg' if pnl_val >= 0 else 'dn-bg'
+        pnl_sg = '+' if pnl_val >= 0 else ''
+        pnl_card = ('<div class="pnl-card ' + pnl_bg + '">'
+                  + '<div class="pnl-label">\u6d6e\u52d5\u640d\u76ca</div>'
+                  + '<div class="pnl-val ' + pnl_cc + '">' + pnl_sg + '$' + f'{abs(pnl_val):,}' + '</div>'
+                  + '<div class="pnl-sub">' + pnl_sg + f'{abs(pnl_pct):.2f}' + '%</div></div>')
+        s = re.sub(
+            r'<div class="pnl-card[^"]*"><div class="pnl-label">\u6d6e\u52d5\u640d\u76ca</div>[\s\S]*?</div>\s*</div>',
+            pnl_card, s, 1)
+    h = h[:idx] + s + h[b:]
+    # 5. table row 更新
+    if avg_cost > 0 and shares > 0:
+        pnl_val = round((price - avg_cost) * shares)
+        pnl_pct = round((price - avg_cost) / avg_cost * 100, 2)
+        pnl_sg = '+' if pnl_val >= 0 else ''
+        pct_sg = '+' if pct >= 0 else ''
+        mv = round(price * shares)
+        cl_cc = 'up' if pct >= 0 else 'dn'
+        pnl_cc2 = 'up' if pnl_val >= 0 else 'dn'
+        row_s = h.find(f'id="row-{pid}"')
+        if row_s >= 0:
+            row_e = h.find('</tr>', row_s) + 5
+            row = h[row_s:row_e]
+            row = re.sub(rf'<td class="[^"]*" id="cl-{pid}">[^<]*</td>',
+                         f'<td class="{cl_cc}" id="cl-{pid}">${price}</td>', row)
+            row = re.sub(rf'(<td class="[^"]*" id="cl-{pid}">[^<]*</td>)<td[^>]*>[^<]*</td>',
+                         rf'\g<1><td class="{cl_cc}">{pct_sg}{abs(pct):.2f}%</td>', row, 1)
+            row = re.sub(r'(<td[^>]*>[+\-]?[\d.]+%</td>)<td>\$[\d,]+</td>',
+                         rf'\g<1><td>${mv:,}</td>', row, 1)
+            row = re.sub(rf'<td class="[^"]*" id="pnl-{pid}">[^<]*</td>',
+                         f'<td class="{pnl_cc2}" id="pnl-{pid}">{pnl_sg}${abs(pnl_val):,}</td>', row)
+            row = re.sub(rf'<td class="[^"]*" id="pp-{pid}">[^<]*</td>',
+                         f'<td class="{pnl_cc2}" id="pp-{pid}">{pnl_sg}{abs(pnl_pct):.2f}%</td>', row)
+            h = h[:row_s] + row + h[row_e:]
+    return h
 def run_tw():
     t = now_tw(); ds = t.strftime('%Y/%m/%d'); dl = f'{t.month}/{t.day}'
     print(f'=== TW {ds} ===')
@@ -108,7 +146,7 @@ def run_tw():
     for tid, d in TW.items():
         info = raw.get(d['symbol'])
         if not info: continue
-        h = upd(h, tid, info['p'], info['c'], dl)
+        h = upd(h, tid, info['p'], info['c'], dl, round(d['ct']/d['shares'],2) if d['shares']>0 else 0, d['shares'])
     h = re.sub(r'台股[\d/]+參考市值', f'台股{dl}參考市值', h)
     h = re.sub(r'Yahoo股市 [\d/]+ 14:30', f'Yahoo股市 {dl} 14:30', h)
     h = re.sub(r'台股持倉一覽（[^）]+）', f'台股持倉一覽（{ds} 14:30 Yahoo股市收盤）', h)
@@ -124,7 +162,7 @@ def run_us():
     for tid, d in US.items():
         info = raw.get(d['symbol'])
         if not info: continue
-        h = upd(h, tid, info['p'], info['c'], dl)
+        h = upd(h, tid, info['p'], info['c'], dl, round(d['ct']/d['shares'],2) if d['shares']>0 else 0, d['shares'])
     h = re.sub(r'美股[\d/]+參考市值', f'美股{dl}參考市值', h)
     h = re.sub(r'美股持倉一覽（[^）]+）', f'美股持倉一覽（{ds} Yahoo股市昨收確認）', h)
     h = re.sub(r'<th>\d+/\d+收[盤盘]</th><th>參考市值', f'<th>{dl}收盤</th><th>參考市值', h)
