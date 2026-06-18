@@ -68,7 +68,7 @@ def fetch_nav(code):
         print(f'MoneyDJ {code}: {e}')
     return None
 
-def upd(h, pid, price, pct, dl, avg_cost=0, shares=0):
+def upd(h, pid, price, pct, dl, avg_cost=0, shares=0, currency_prefix="$"):
     """更新個股分頁：收盤card + 浮動損益card + table row"""
     idx = h.find(f'id="p-{pid}"')
     if idx < 0: return h
@@ -130,8 +130,8 @@ def upd(h, pid, price, pct, dl, avg_cost=0, shares=0):
                          f'<td class="{cl_cc}" id="cl-{pid}">${price}</td>', row)
             row = re.sub(rf'(<td class="[^"]*" id="cl-{pid}">[^<]*</td>)<td[^>]*>[^<]*</td>',
                          rf'\g<1><td class="{cl_cc}">{pct_sg}{abs(pct):.2f}%</td>', row, 1)
-            row = re.sub(r'(<td[^>]*>[+\-]?[\d.]+%</td>)<td>\$[\d,]+</td>',
-                         rf'\g<1><td>${mv:,}</td>', row, 1)
+            row = re.sub(r'(<td[^>]*>[+\-]?[\d.]+%</td>)<td>\$?[\d,]+</td>',
+                         rf'\g<1><td>{currency_prefix}{mv:,}</td>', row, 1)
             row = re.sub(rf'<td class="[^"]*" id="pnl-{pid}">[^<]*</td>',
                          f'<td class="{pnl_cc2}" id="pnl-{pid}">{pnl_sg}${abs(pnl_val):,}</td>', row)
             row = re.sub(rf'<td class="[^"]*" id="pp-{pid}">[^<]*</td>',
@@ -146,7 +146,7 @@ def run_tw():
     for tid, d in TW.items():
         info = raw.get(d['symbol'])
         if not info: continue
-        h = upd(h, tid, info['p'], info['c'], dl, round(d['ct']/d['shares'],2) if d['shares']>0 else 0, d['shares'])
+        h = upd(h, tid, info['p'], info['c'], dl, round(d['ct']/d['shares'],2) if d['shares']>0 else 0, d['shares'], currency_prefix='')
     h = re.sub(r'台股[\d/]+參考市值', f'台股{dl}參考市值', h)
     h = re.sub(r'Yahoo股市 [\d/]+ 14:30', f'Yahoo股市 {dl} 14:30', h)
     h = re.sub(r'台股持倉一覽（[^）]+）', f'台股持倉一覽（{ds} 14:30 Yahoo股市收盤）', h)
@@ -162,7 +162,15 @@ def run_us():
     for tid, d in US.items():
         info = raw.get(d['symbol'])
         if not info: continue
-        h = upd(h, tid, info['p'], info['c'], dl, round(d['ct']/d['shares'],2) if d['shares']>0 else 0, d['shares'])
+        h = upd(h, tid, info['p'], info['c'], dl, round(d['ct']/d['shares'],2) if d['shares']>0 else 0, d['shares'], currency_prefix='
+    h = re.sub(r'美股[\d/]+參考市值', f'美股{dl}參考市值', h)
+    h = re.sub(r'美股持倉一覽（[^）]+）', f'美股持倉一覽（{ds} Yahoo股市昨收確認）', h)
+    h = re.sub(r'<th>\d+/\d+收[盤盘]</th><th>參考市值', f'<th>{dl}收盤</th><th>參考市值', h)
+    h = re.sub(r'資料基準：[\d/]+（美股[^）]*）', f'資料基準：{ds}（美股）', h)
+    h = re.sub(r'美股[\d/]+參考市值', f'美股{dl}參考市值', h)
+    HTML.write_text(h, 'utf-8'); print('US done')
+
+)
     h = re.sub(r'美股[\d/]+參考市值', f'美股{dl}參考市值', h)
     h = re.sub(r'美股持倉一覽（[^）]+）', f'美股持倉一覽（{ds} Yahoo股市昨收確認）', h)
     h = re.sub(r'<th>\d+/\d+收[盤盘]</th><th>參考市值', f'<th>{dl}收盤</th><th>參考市值', h)
