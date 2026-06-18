@@ -174,23 +174,57 @@ def run_fund():
     t = now_tw(); dl = f'{t.month}/{t.day}'
     print('=== FUND ===')
     h = HTML.read_text('utf-8')
-    for fid, code in FUNDS.items():
-        nav = fetch_nav(code); time.sleep(1)
+    # 基金資料：code, 本金(USD), 單位數, 現值label, 損益label
+    FUND_DATA = {
+        'f1': {'code':'tlzm8','cost':318,'units':35.432,'nav_label':'參考現値','pnl_label':'含息損益'},
+        'f2': {'code':'pim91','cost':50000,'units':6226.65,'nav_label':'參考現値','pnl_label':'含息損益'},
+        'f3': {'code':'pim90','cost':36021,'units':3748.283,'nav_label':'參考現値','pnl_label':'含息損益'},
+        'f4': {'code':'tlh43','cost':1500,'units':43.7320,'nav_label':'參考現値','pnl_label':'浮動損益'},
+        'f5': {'code':'wea84','cost':5000,'units':0,'nav_label':'現値','pnl_label':'損益'},
+    }
+    for fid, fd in FUND_DATA.items():
+        nav = fetch_nav(fd['code']); time.sleep(1)
         if not nav: continue
         idx = h.find(f'id="p-{fid}"')
         if idx < 0: continue
         nxt = h.find('\n<div id="p-', idx + 10); b = nxt if nxt > 0 else idx + 3000
         s = h[idx:b]
+        # 1. pch-price 更新
         s = re.sub(
             r'class="pch-price [^"]*">USD [\d.]+[^<]*<span[^>]*>[^<]*</span></div>',
             f'class="pch-price up">USD {nav} <span style="font-size:13px">▲</span></div>', s, 1)
+        # 2. pch-subtitle 更新
         s = re.sub(
-            r'(<div style="font-size:11px[^>]*>)\d+/\d+[^<]*(淨值)[^<]*',
-            rf'\g<1>{dl}淨值 MoneyDJ', s, 1)
+            r'(<div style="font-size:11px[^>]*>)\d+/\d+[^<]*(淨値|追蹤)[^<]*',
+            rf'\g<1>{dl}淨値 MoneyDJ', s, 1)
+        # 3. 更新淨值 card（有申購淨值的）
+        s = re.sub(
+            r'(<div class="pnl-label">申購淨値<\/div><div class="pnl-val[^"]*">)USD [\d.]+(<\/div>)',
+            rf'\g<1>USD {nav}\g<2>', s, 1)
+        # 4. 計算並更新現值和損益（需要單位數）
+        if fd['units'] > 0:
+            new_mv = round(nav * fd['units'], 2)
+            pnl_val = round(new_mv - fd['cost'], 2)
+            pnl_cc = 'up' if pnl_val >= 0 else 'dn'
+            pnl_bg = 'up-bg' if pnl_val >= 0 else 'dn-bg'
+            pnl_sg = '+' if pnl_val >= 0 else ''
+            # 更新現值 card
+            mv_label = fd['nav_label']
+            s = re.sub(
+                rf'(<div class="pnl-label">{mv_label}<\/div><div class="pnl-val[^"]*">)USD [\d,.]+(<\/div>)',
+                rf'\g<1>USD {new_mv:,.2f}\g<2>', s, 1)
+            # 更新損益 card
+            pnl_label = fd['pnl_label']
+            new_pnl_card = (f'<div class="pnl-card {pnl_bg}">'
+                           + f'<div class="pnl-label">{pnl_label}</div>'
+                           + f'<div class="pnl-val {pnl_cc}">{pnl_sg}USD {abs(pnl_val):,.2f}</div>'
+                           + f'<div class="pnl-sub">{pnl_sg}{abs(pnl_val/fd["cost"]*100):.2f}%</div></div>')
+            s = re.sub(
+                rf'<div class="pnl-card[^"]*"><div class="pnl-label">{pnl_label}<\/div>[\s\S]*?<\/div>\s*<\/div>',
+                new_pnl_card, s, 1)
         h = h[:idx] + s + h[b:]
         print(f'  {fid}: NAV={nav}')
     HTML.write_text(h, 'utf-8'); print('FUND done')
-
 if __name__ == '__main__':
     mode = sys.argv[1] if len(sys.argv) > 1 else 'all'
     if not HTML.exists(): sys.exit(f'no {HTML}')
