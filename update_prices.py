@@ -96,7 +96,7 @@ def upd(h, pid, price, pct, dl):
                 f'<div class="pnl-val {cc}">{ps}</div>'
                 f'<div class="pnl-sub">Yahoo股市昨收確認</div></div>')
     s = re.sub(
-        r'<div class="pnl-card[^"]*"><div class="pnl-label">\d+/\d+\s*收[盤盘]</div>[\s\S]*?</div>\s*</div>',
+        r'<div class="pnl-card[^"]*"><div class="pnl-label">\d+/\d+[^<]*收[盤盘][^<]*</div>[\s\S]*?</div>\s*</div>',
         new_card, s, 1)
     return h[:idx] + s + h[b:]
 
