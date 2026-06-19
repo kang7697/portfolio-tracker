@@ -162,7 +162,7 @@ def run_us():
     for tid, d in US.items():
         info = raw.get(d['symbol'])
         if not info: continue
-        h = upd(h, tid, info['p'], info['c'], dl, round(d['ct']/d['shares'],2) if d['shares']>0 else 0, d['shares'], currency_prefix='
+        h = upd(h, tid, info['p'], info['c'], dl, round(d['ct']/d['shares'],2) if d['shares']>0 else 0, d['shares'], currency_prefix='')
     h = re.sub(r'美股[\d/]+參考市值', f'美股{dl}參考市值', h)
     h = re.sub(r'美股持倉一覽（[^）]+）', f'美股持倉一覽（{ds} Yahoo股市昨收確認）', h)
     h = re.sub(r'<th>\d+/\d+收[盤盘]</th><th>參考市值', f'<th>{dl}收盤</th><th>參考市值', h)
