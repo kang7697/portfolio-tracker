@@ -298,9 +298,9 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-ag">點擊生成...</div></div>
   <div class="btn-row">
-    <button class="btn pri" onclick="gen('ag')">⚡ 生成今日分析</button>
-    <button class="btn" onclick="genSig('ag','AG')">📡 技術信號</button>
-    <button class="btn" onclick="genSc('ag','AG','白銀礦業')">📊 三情境</button>
+    <button class="btn pri" onclick="renderFundamentals('ag')">⚡ 生成今日分析</button>
+    <button class="btn" onclick="callClaude('ag','AG','技術信號')">📡 技術信號</button>
+    <button class="btn" onclick="callClaude('ag','AG','三情境')">📊 三情境</button>
   </div>
   <div class="sc-grid">
     <div class="sc sc-b"><div class="sc-label up">🟢 樂觀 30%</div><div class="sc-tgt up">$25–28</div><div class="sc-note">白銀現貨突破$36+、霍爾木茲持續緊張→避險需求↑、Fed升息預期消退<br>成本$20.11 → 潛在+24~39%</div></div>
@@ -343,9 +343,9 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-cohr">點擊生成...</div></div>
   <div class="btn-row">
-    <button class="btn pri" onclick="gen('cohr')">⚡ 生成今日分析</button>
-    <button class="btn" onclick="genSig('cohr','COHR')">📡 技術信號</button>
-    <button class="btn" onclick="genSc('cohr','COHR','AI光互連')">📊 三情境</button>
+    <button class="btn pri" onclick="renderFundamentals('cohr')">⚡ 生成今日分析</button>
+    <button class="btn" onclick="callClaude('cohr','COHR','技術信號')">📡 技術信號</button>
+    <button class="btn" onclick="callClaude('cohr','COHR','三情境')">📊 三情境</button>
   </div>
   <div class="sc-grid">
     <div class="sc sc-b"><div class="sc-label up">🟢 樂觀 35%</div><div class="sc-tgt up">$400–425</div><div class="sc-note">1.6T光模組大量採用 + NVDA AI投資持續 + 目標最高$425<br>成本$235.67 → 潛在+70~80%</div></div>
@@ -388,9 +388,9 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-tsm">點擊生成...</div></div>
   <div class="btn-row">
-    <button class="btn pri" onclick="gen('tsm')">⚡ 生成今日分析</button>
-    <button class="btn" onclick="genSig('tsm','TSM')">📡 技術信號</button>
-    <button class="btn" onclick="genSc('tsm','TSM','晶圓代工')">📊 三情境</button>
+    <button class="btn pri" onclick="renderFundamentals('tsm')">⚡ 生成今日分析</button>
+    <button class="btn" onclick="callClaude('tsm','TSM','技術信號')">📡 技術信號</button>
+    <button class="btn" onclick="callClaude('tsm','TSM','三情境')">📊 三情境</button>
   </div>
   <div class="sc-grid">
     <div class="sc sc-b"><div class="sc-label up">🟢 樂觀 35%</div><div class="sc-tgt up">$450–500</div><div class="sc-note">N2大量出貨 + CoWoS瓶頸解除 + AI需求超週期<br>成本$330.46 → 潛在+36~51%</div></div>
@@ -438,9 +438,9 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-tsla">點擊生成...</div></div>
   <div class="btn-row">
-    <button class="btn pri" onclick="gen('tsla')">⚡ 生成今日分析</button>
-    <button class="btn" onclick="genSig('tsla','TSLA')">📡 技術信號</button>
-    <button class="btn" onclick="genSc('tsla','TSLA','電動車/自動駕駛')">📊 三情境</button>
+    <button class="btn pri" onclick="renderFundamentals('tsla')">⚡ 生成今日分析</button>
+    <button class="btn" onclick="callClaude('tsla','TSLA','技術信號')">📡 技術信號</button>
+    <button class="btn" onclick="callClaude('tsla','TSLA','三情境')">📊 三情境</button>
   </div>
   <div class="sc-grid">
     <div class="sc sc-b"><div class="sc-label up">🟢 樂觀 35%</div><div class="sc-tgt up">$480–550</div><div class="sc-note">Robotaxi Austin 6月順利推出 + FSD全自動認證 + Optimus量產進度超預期<br>成本$387.58 → 潛在+24~42%</div></div>
@@ -494,7 +494,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   <div class="btn-row">
     <button class="btn pri" onclick="genUUUU()">⚡ 深度分析（含$20.86持倉建議）</button>
     <button class="btn" onclick="genASM()">🏗 ASM收購進度分析</button>
-    <button class="btn" onclick="genSig('uuuu','UUUU')">📡 技術信號</button>
+    <button class="btn" onclick="callClaude('uuuu','UUUU','技術信號')">📡 技術信號</button>
   </div>
   <div style="background:var(--card);border:1px solid var(--border);border-radius:4px;padding:12px;margin-bottom:12px">
     <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:8px">🗓 ASM收購里程碑</div>
@@ -543,9 +543,9 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-eose">點擊生成...</div></div>
   <div class="btn-row">
-    <button class="btn pri" onclick="gen('eose')">⚡ 生成今日分析</button>
-    <button class="btn" onclick="genSig('eose','EOSE')">📡 技術信號</button>
-    <button class="btn" onclick="genSc('eose','EOSE','鋅基儲能')">📊 三情境</button>
+    <button class="btn pri" onclick="renderFundamentals('eose')">⚡ 生成今日分析</button>
+    <button class="btn" onclick="callClaude('eose','EOSE','技術信號')">📡 技術信號</button>
+    <button class="btn" onclick="callClaude('eose','EOSE','三情境')">📊 三情境</button>
   </div>
   <div class="trig"><strong>觸發條件（成本$7.83，浮盈+5.8%，倉位小）：</strong><br>
   📌 持有：IRA補貼未削減、油價維持高位 → 儲能需求支撐<br>
@@ -582,9 +582,9 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-nbis">點擊生成...</div></div>
   <div class="btn-row">
-    <button class="btn pri" onclick="gen('nbis')">⚡ 生成今日分析</button>
-    <button class="btn" onclick="genSig('nbis','NBIS')">📡 技術信號</button>
-    <button class="btn" onclick="genSc('nbis','NBIS','AI雲端基礎設施')">📊 三情境</button>
+    <button class="btn pri" onclick="renderFundamentals('nbis')">⚡ 生成今日分析</button>
+    <button class="btn" onclick="callClaude('nbis','NBIS','技術信號')">📡 技術信號</button>
+    <button class="btn" onclick="callClaude('nbis','NBIS','三情境')">📊 三情境</button>
   </div>
   <div class="trig"><strong>觸發條件（成本$86.88，浮盈+146.8%，為比例最大獲利部位）：</strong><br>
   📌 持有：AI算力租賃需求持續爆發 + NVDA背書 → 核心倉位持有<br>
@@ -619,8 +619,8 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-onds">點擊生成...</div></div>
   <div class="btn-row">
-    <button class="btn pri" onclick="gen('onds')">⚡ 生成今日分析</button>
-    <button class="btn" onclick="genSig('onds','ONDS')">📡 技術信號</button>
+    <button class="btn pri" onclick="renderFundamentals('onds')">⚡ 生成今日分析</button>
+    <button class="btn" onclick="callClaude('onds','ONDS','技術信號')">📡 技術信號</button>
   </div>
   <div class="trig"><strong>觸發條件（成本$8.96，浮盈+2.5%，倉位極小）：</strong><br>
   📌 持有：政府無人機/鐵路合約進展中 → 維持小倉位觀察<br>
@@ -655,9 +655,9 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-orcl">點擊生成...</div></div>
   <div class="btn-row">
-    <button class="btn pri" onclick="gen('orcl')">⚡ 生成今日分析</button>
-    <button class="btn" onclick="genSig('orcl','ORCL')">📡 技術信號</button>
-    <button class="btn" onclick="genSc('orcl','ORCL','AI企業雲')">📊 三情境</button>
+    <button class="btn pri" onclick="renderFundamentals('orcl')">⚡ 生成今日分析</button>
+    <button class="btn" onclick="callClaude('orcl','ORCL','技術信號')">📡 技術信號</button>
+    <button class="btn" onclick="callClaude('orcl','ORCL','三情境')">📊 三情境</button>
   </div>
   <div class="trig"><strong>觸發條件（成本$161.24，浮盈+18.4%）：</strong><br>
   📌 持有：OCI雲業務訂單積壓持續成長 → 核心長線邏輯完整<br>
@@ -736,8 +736,8 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-t631">點擊生成...</div></div>
   <div class="btn-row">
-    <button class="btn pri" onclick="gen('t631')">⚡ 生成今日分析</button>
-    <button class="btn" onclick="genSig('t631','00631L')">📡 技術信號</button>
+    <button class="btn pri" onclick="renderFundamentals('t631')">⚡ 生成今日分析</button>
+    <button class="btn" onclick="callClaude('t631','00631L','技術信號')">📡 技術信號</button>
   </div>
   <div class="trig"><strong>⚠️ 槓桿ETF特別提示：</strong><br>
   📌 此為每日重置2倍槓桿ETF，不適合長期持有<br>
@@ -762,7 +762,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   <div id="fund-t922" style="font-size:12px;color:var(--muted)">載入中...</div>
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-t922">點擊生成...</div></div>
-  <div class="btn-row"><button class="btn pri" onclick="gen('t922')">⚡ 生成今日分析</button><button class="btn" onclick="genSig('t922','00922')">📡 技術信號</button></div>
+  <div class="btn-row"><button class="btn pri" onclick="renderFundamentals('t922')">⚡ 生成今日分析</button><button class="btn" onclick="callClaude('t922','00922','技術信號')">📡 技術信號</button></div>
 
 <div class="section-block" style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px"><div class="section-title">📊 歷史估值（本益比(P/E)）</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0"><div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最高</div><div class="pnl-val up" style="font-size:13px">~22x（2021）</div></div><div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最低</div><div class="pnl-val dn" style="font-size:13px">~14x（2022）</div></div><div class="pnl-card" style="text-align:center"><div class="pnl-label">5年均值</div><div class="pnl-val nv" style="font-size:13px">~18x</div></div></div><div style="font-size:11px;color:var(--muted);line-height:1.6">💡 台灣領袖50 ETF，目前~20x，AI題材推動台股整體估值偏高</div><div style="font-size:10px;color:var(--muted);margin-top:3px">資料來源：MacroTrends · stockanalysis · GuruFocus</div></div>
 </div>
@@ -783,7 +783,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   <div id="fund-t882" style="font-size:12px;color:var(--muted)">載入中...</div>
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-t882">點擊生成...</div></div>
-  <div class="btn-row"><button class="btn pri" onclick="gen('t882')">⚡ 生成今日分析</button><button class="btn" onclick="genSig('t882','00882')">📡 技術信號</button></div>
+  <div class="btn-row"><button class="btn pri" onclick="renderFundamentals('t882')">⚡ 生成今日分析</button><button class="btn" onclick="callClaude('t882','00882','技術信號')">📡 技術信號</button></div>
 
 <div class="section-block" style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px"><div class="section-title">📊 歷史估值（殖利率）</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0"><div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最高</div><div class="pnl-val nv" style="font-size:13px">N/A（ETF）</div></div><div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最低</div><div class="pnl-val dn" style="font-size:13px">N/A</div></div><div class="pnl-card" style="text-align:center"><div class="pnl-label">5年均值</div><div class="pnl-val nv" style="font-size:13px">殖利率7-8%</div></div></div><div style="font-size:11px;color:var(--muted);line-height:1.6">💡 中國高股息ETF，以年化殖利率（目前約7%）評估，PE較無意義</div><div style="font-size:10px;color:var(--muted);margin-top:3px">資料來源：MacroTrends · stockanalysis · GuruFocus</div></div>
 </div>
@@ -804,7 +804,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   <div id="fund-t955" style="font-size:12px;color:var(--muted)">載入中...</div>
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-t955">點擊生成...</div></div>
-  <div class="btn-row"><button class="btn pri" onclick="gen('t955')">⚡ 生成今日分析</button><button class="btn" onclick="genSig('t955','00955')">📡 技術信號</button></div>
+  <div class="btn-row"><button class="btn pri" onclick="renderFundamentals('t955')">⚡ 生成今日分析</button><button class="btn" onclick="callClaude('t955','00955','技術信號')">📡 技術信號</button></div>
 
 <div class="section-block" style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px"><div class="section-title">📊 歷史估值（本益比(P/E)）</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0"><div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最高</div><div class="pnl-val nv" style="font-size:13px">N/A（ETF）</div></div><div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最低</div><div class="pnl-val dn" style="font-size:13px">N/A</div></div><div class="pnl-card" style="text-align:center"><div class="pnl-label">5年均值</div><div class="pnl-val nv" style="font-size:13px">~13x（日商均值）</div></div></div><div style="font-size:11px;color:var(--muted);line-height:1.6">💡 日本商社ETF，日本商社PE普遍10-15x，匯率波動影響總報酬</div><div style="font-size:10px;color:var(--muted);margin-top:3px">資料來源：MacroTrends · stockanalysis · GuruFocus</div></div>
 </div>
@@ -824,7 +824,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   <div id="fund-t9816" style="font-size:12px;color:var(--muted)">載入中...</div>
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-t9816">點擊生成...</div></div>
-  <div class="btn-row"><button class="btn pri" onclick="gen('t9816')">⚡ 生成今日分析</button></div>
+  <div class="btn-row"><button class="btn pri" onclick="renderFundamentals('t9816')">⚡ 生成今日分析</button></div>
 
 <div class="section-block" style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px"><div class="section-title">📊 歷史估值（本益比(P/E)）</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0"><div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最高</div><div class="pnl-val nv" style="font-size:13px">N/A（ETF）</div></div><div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最低</div><div class="pnl-val dn" style="font-size:13px">N/A</div></div><div class="pnl-card" style="text-align:center"><div class="pnl-label">5年均值</div><div class="pnl-val nv" style="font-size:13px">~20x（台灣大型股）</div></div></div><div style="font-size:11px;color:var(--muted);line-height:1.6">💡 凱基台灣TOP50 ETF，PE跟隨台灣大型股，AI題材推動近期溢價</div><div style="font-size:10px;color:var(--muted);margin-top:3px">資料來源：MacroTrends · stockanalysis · GuruFocus</div></div>
 </div>
@@ -844,7 +844,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   <div id="fund-t990" style="font-size:12px;color:var(--muted)">載入中...</div>
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-t990">點擊生成...</div></div>
-  <div class="btn-row"><button class="btn pri" onclick="gen('t990')">⚡ 生成今日分析</button><button class="btn" onclick="genSig('t990','00990A')">📡 技術信號</button></div>
+  <div class="btn-row"><button class="btn pri" onclick="renderFundamentals('t990')">⚡ 生成今日分析</button><button class="btn" onclick="callClaude('t990','00990A','技術信號')">📡 技術信號</button></div>
 
 <div class="section-block" style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px"><div class="section-title">📊 歷史估值（本益比(P/E)）</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0"><div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最高</div><div class="pnl-val nv" style="font-size:13px">N/A（主動ETF）</div></div><div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最低</div><div class="pnl-val dn" style="font-size:13px">N/A</div></div><div class="pnl-card" style="text-align:center"><div class="pnl-label">5年均值</div><div class="pnl-val nv" style="font-size:13px">N/A</div></div></div><div style="font-size:11px;color:var(--muted);line-height:1.6">💡 元大AI新經濟主動ETF，2024年成立，PE依持倉AI個股組合而定</div><div style="font-size:10px;color:var(--muted);margin-top:3px">資料來源：MacroTrends · stockanalysis · GuruFocus</div></div>
 </div>
@@ -865,7 +865,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   <div id="fund-t2313" style="font-size:12px;color:var(--muted)">載入中...</div>
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-t2313">點擊生成...</div></div>
-  <div class="btn-row"><button class="btn pri" onclick="gen('t2313')">⚡ 生成今日分析</button><button class="btn" onclick="genSig('t2313','2313')">📡 技術信號</button></div>
+  <div class="btn-row"><button class="btn pri" onclick="renderFundamentals('t2313')">⚡ 生成今日分析</button><button class="btn" onclick="callClaude('t2313','2313','技術信號')">📡 技術信號</button></div>
 
 <div class="section-block" style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px"><div class="section-title">📊 歷史估值（本益比(P/E)）</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0"><div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最高</div><div class="pnl-val up" style="font-size:13px">25x（2021）</div></div><div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最低</div><div class="pnl-val dn" style="font-size:13px">10x（2019）</div></div><div class="pnl-card" style="text-align:center"><div class="pnl-label">5年均值</div><div class="pnl-val nv" style="font-size:13px">~17x</div></div></div><div style="font-size:11px;color:var(--muted);line-height:1.6">💡 華通電腦PCB，目前~15x低於均值，AI伺服器需求帶動，估值合理偏低</div><div style="font-size:10px;color:var(--muted);margin-top:3px">資料來源：MacroTrends · stockanalysis · GuruFocus</div></div>
 </div>
@@ -885,7 +885,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   <div id="fund-t2359" style="font-size:12px;color:var(--muted)">載入中...</div>
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-t2359">點擊生成...</div></div>
-  <div class="btn-row"><button class="btn pri" onclick="gen('t2359')">⚡ 生成今日分析</button><button class="btn" onclick="genSig('t2359','2359')">📡 技術信號</button></div>
+  <div class="btn-row"><button class="btn pri" onclick="renderFundamentals('t2359')">⚡ 生成今日分析</button><button class="btn" onclick="callClaude('t2359','2359','技術信號')">📡 技術信號</button></div>
 
 <div class="section-block" style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px"><div class="section-title">📊 歷史估值（本益比(P/E)）</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0"><div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最高</div><div class="pnl-val up" style="font-size:13px">30x（2021）</div></div><div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最低</div><div class="pnl-val dn" style="font-size:13px">12x（2019）</div></div><div class="pnl-card" style="text-align:center"><div class="pnl-label">5年均值</div><div class="pnl-val nv" style="font-size:13px">~18x</div></div></div><div style="font-size:11px;color:var(--muted);line-height:1.6">💡 所羅門機器人/AI視覺，目前~14x低於均值，機器人題材具上行空間</div><div style="font-size:10px;color:var(--muted);margin-top:3px">資料來源：MacroTrends · stockanalysis · GuruFocus</div></div>
 </div>
@@ -911,7 +911,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   <div id="fund-t3481" style="font-size:12px;color:var(--muted)">載入中...</div>
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-t3481">點擊生成...</div></div>
-  <div class="btn-row"><button class="btn pri" onclick="gen('t3481')">⚡ 生成今日分析</button><button class="btn" onclick="genSig('t3481','3481')">📡 技術信號</button><button class="btn" onclick="genSc('t3481','3481','面板轉型FOPLP')">📊 三情境</button></div>
+  <div class="btn-row"><button class="btn pri" onclick="renderFundamentals('t3481')">⚡ 生成今日分析</button><button class="btn" onclick="callClaude('t3481','3481','技術信號')">📡 技術信號</button><button class="btn" onclick="callClaude('t3481','3481','三情境')">📊 三情境</button></div>
   <div class="trig"><strong>觸發條件（成本$25.39，連2漲停，浮盈+75.9%）：</strong><br>
   📌 部分獲利：連漲停後考慮在$42–45區間獲利了結30–50%（已大幅超越成本）<br>
   📌 持有核心：FOPLP長線轉型邏輯若確認有客戶導入量產 → 留核心倉<br>
@@ -938,7 +938,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   <div id="fund-t6488" style="font-size:12px;color:var(--muted)">載入中...</div>
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-t6488">點擊生成...</div></div>
-  <div class="btn-row"><button class="btn pri" onclick="gen('t6488')">⚡ 生成今日分析</button><button class="btn" onclick="genSig('t6488','6488')">📡 技術信號</button><button class="btn" onclick="genSc('t6488','6488','晶圓材料')">📊 三情境</button></div>
+  <div class="btn-row"><button class="btn pri" onclick="renderFundamentals('t6488')">⚡ 生成今日分析</button><button class="btn" onclick="callClaude('t6488','6488','技術信號')">📡 技術信號</button><button class="btn" onclick="callClaude('t6488','6488','三情境')">📊 三情境</button></div>
   <div class="trig"><strong>觸發條件（成本$656.93，浮盈+9.1%，最大單一個股倉位）：</strong><br>
   📌 持有：12吋產線滿載 + AI需求持續 + TSM擴產帶動 → 核心倉位長期持有<br>
   📌 部分獲利：6488突破$780（前高區間）→ 考慮獲利了結20–30%<br>
@@ -962,7 +962,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   <div id="fund-t8070" style="font-size:12px;color:var(--muted)">載入中...</div>
 </div>
 <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-t8070">點擊生成...</div></div>
-  <div class="btn-row"><button class="btn pri" onclick="gen('t8070')">⚡ 生成今日分析</button><button class="btn" onclick="genSig('t8070','8070')">📡 技術信號</button></div>
+  <div class="btn-row"><button class="btn pri" onclick="renderFundamentals('t8070')">⚡ 生成今日分析</button><button class="btn" onclick="callClaude('t8070','8070','技術信號')">📡 技術信號</button></div>
 
 <div class="section-block" style="margin-top:12px;border-top:1px solid var(--border);padding-top:10px"><div class="section-title">📊 歷史估值（本益比(P/E)）</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0"><div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最高</div><div class="pnl-val up" style="font-size:13px">28x（2022）</div></div><div class="pnl-card" style="text-align:center"><div class="pnl-label">歷史最低</div><div class="pnl-val dn" style="font-size:13px">10x（2019）</div></div><div class="pnl-card" style="text-align:center"><div class="pnl-label">5年均值</div><div class="pnl-val nv" style="font-size:13px">~18x</div></div></div><div style="font-size:11px;color:var(--muted);line-height:1.6">💡 長華電材ABF載板，目前~22x略高於均值，AI伺服器需求持續帶動</div><div style="font-size:10px;color:var(--muted);margin-top:3px">資料來源：MacroTrends · stockanalysis · GuruFocus</div></div>
 </div>
@@ -1037,8 +1037,8 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   </div>
   <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-f1">點擊生成...</div></div>
   <div class="btn-row">
-    <button class="btn pri" onclick="gen('f1')">⚡ 生成今日分析</button>
-    <button class="btn" onclick="genSc('f1','安聯智慧城市AMg','AI+城市科技月配息')">📊 三情境</button>
+    <button class="btn pri" onclick="renderFundamentals('f1')">⚡ 生成今日分析</button>
+    <button class="btn" onclick="callClaude('f1','安聯智慧城市AMg','三情境')">📊 三情境</button>
   </div>
   <div class="trig"><strong>觸發條件（本金$318，含息浮盈+27.64%，月配息持續中）：</strong><br>
   📌 持有：AI+城市科技長線邏輯完整，月配息穩定入帳 → 繼續持有<br>
@@ -1071,8 +1071,8 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   </div>
   <div class="ai-wrap"><div class="ai-label">AI 今日分析（升息風險評估）</div><div class="ai-out idle" id="o-f2">點擊生成...</div></div>
   <div class="btn-row">
-    <button class="btn pri" onclick="gen('f2')">⚡ 生成今日分析</button>
-    <button class="btn" onclick="genSc('f2','PIMCO強化月收息','高收益債升息風險')">📊 三情境</button>
+    <button class="btn pri" onclick="renderFundamentals('f2')">⚡ 生成今日分析</button>
+    <button class="btn" onclick="callClaude('f2','PIMCO強化月收息','三情境')">📊 三情境</button>
   </div>
   <div class="trig"><strong>觸發條件（本金$50,000，不含息虧損-1.12%，配息彌補後含息+4.27%）：</strong><br>
   📌 持有：月配息USD$2,697.57已累積，短期持有等待Fed政策明朗<br>
@@ -1106,8 +1106,8 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
   </div>
   <div class="ai-wrap"><div class="ai-label">AI 今日分析（升息風險評估）</div><div class="ai-out idle" id="o-f3">點擊生成...</div></div>
   <div class="btn-row">
-    <button class="btn pri" onclick="gen('f3')">⚡ 生成今日分析</button>
-    <button class="btn" onclick="genSc('f3','PIMCO穩定月收息','投資級債升息風險')">📊 三情境</button>
+    <button class="btn pri" onclick="renderFundamentals('f3')">⚡ 生成今日分析</button>
+    <button class="btn" onclick="callClaude('f3','PIMCO穩定月收息','三情境')">📊 三情境</button>
   </div>
   <div class="trig"><strong>觸發條件（本金$36,021，不含息虧損-3.23%，含息+4.37%）：</strong><br>
   📌 持有：月配息$2,736.24已累積，穩定股份波動相對強化股份小<br>
@@ -1161,7 +1161,7 @@ hr.sep{border:none;border-top:1px solid var(--border);margin:14px 0}
 
   <div class="ai-wrap"><div class="ai-label">AI 今日分析</div><div class="ai-out idle" id="o-f4">點擊生成...</div></div>
   <div class="btn-row">
-    <button class="btn pri" onclick="gen('f4')">⚡ 美盛凱利分析</button>
+    <button class="btn pri" onclick="renderFundamentals('f4')">⚡ 美盛凱利分析</button>
     <button class="btn" onclick="genF3AI()">🤖 安聯AI分析</button>
   </div>
   <div class="trig"><strong>安聯AI（本金$1,500，浮盈+21.38%）：</strong><br>
