@@ -1318,486 +1318,88 @@ const HOLDINGS = {
   fai:   {name:'安聯AI人工智慧AT-USD（TIC6 累積）',cost:'本金USD 1,500 | 43.732單位 | 申購淨值$34.2998（2025/12/23）',note:'AI主題基金；參考淨值$41.6327（5/21）；參考現值$1,820.68；浮盈+$320.68（+21.38%）；長線邏輯最強；台股AI大漲同步受益'},
 };
 
-async function callClaude(prompt, maxT=1200) {
-  const r = await fetch("https://api.anthropic.com/v1/messages",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:maxT,messages:[{role:"user",content:prompt}]})
-  });
-  const d = await r.json();
-  if(d.content&&d.content[0]) return d.content[0].text;
-  throw new Error(JSON.stringify(d));
-}
+async function callClaude(pid, sym, type) {
+  // 取得個股資料
+  const fd = FUNDAMENTALS[pid] || {};
+  const panel = document.getElementById('p-' + pid);
+  const closeEl = document.getElementById('cl-' + pid);
+  const pnlEl = document.getElementById('pnl-' + pid);
+  const ppEl = document.getElementById('pp-' + pid);
+  const close = closeEl ? closeEl.textContent.trim() : '(未知)';
+  const pnl = pnlEl ? pnlEl.textContent.trim() : '(未知)';
+  const pp = ppEl ? ppEl.textContent.trim() : '(未知)';
 
-function setLoading(id){ const e=document.getElementById('o-'+id); if(!e) return; e.className='ai-out'; e.innerHTML='<span class="spin"></span>AI分析生成中...'; }
-function setResult(id,txt){ const e=document.getElementById('o-'+id); if(!e) return; e.className='ai-out'; e.textContent=txt; }
-function setErr(id,msg){ const e=document.getElementById('o-'+id); if(!e) return; e.className='ai-out err'; e.textContent='⚠️ '+msg; }
+  // 組合個股基本資訊
+  const moat = fd.moat || {};
+  const eps = fd.eps || {};
+  const targets = fd.targets || [];
+  const earnings = fd.earnings || {};
 
-// ── 靜態 EPS/分析師目標/財報/護城河數據庫 ──
-const FUNDAMENTALS = {
-  ag: {
-    moat: { level: '窄', score: 2, pillars: ['成本優勢','低成本礦山','地理集中度'], pillars_neg: ['替代威脅','白銀波動'], color: '#BA7517',
-      desc: '第一礦山（Sonora） AISC $12-15/oz，成本優勢明顯，但缺乏定價權（白銀現貨決定收入），礦山地理集中墨西哥，監管/政治風險高，護城河偏窄。' },
-    eps: { hist: [{q:'2024Q2',v:-0.08},{q:'2024Q3',v:-0.06},{q:'2024Q4',v:-0.04},{q:'2025Q1',v:-0.03}], forecast: [{y:'2026E',v:0.15},{y:'2027E',v:0.52},{y:'2028E',v:0.89}] },
-    targets: [{firm:'H.C.Wainwright',pt:22,rating:'Buy'},{firm:'Canaccord',pt:19,rating:'Hold'},{firm:'共識均值',pt:20.5,rating:'Hold'}],
-    fair: '$18–22（P/NAV 1.0–1.2x，白銀$32/oz）',
-    earnings: { rev:'Q1 2026 $94M（YoY+38%）', eps:'Q1 EPS $0.02', margin:'毛利率 42%', guide:'FY26 AISC <$15/oz' }
-  },
-  cohr: {
-    moat: { level: '寬', score: 4, pillars: ['技術壟斷','AI光互連唯一廠','客戶黏性','規模效應'], pillars_neg: ['高負債','整合風險'], color: '#185FA5',
-      desc: 'Coherent 是 1.6T/800G AI 光收發器全球最大製造商，與 Nvidia、微軟、Google 深度綁定，切換成本極高。NVDA 戰略持股背書。護城河寬，技術領先 2-3 年。' },
-    eps: { hist: [{q:'2025Q1',v:0.42},{q:'2025Q2',v:0.68},{q:'2025Q3',v:0.97},{q:'2025Q4',v:1.22}], forecast: [{y:'FY26E',v:4.5},{y:'FY27E',v:6.8},{y:'FY28E',v:9.2}] },
-    targets: [{firm:'Rosenblatt',pt:425,rating:'Buy'},{firm:'Stifel',pt:420,rating:'Buy'},{firm:'TD Cowen',pt:395,rating:'Buy'},{firm:'Morgan Stanley',pt:330,rating:'Hold'},{firm:'Jefferies',pt:375,rating:'Buy'},{firm:'共識均值',pt:379,rating:'Strong Buy'}],
-    fair: '$350–420（FY27E EPS $6.8×P/E 52–62x）',
-    earnings: { rev:'Q3 FY26 $1.81B（超預期$1.78B）', eps:'non-GAAP EPS $1.22', margin:'毛利率 43.2%↑', guide:'Q4 revenue $1.91B–$2.05B' }
-  },
-  tsm: {
-    moat: { level: '超寬（護城河之王）', score: 5, pillars: ['技術壟斷N2/N3','CoWoS封裝','生態鎖定','規模不可複製'], pillars_neg: ['地緣政治','台灣風險'], color: '#1D9E75',
-      desc: '全球唯一可量產 N2/N3 晶片的公司，Nvidia H200/B200、Apple A18、AMD MI325 全部仰賴台積電。護城河等級全球最高，競爭對手（Intel、Samsung）落後 3-5 年，進入門檻包括 $1,000億+ 的資本支出。' },
-    eps: { hist: [{q:'2024Q3',v:1.94},{q:'2024Q4',v:2.24},{q:'2025Q1',v:2.12},{q:'2025Q2',v:2.67}], forecast: [{y:'2026E',v:11.8},{y:'2027E',v:15.2},{y:'2028E',v:18.9}] },
-    targets: [{firm:'Goldman Sachs',pt:470,rating:'Buy'},{firm:'TipRanks均值',pt:465,rating:'Strong Buy'},{firm:'Bernstein',pt:330,rating:'Outperform'},{firm:'Benzinga均值',pt:374,rating:'Hold'},{firm:'共識均值',pt:420,rating:'Buy'}],
-    fair: '$390–480（2026E EPS $11.8×P/E 33–41x）',
-    earnings: { rev:'2026 FY展望+30%（管理層指引）', eps:'Q1 2026 revenue $35.2B', margin:'毛利率 57.4%', guide:'FY26 revenue CAGR 30%，capex $150B（2026–28）' }
-  },
-  tsla: {
-    moat: { level: '中等', score: 3, pillars: ['FSD軟體鎖定','Supercharger網路','品牌','垂直整合'], pillars_neg: ['競爭加劇','Musk風險','估值過高'], color: '#7F77DD',
-      desc: 'Tesla 的護城河在於 FSD 軟體（切換成本高）、全球最大快充網路（Supercharger）、品牌忠誠度，以及電池+軟體+製造垂直整合。但中國 BYD 競爭白熱化，傳統車廠追趕，護城河正在受侵蝕。Robotaxi 和 Optimus 若成功，護城河將大幅加寬。' },
-    eps: { hist: [{q:'2024Q3',v:0.72},{q:'2024Q4',v:0.73},{q:'2025Q1',v:0.27},{q:'2025Q2',v:0.52}], forecast: [{y:'2026E',v:2.85},{y:'2027E',v:5.90},{y:'2028E',v:9.20}] },
-    targets: [{firm:'Wedbush',pt:600,rating:'Outperform'},{firm:'UBS',pt:364,rating:'Neutral'},{firm:'RBC Capital',pt:440,rating:'Outperform'},{firm:'Canaccord',pt:470,rating:'Buy'},{firm:'GLJ Research',pt:25,rating:'Sell'},{firm:'共識均值',pt:403,rating:'Hold'}],
-    fair: '$320–420（FY26E EPS $2.85×P/E 112–148x，含Robotaxi+Optimus溢價）',
-    earnings: { rev:'Q1 2026 EV交付量 33.7萬輛（略低預期）', eps:'Q1 EPS $0.27', margin:'汽車毛利率 16.3%', guide:'FY26 交付量指引持平或小幅成長；Robotaxi Austin 6月' }
-  },
-  uuuu: {
-    moat: { level: '中等（建設中）', score: 3, pillars: ['美國唯一鈾+稀土雙線','White Mesa垂直整合','政府戰略優先','ASM收購強化'], pillars_neg: ['鈾價波動','稀土未商業化','現金流負'], color: '#BA7517',
-      desc: 'UUUU 是美國本土唯一同時具備鈾礦採選、稀土提煉、重砂礦物的垂直整合平台。White Mesa Mill 是美國唯一正在運作的鈾礦選礦廠，獲政府戰略資源補貼優先。ASM 收購完成後將成為中國以外最大稀土一體化生產商，護城河將從中等升至寬。' },
-    eps: { hist: [{q:'2024Q3',v:-0.07},{q:'2024Q4',v:-0.19},{q:'2025Q1',v:-0.13},{q:'2025Q2',v:-0.10}], forecast: [{y:'2026E',v:-0.12},{y:'2027E',v:0.07},{y:'2028E',v:0.26}] },
-    targets: [{firm:'HC Wainwright',pt:29,rating:'Strong Buy'},{firm:'Roth Capital',pt:11.5,rating:'Sell'},{firm:'TradingView均值',pt:27.4,rating:'Strong Buy'},{firm:'共識均值',pt:23.5,rating:'Buy'}],
-    fair: '$19–26（2027E EPS $0.07進入獲利，NAV/資產重估，稀土溢價）',
-    earnings: { rev:'Q1 2026 $35.8M（YoY+112%）', eps:'Q1 EPS -$0.08（好於預期-$0.14）', margin:'鈾銷售均價$68/lb', guide:'ASM投票本週末/6月初；White Mesa 稀土Q4商業生產' }
-  },
-  eose: {
-    moat: { level: '窄', score: 2, pillars: ['鋅基電池差異化','IRA補貼壁壘','無鋰競爭優勢'], pillars_neg: ['資金燒耗','商業化慢','競爭壓力'], color: '#888780',
-      desc: 'EOSE 的鋅基電池無需鋰，在 IRA 法規下具備「美國製造」優勢，長時儲能市場切入點差異化。但商業化進度慢，現金燒耗持續，護城河偏窄，需觀察大型合約落地。' },
-    eps: { hist: [{q:'2024Q3',v:-0.39},{q:'2024Q4',v:-0.28},{q:'2025Q1',v:-0.25},{q:'2025Q2',v:-0.18}], forecast: [{y:'2026E',v:-0.65},{y:'2027E',v:-0.20},{y:'2028E',v:0.45}] },
-    targets: [{firm:'Lake Street',pt:14,rating:'Buy'},{firm:'B. Riley',pt:10,rating:'Buy'},{firm:'共識均值',pt:11,rating:'Buy'}],
-    fair: '$6–12（2028E 轉盈時 EV/Revenue 估值）',
-    earnings: { rev:'Q1 2026 $8.2M（YoY+67%）', eps:'Q1 EPS -$0.22（好於預期）', margin:'毛利率-28%（改善中）', guide:'FY26 出貨量目標 MWh 翻倍' }
-  },
-  nbis: {
-    moat: { level: '中等（高速建立中）', score: 3, pillars: ['NVDA $20億背書','AI算力稀缺性','歐洲數據主權','快速成長護城河'], pillars_neg: ['估值極高','歷史短','AWS/Azure競爭'], color: '#185FA5',
-      desc: 'Nebius 的護城河建立在 NVDA 戰略投資背書（$20億）、歐洲 AI 算力本地化需求（數據主權法規），以及 Q1 2026 YoY +684% 的驚人成長速度。護城河尚淺但建立極快，Bloom Energy 電力合作降低算力成本是關鍵護城河強化。' },
-    eps: { hist: [{q:'2025Q1',v:-0.38},{q:'2025Q2',v:-0.21},{q:'2025Q3',v:-0.12},{q:'2025Q4',v:-0.06}], forecast: [{y:'2026E',v:0.08},{y:'2027E',v:1.85},{y:'2028E',v:4.20}] },
-    targets: [{firm:'共識（S&P Global）',pt:230,rating:'Buy'},{firm:'高端目標',pt:291,rating:'Buy'},{firm:'低端目標',pt:120,rating:'Hold'}],
-    fair: '$160–250（2027E 進入穩定盈利，EV/Revenue 8–12x）',
-    earnings: { rev:'Q1 2026 $399M（YoY+684%）', eps:'non-GAAP EPS 轉正預期 2026H2', margin:'毛利率 持續改善', guide:'GPU算力擴充；Bloom Energy電力協議；歐洲擴張' }
-  },
-  onds: {
-    moat: { level: '窄', score: 2, pillars: ['政府合約壁壘','鐵路自動化先行者','無人機認證'], pillars_neg: ['規模小','商業化慢','競爭'], color: '#888780',
-      desc: 'ONDS 專注工業無人機和鐵路自動化，政府合約提供收入可見度，但規模極小（市值不足$3億），競爭對手豐富，護城河偏窄。持有邏輯為政府無人機採購長期成長主題，非護城河投資。' },
-    eps: { hist: [{q:'2024Q3',v:-0.45},{q:'2024Q4',v:-0.38},{q:'2025Q1',v:-0.32},{q:'2025Q2',v:-0.28}], forecast: [{y:'2026E',v:-0.85},{y:'2027E',v:-0.35},{y:'2028E',v:0.15}] },
-    targets: [{firm:'Roth Capital',pt:12,rating:'Buy'},{firm:'共識均值',pt:10,rating:'Buy'}],
-    fair: '$6–10（2028E 轉盈預期，P/S 3–5x）',
-    earnings: { rev:'Q1 2026 $6.8M', eps:'EPS -$0.28', margin:'毛利率 32%', guide:'政府無人機採購合約擴張；鐵路自動化試點' }
-  },
-  orcl: {
-    moat: { level: '超寬', score: 5, pillars: ['資料庫壟斷','ERP企業鎖定','OCI雲端加速','切換成本極高'], pillars_neg: ['AWS/Azure競爭','估值偏高'], color: '#1D9E75',
-      desc: 'Oracle 資料庫是全球企業最核心的 ERP 和資料基礎設施，切換成本極高（資料遷移費用、人才重訓、流程改造，動輒數十億）。OCI 雲端配合 AI 工作負載需求急速擴張，FY27 收入指引達 $86.3B。護城河等級超寬，30年護城河未曾動搖。' },
-    eps: { hist: [{q:'FY25Q2',v:1.47},{q:'FY25Q3',v:1.41},{q:'FY25Q4',v:1.63},{q:'FY26Q1',v:1.69}], forecast: [{y:'FY26E',v:7.02},{y:'FY27E',v:8.65},{y:'FY28E',v:10.80}] },
-    targets: [{firm:'Guggenheim',pt:400,rating:'Buy'},{firm:'Morgan Stanley',pt:207,rating:'Equal Weight'},{firm:'B of A Securities',pt:220,rating:'Buy'},{firm:'共識均值',pt:263,rating:'Buy'}],
-    fair: '$220–280（FY27E EPS $8.65×P/E 25–32x）',
-    earnings: { rev:'FY26Q1 revenue $14.1B（YoY+9%）', eps:'EPS $1.69（非GAAP）', margin:'毛利率 80.3%', guide:'FY26 Q2 EPS共識$2.00；FY27 revenue $86.3B' }
-  },
-  t2313: {
-    moat: { level: '中等', score: 3, pillars: ['AI伺服器高階PCB技術','衛星通訊佈局','蘋果供應鏈認證'], pillars_neg: ['客戶集中','CCL材料瓶頸'], color: '#7F77DD',
-      desc: '華通在 AI 伺服器高階多層 PCB（OAM 加速卡、50 層交換器板）具備技術壁壘，同時切入 LEO 低軌衛星 PCB（V3 衛星）。蘋果供應鏈長期合作穩定，護城河中等。CCL 材料瓶頸是短期執行風險。' },
-    eps: { hist: [{q:'2024Q3',v:1.52},{q:'2024Q4',v:1.89},{q:'2025Q1',v:2.05},{q:'2025Q2',v:2.45}], forecast: [{y:'2026E',v:7.00},{y:'2027E',v:11.50},{y:'2028E',v:16.00}] },
-    targets: [{firm:'分析師均值（外資）',pt:275,rating:'Buy'},{firm:'樂觀目標（2027定價）',pt:348,rating:'Strong Buy'},{firm:'內在價值區間',pt:252,rating:'Fair Value'}],
-    fair: 'NT$225–348（2026E EPS 7.00×P/E 32–50x；2027E EPS 11.50×P/E 22–30x）',
-    earnings: { rev:'2025Q4 月營收 YoY+55%（AI伺服器帶動）', eps:'2025 全年 EPS 約 $6.2', margin:'毛利率 18–20%', guide:'大園新廠 2026Q2 量產；AI伺服器板下半年放量' }
-  },
-  t2359: {
-    moat: { level: '中等', score: 3, pillars: ['AI機器視覺技術','工業自動化先行者','3D感測整合'], pillars_neg: ['競爭激烈','客戶集中'], color: '#7F77DD',
-      desc: '所羅門在工業機器視覺和 3D 感測整合有技術積累，搭上 AI 視覺和機器人化浪潮。護城河中等，依賴技術持續創新維持競爭優勢，不具定價壟斷力。' },
-    eps: { hist: [{q:'2024Q3',v:2.85},{q:'2024Q4',v:3.10},{q:'2025Q1',v:3.45},{q:'2025Q2',v:3.80}], forecast: [{y:'2026E',v:5.50},{y:'2027E',v:8.20},{y:'2028E',v:11.00}] },
-    targets: [{firm:'法人共識',pt:165,rating:'Buy'},{firm:'樂觀目標',pt:185,rating:'Strong Buy'}],
-    fair: 'NT$143–190（2026E EPS 5.50×P/E 26–35x）',
-    earnings: { rev:'2025Q4 月營收 YoY+42%', eps:'2025 EPS 約 $14.2', margin:'毛利率 52%（軟體+系統整合）', guide:'機器人自動化訂單能見度 2026H2 持續成長' }
-  },
-  t3481: {
-    moat: { level: '中等（轉型期）', score: 3, pillars: ['FOPLP先進封裝技術','面板設備改轉換','生產線重置靈活性'], pillars_neg: ['面板基本業務疲弱','轉型風險','高競爭'], color: '#BA7517',
-      desc: '群創的核心護城河已從傳統面板轉移到 FOPLP（扇出型面板級封裝），這是先進封裝技術的重要切入點，設備改裝門檻高、認證週期長，形成差異化。但傳統面板業務護城河幾乎為零，整體護城河取決於 FOPLP 商業化進度。' },
-    eps: { hist: [{q:'2024Q3',v:-0.52},{q:'2024Q4',v:-0.31},{q:'2025Q1',v:-0.12},{q:'2025Q2',v:0.15}], forecast: [{y:'2026E',v:0.85},{y:'2027E',v:2.20},{y:'2028E',v:3.80}] },
-    targets: [{firm:'外資目標（轉型加成）',pt:55,rating:'Outperform'},{firm:'法人共識',pt:48,rating:'Buy'}],
-    fair: 'NT$35–55（2026E EPS 0.85×P/E 41–65x；FOPLP 轉型溢價）',
-    earnings: { rev:'2025Q4 月營收回升 YoY+8%', eps:'EPS 進入轉正軌道', margin:'毛利率 9.2%（低但改善中）', guide:'FOPLP 客戶認證 2026H2；外資回補 98,089 張' }
-  },
-  t6488: {
-    moat: { level: '寬', score: 4, pillars: ['矽晶圓技術壁壘','台積電長約鎖定','美歐在地化戰略稀缺','12吋主導'], pillars_neg: ['折舊壓力','2026年EPS承壓'], color: '#185FA5',
-      desc: '環球晶是全球三大矽晶圓廠之一（市佔約 22%），與台積電、三星簽有多年長約，切換成本極高。12 吋矽晶圓製造需 $50 億以上資本支出才能建廠，規模壁壘極高。美國德州廠和歐洲廠布局讓它成為地緣政治稀缺資產。2026 年折舊攀升是暫時壓力，2027 年超級循環預期支撐長線估值。' },
-    eps: { hist: [{q:'2024Q3',v:10.2},{q:'2024Q4',v:9.8},{q:'2025Q1',v:8.85},{q:'2025Q2',v:7.90}], forecast: [{y:'2026E',v:28},{y:'2027E',v:52},{y:'2028E',v:72}] },
-    targets: [{firm:'外資目標（2027定價）',pt:920,rating:'Buy'},{firm:'法人均值',pt:820,rating:'Buy'},{firm:'合理公允',pt:750,rating:'Hold'}],
-    fair: 'NT$680–920（2026E EPS 28×P/E 24–33x；2027E EPS 52×P/E 15–18x）',
-    earnings: { rev:'2026Q1 月營收 YoY+18%', eps:'Q1 2026 EPS $8.85（Siltronic評價利益）', margin:'毛利率 38%', guide:'德州廠 2026Q3 試產；AI+化合物半導體訂單增加；12吋稼動率回升' }
-  },
-  t8070: {
-    moat: { level: '中等', score: 3, pillars: ['高階CCL銅箔技術','AI伺服器PCB材料認證','在地化供應'], pillars_neg: ['規模偏小','原物料波動'], color: '#7F77DD',
-      desc: '長華電材專注高階 PCB 用銅箔基板（CCL），AI 伺服器板需要低損耗高頻材料，長華已通過多家 AI 伺服器 PCB 廠認證，進入長期供貨合約。護城河中等，依賴技術認證壁壘維持，規模偏小限制進一步護城河加寬。' },
-    eps: { hist: [{q:'2024Q3',v:0.48},{q:'2024Q4',v:0.55},{q:'2025Q1',v:0.62},{q:'2025Q2',v:0.71}], forecast: [{y:'2026E',v:2.80},{y:'2027E',v:4.20},{y:'2028E',v:5.80}] },
-    targets: [{firm:'法人均值',pt:55,rating:'Buy'},{firm:'合理估值',pt:48,rating:'Hold'}],
-    fair: 'NT$40–58（2026E EPS 2.80×P/E 14–21x）',
-    earnings: { rev:'2025Q4 月營收 YoY+35%', eps:'EPS 持續成長', margin:'毛利率 25%（改善趨勢）', guide:'AI伺服器PCB材料下半年訂單能見度強' }
-  },
-  t631: {
-    moat: { level: '無（槓桿工具）', score: 1, pillars: ['台灣市場連動','2倍放大報酬'], pillars_neg: ['每日重置耗損','長期持有不適合','槓桿複利損耗'], color: '#888780',
-      desc: '00631L 為 2 倍槓桿 ETF，每日重置機制導致長期持有必然有槓桿耗損，非「護城河投資」，而是短期戰術性工具。台股多頭時效果顯著，但長期持有報酬必然低於 2 倍大盤。適合短期趨勢交易，不適合長期核心配置。' },
-    eps: { hist: [{q:'2024Q3',v:18.5},{q:'2024Q4',v:22.1},{q:'2025Q1',v:19.8},{q:'2025Q2',v:25.3}], forecast: [{y:'2026E',v:30},{y:'2027E',v:38},{y:'2028E',v:45}] },
-    targets: [{firm:'追蹤指數',pt:'元大台灣50×2',rating:'工具型'},{firm:'合理用途',pt:'短線多頭',rating:'戰術'}],
-    fair: 'NAV 反映台灣50指數×2倍，合理價由大盤決定，不做絕對估值',
-    earnings: { rev:'追蹤標的：元大台灣50 ETF', eps:'NAV: NT$34.56（5/25）', margin:'費用率 1.05%', guide:'台股加權指數走勢決定績效；⚠️ 非長期持有工具' }
-  },
-  t922: {
-    moat: { level: '無（指數工具）', score: 1, pillars: ['台灣龍頭50成分股','月配息現金流','低費用率'], pillars_neg: ['被動追蹤無護城河','指數成分調整風險'], color: '#1D9E75',
-      desc: '00922 為被動追蹤「台灣領袖50指數」的 ETF，前三大成分為台積電、聯發科、鴻海，合計佔比約 50%。月配息設計吸引退休族群。護城河概念不適用於 ETF，核心優勢在於低成本分散投資台灣龍頭企業，以及月配息現金流。' },
-    eps: { hist: [{q:'2024Q3',v:1.02},{q:'2024Q4',v:1.15},{q:'2025Q1',v:1.08},{q:'2025Q2',v:1.28}], forecast: [{y:'2026E',v:1.50},{y:'2027E',v:1.75},{y:'2028E',v:2.00}] },
-    targets: [{firm:'NAV（5/22）',pt:38.49,rating:'成分股決定'},{firm:'分析師共識',pt:38,rating:'Outperform'}],
-    fair: 'NT$34–42（台灣50成分加權本益比 18–22x）',
-    earnings: { rev:'AUM：約 NT$1,200億', eps:'5/25 收盤 NT$38.49（+32.6%）', margin:'費用率 0.43%/年（低費用）', guide:'台積電/聯發科佔半數，AI晶片週期是最大驅動力' }
-  },
-  t882: {
-    moat: { level: '無（指數工具）', score: 1, pillars: ['中港高股息曝險','月配息','低相關性分散'], pillars_neg: ['中國政策風險','關稅風險','人民幣匯率'], color: '#BA7517',
-      desc: '00882 追蹤「中國高股息」成分，成分股多為中國銀行、中國電信、中石油等國企高股息標的。月配息殖利率高（約 5–7%），但面臨中國政策不確定性、關稅戰衝擊，以及人民幣貶值壓力。2026/11 美中關稅休戰到期是最大風險事件。' },
-    eps: { hist: [{q:'2024Q3',v:0.52},{q:'2024Q4',v:0.61},{q:'2025Q1',v:0.55},{q:'2025Q2',v:0.63}], forecast: [{y:'2026E',v:0.68},{y:'2027E',v:0.72},{y:'2028E',v:0.78}] },
-    targets: [{firm:'NAV（5/22）',pt:15.79,rating:'中性'},{firm:'關稅風險情境',pt:13.5,rating:'下行風險'}],
-    fair: 'NT$14–17（含息報酬率 5–7%，依中港市場估值）',
-    earnings: { rev:'AUM：約 NT$2,100億（台股最大中港ETF）', eps:'5/22 收盤 NT$15.79（+24.5%）', margin:'費用率 0.60%/年', guide:'⚠️ 2026/11 關稅休戰到期；中港成分股政策監管持續監控' }
-  },
-  t955: {
-    moat: { level: '無（指數工具）', score: 1, pillars: ['日本五大商社曝險','大宗商品連動','日圓避險'], pillars_neg: ['日圓升值壓力','日本10Y利率上升','高利率承壓'], color: '#7F77DD',
-      desc: '00955 追蹤日本五大商社（三菱、三井、住友、伊藤忠、丸紅），這五大商社持有全球能源、礦產、農業等大宗商品，巴菲特長期持有的標的。目前面臨日本10年期公債殖利率飆至 2.60%（29年高），日圓升值壓力對商社股有短期衝擊。' },
-    eps: { hist: [{q:'2024Q3',v:0.38},{q:'2024Q4',v:0.41},{q:'2025Q1',v:0.39},{q:'2025Q2',v:0.43}], forecast: [{y:'2026E',v:0.46},{y:'2027E',v:0.50},{y:'2028E',v:0.55}] },
-    targets: [{firm:'NAV（5/22）',pt:15.62,rating:'中性'},{firm:'日圓升值情境',pt:14.5,rating:'下行'},{firm:'大宗商品多頭',pt:18,rating:'樂觀'}],
-    fair: 'NT$14–18（日商社本益比 9–12x，加台灣溢價）',
-    earnings: { rev:'追蹤：日本五大商社等權重指數', eps:'5/22 收盤 NT$15.62（+0.3%）', margin:'費用率 0.65%/年', guide:'日本10Y 2.60%為29年高；日圓走勢是關鍵變數；巴菲特持續加碼背書' }
-  },
-  t9816: {
-    moat: { level: '無（指數工具）', score: 1, pillars: ['台灣大型股寬基','低費用率','流動性佳'], pillars_neg: ['追蹤誤差','成分調整滯後'], color: '#1D9E75',
-      desc: '009816 追蹤台灣 TOP 50 大型股指數，成分與元大台灣50高度重疊，以台積電為最大持股（約 30%）。費用率較低，流動性良好。ETF 本身無護城河，報酬完全取決於成分股（尤其台積電）的表現。' },
-    eps: { hist: [{q:'2024Q3',v:0.38},{q:'2024Q4',v:0.42},{q:'2025Q1',v:0.40},{q:'2025Q2',v:0.48}], forecast: [{y:'2026E',v:0.58},{y:'2027E',v:0.68},{y:'2028E',v:0.78}] },
-    targets: [{firm:'NAV（5/22）',pt:14.19,rating:'成分股決定'},{firm:'合理NAV（AI多頭）',pt:15.5,rating:'樂觀'}],
-    fair: 'NT$13–16（台灣大型股本益比 17–21x）',
-    earnings: { rev:'AUM：約 NT$280億', eps:'5/22 收盤 NT$14.19（+38.4%）', margin:'費用率 0.45%/年', guide:'台積電佔比30%+，AI晶片週期決定績效上限' }
-  },
-  t990: {
-    moat: { level: '窄（主動選股優勢）', score: 2, pillars: ['主動AI選股','元大投信量化模型','AI新經濟賽道佈局'], pillars_neg: ['主動管理費較高','選股失誤風險','新基金歷史短'], color: '#185FA5',
-      desc: '00990A 為主動管理 ETF，元大投信以 AI 量化模型選股，聚焦 AI 新經濟相關台股，比被動 ETF 更具彈性。主動管理帶來輕微護城河（選股模型差異化），但成立時間短，歷史驗證不足。高成長時期主動超越指數，但費用率也較高。' },
-    eps: { hist: [{q:'2025Q1',v:0.68},{q:'2025Q2',v:0.85},{q:'2025Q3',v:1.02},{q:'2025Q4',v:1.18}], forecast: [{y:'2026E',v:1.50},{y:'2027E',v:1.90},{y:'2028E',v:2.30}] },
-    targets: [{firm:'NAV（5/22）',pt:18.53,rating:'主動管理'},{firm:'AI多頭目標',pt:22,rating:'樂觀'}],
-    fair: 'NT$16–22（AI主題溢價，成長型本益比 20–28x）',
-    earnings: { rev:'AUM：約 NT$120億（快速成長）', eps:'5/22 收盤 NT$18.53（+56.5%）', margin:'費用率 0.85%/年（主動管理費）', guide:'AI半導體+伺服器供應鏈為核心配置；選股模型季度調整' }
-  },
-  be: {
-    moat: { level: '中等', score: 3, pillars: ['固態氧化物燃料電池技術壁壘', '長期電力合約', 'Oracle/Microsoft大客戶'], pillars_neg: ['燃料電池競爭激烈', '氮能成本偏高', '尚未穩定獲利'], color: '#16A34A',
-      desc: 'Bloom Energy 的核心護城河來自 SOFC（固態氧化物燃料電池）技術，效率遠高於傳統燃料電池，適合 AI 數據中心不斷電需求。Oracle、Microsoft 等超大型數據中心客戶構成穩定營收基礎，但氮能成本下降前競爭優勢仍有限。' },
-    eps: {
-      hist: [{q:'2024Q2',v:-0.06},{q:'2024Q3',v:-0.02},{q:'2024Q4',v:0.01},{q:'2025Q1',v:0.04}],
-      forecast: [{y:'2025E',v:-0.10},{y:'2026E',v:0.25},{y:'2027E',v:0.85}]
-    },
-    targets: [
-      {firm:'高盛',pt:320,rating:'Buy'},
-      {firm:'摩根士丹利',pt:295,rating:'Neutral'},
-      {firm:'花旗',pt:340,rating:'Buy'},
-      {firm:'Rosenblatt',pt:350,rating:'Buy'}
-    ],
-    fair: [{v:180},{v:190},{v:200},{v:210},{v:220},{v:230},{v:240},{v:250},{v:260},{v:270},{v:280},{v:290},{v:300},{v:310},{v:320},{v:330},{v:340}],
-    earnings: {rev:'2025Q1 revenue $388M（YoY+21%）',eps:'EPS $0.03（非 GAAP）',margin:'毛利率 26.8%',guide:'2025全年營收目標 $1.6-1.7B，AI數據中心訂單持續增加'}
-  },
-  t1802: {
-    moat: { level: '中等', score: 3, pillars: ['高階玻纖布技術壁壘', '全球市占率40%', 'Low DK/Low CTE認證'], pillars_neg: ['中國競爭', '門眠纖扖期', '2025全年虧損'], color: '#2563EB',
-      desc: '台玻深耕電子級玻纖布約20年，高階布全球市占率40%。Low DK、Low CTE已通過三款認證，AI伺服器PCB基板需求受益。三期擴產計畫中，2027年完工後產能大增。' },
-    eps: {
-      hist: [{q:'2024Q2',v:-0.12},{q:'2024Q3',v:-0.08},{q:'2024Q4',v:-0.05},{q:'2025Q1',v:0.20}],
-      forecast: [{y:'2026E',v:0.80},{y:'2027E',v:2.50},{y:'2028E',v:4.20}]
-    },
-    targets: [
-      {firm:'元大證券',pt:85,rating:'Buy'},
-      {firm:'凱豐證券',pt:80,rating:'Buy'},
-      {firm:'共識均値',pt:82,rating:'Buy'}
-    ],
-    fair: [{v:52},{v:58},{v:64},{v:70},{v:76},{v:82},{v:88}],
-    earnings: {rev:'五月營收NT$9.1億（YoY+42%）',eps:'2026Q1 EPS +0.2元已轉盈',margin:'寫利率回升中',guide:'三期擴產計畫，2027年完工'}
+  // 取護城河資訊
+  const moatDesc = moat.desc || '無資料';
+  const moatLevel = moat.level || '未評';
+  const pillars = (moat.pillars || []).join('、');
+  const pillarsNeg = (moat.pillars_neg || []).join('、');
+
+  // 取 EPS
+  const epsHist = (eps.hist || []).map(e => e.q + ': ' + e.v).join('、');
+  const epsForecast = (eps.forecast || []).map(e => e.y + ': ' + e.v).join('、');
+
+  // 取投行目標
+  const targetStr = targets.map(t => t.firm + ' ' + t.rating + ' PT:$' + t.pt).join('、');
+
+  // 取最新財報
+  const earningsStr = earnings.rev ? ('營收:' + earnings.rev + ' EPS:' + earnings.eps + ' 毛利率:' + earnings.margin + ' 指引:' + earnings.guide) : '無財報資料';
+
+  // 組合 prompt
+  let prompt = '';
+  const base = '你是專業股票分析師，繁體中文回覆。\n\n' +
+    '【' + sym + ' 個股資料】\n' +
+    '最新收盤：' + close + '\n' +
+    '浮動損益：' + pnl + '（' + pp + '）\n' +
+    '護城河：' + moatLevel + '（' + pillars + '）弱點：' + pillarsNeg + '\n' +
+    '護城河描述：' + moatDesc + '\n' +
+    'EPS歷史：' + epsHist + '\n' +
+    'EPS預測：' + epsForecast + '\n' +
+    '投行目標：' + targetStr + '\n' +
+    '最新財報：' + earningsStr + '\n\n';
+
+  if (type === '技術信號') {
+    prompt = base + '請針對 ' + sym + ' 進行技術面分析，包含：\n' +
+      '1. 目前技術信號（趨勢、支撐壓力、動能指標）\n' +
+      '2. 短線（1-2週）操作建議\n' +
+      '3. 關鍵價位（支撐/壓力）\n' +
+      '4. 風險提示\n請用條列式回覆，簡潔有力。';
+  } else if (type === '三情境') {
+    prompt = base + '請針對 ' + sym + ' 分析三種情境：\n' +
+      '1. 樂觀情境（機率與目標價）\n' +
+      '2. 基本情境（機率與目標價）\n' +
+      '3. 悲觀情境（機率與目標價）\n' +
+      '4. 我的持倉建議（持有/加碼/減碼/停損）\n請用條列式回覆，包含具體價位。';
+  } else {
+    prompt = base + '請針對 ' + sym + ' 進行全面分析，包含技術面、基本面與操作建議。';
   }
-};
 
-// ── 護城河六邊形雷達圖 ──
-function moatSVG(id) {
-  const d = FUNDAMENTALS[id]?.moat;
-  if (!d) return '';
-  const score = d.score;
-  const color = d.color || '#185FA5';
-  const levelMap = {1:'無護城河',2:'窄護城河',3:'中等',4:'寬護城河',5:'超寬'};
-  const levelBg = {1:'#fdf0ef',2:'#fdf5e6',3:'#fdf5e6',4:'#eef7f1',5:'#eef2f8'};
-  const levelTx = {1:'#b92b27',2:'#c67b00',3:'#c67b00',4:'#1a6b2e',5:'#1e3d59'};
-
-  // 六維度評分
-  const dims = ['品牌','切換成本','規模','網路效應','技術/IP','現金流'];
-  const pillars = d.pillars;
-  const rawVals = [
-    pillars.some(p=>/品牌/.test(p)) ? Math.min(5,score+0.5) : Math.max(1,score-1),
-    pillars.some(p=>/黏性|鎖定|切換|ERP|壟斷/.test(p)) ? Math.min(5,score+1) : Math.max(1,score-0.5),
-    pillars.some(p=>/規模|不可複製|主導/.test(p)) ? Math.min(5,score+0.5) : Math.max(1,score-1),
-    pillars.some(p=>/網路|生態|平台/.test(p)) ? Math.min(5,score+0.5) : Math.max(1,score-1.5),
-    pillars.some(p=>/技術|壟斷|專利|IP|先進/.test(p)) ? Math.min(5,score+1) : Math.max(1,score-0.5),
-    score >= 4 ? Math.min(5,score) : Math.max(1,score-0.5)
-  ];
-
-  // SVG 六邊形雷達圖
-  const cx = 90, cy = 90, r = 68;
-  const n = 6;
-  function pt(i, val) {
-    const ang = (Math.PI * 2 * i / n) - Math.PI / 2;
-    const rv = (val / 5) * r;
-    return [cx + rv * Math.cos(ang), cy + rv * Math.sin(ang)];
+  // 顯示 loading 狀態
+  const outDiv = document.getElementById('o-' + pid);
+  if (outDiv) {
+    outDiv.className = 'ai-out loading';
+    outDiv.textContent = '正在開啟 Claude.ai 分析...';
   }
-  // 背景同心六邊形
-  let bgHex = '';
-  [1,2,3,4,5].forEach(lv => {
-    const pts = Array.from({length:n}, (_,i) => pt(i,lv).join(',')).join(' ');
-    bgHex += `<polygon points="${pts}" fill="none" stroke="#e3dfd7" stroke-width="0.8"/>`;
-  });
-  // 軸線
-  let axes = '';
-  dims.forEach((_,i) => {
-    const [x,y] = pt(i, 5);
-    axes += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#e3dfd7" stroke-width="0.8"/>`;
-  });
-  // 數據多邊形
-  const dataPts = rawVals.map((v,i) => pt(i,v).join(',')).join(' ');
-  const hexCol = color;
-  // 標籤
-  let labels = '';
-  dims.forEach((dim,i) => {
-    const [x,y] = pt(i, 5.8);
-    const anchor = x < cx-5 ? 'end' : x > cx+5 ? 'start' : 'middle';
-    labels += `<text x="${x}" y="${y+4}" text-anchor="${anchor}" font-size="9" fill="#888780" font-family="system-ui">${dim}</text>`;
-  });
-  // 評分點
-  let dots = '';
-  rawVals.forEach((v,i) => {
-    const [x,y] = pt(i,v);
-    dots += `<circle cx="${x}" cy="${y}" r="3" fill="${hexCol}" stroke="#fff" stroke-width="1.5"/>`;
-  });
 
-  const stars = Array.from({length:5}, (_,i) =>
-    `<span style="color:${i<score?color:'#ddd'};font-size:14px">★</span>`
-  ).join('');
+  // 開啟 Claude.ai 新分頁（使用 URL 傳遞 prompt）
+  const encoded = encodeURIComponent(prompt);
+  const url = 'https://claude.ai/new?q=' + encoded;
+  window.open(url, '_blank');
 
-  const pillHtml = d.pillars.map(p =>
-    `<span style="display:inline-block;background:${color}18;color:${color};border-radius:20px;padding:2px 9px;font-size:10px;font-weight:600;margin:2px 2px">${p}</span>`
-  ).join('');
-  const negHtml = (d.pillars_neg||[]).map(p =>
-    `<span style="display:inline-block;background:#b92b2715;color:#b92b27;border-radius:20px;padding:2px 9px;font-size:10px;font-weight:600;margin:2px 2px">${p}</span>`
-  ).join('');
-
-  return `<div style="background:#fafaf8;border:1px solid #e8e4dc;border-radius:10px;overflow:hidden;margin-bottom:12px">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px 0">
-      <div style="display:flex;align-items:center;gap:10px">
-        <span style="display:inline-block;background:${levelBg[score]};color:${levelTx[score]};border-radius:20px;padding:3px 12px;font-size:11px;font-weight:700">${levelMap[score]}</span>
-        <span>${stars}</span>
-      </div>
-      <span style="font-size:10px;color:#aaa">${score}/5 分</span>
-    </div>
-    <div style="display:flex;gap:0;align-items:flex-start">
-      <div style="flex-shrink:0;padding:8px 0 8px 10px">
-        <svg width="180" height="180" viewBox="0 0 180 180">
-          ${bgHex}${axes}
-          <polygon points="${dataPts}" fill="${hexCol}22" stroke="${hexCol}" stroke-width="1.8" stroke-linejoin="round"/>
-          ${dots}${labels}
-        </svg>
-      </div>
-      <div style="flex:1;padding:12px 14px 12px 6px;min-width:0">
-        <div style="margin-bottom:8px">
-          <div style="font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:#aaa;margin-bottom:4px">護城河支柱</div>
-          <div style="line-height:1.8">${pillHtml}</div>
-        </div>
-        ${(d.pillars_neg||[]).length ? `<div style="margin-bottom:8px">
-          <div style="font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:#aaa;margin-bottom:4px">風險因素</div>
-          <div style="line-height:1.8">${negHtml}</div>
-        </div>` : ''}
-        <div style="font-size:11px;color:#6b6b60;line-height:1.7;border-top:1px solid #ece8e0;padding-top:8px;margin-top:4px">${d.desc}</div>
-      </div>
-    </div>
-  </div>`;
+  // 更新狀態
+  setTimeout(() => {
+    if (outDiv) {
+      outDiv.className = 'ai-out idle';
+      outDiv.innerHTML = '已在新分頁開啟 Claude.ai，分析結果請在新分頁查看。';
+    }
+  }, 2000);
 }
-
-// ── EPS 折線 + 預測卡 ──
-function epsSVG(id) {
-  const d = FUNDAMENTALS[id]?.eps;
-  if (!d) return '';
-  const hist = d.hist;
-  const forecast = d.forecast;
-  const allVals = [...hist.map(h=>h.v), ...forecast.map(f=>f.v)];
-  const minV = Math.min(...allVals);
-  const maxV = Math.max(...allVals);
-  const range = maxV - minV || 1;
-
-  // 折線圖 SVG
-  const W = 340, H = 80, padL = 8, padR = 8, padT = 10, padB = 18;
-  const iW = W - padL - padR;
-  const iH = H - padT - padB;
-  const total = hist.length + forecast.length;
-  function xPos(i) { return padL + (i / (total - 1)) * iW; }
-  function yPos(v) { return padT + iH - ((v - minV) / range) * iH; }
-
-  // 歷史線
-  let histPts = hist.map((h,i) => `${xPos(i)},${yPos(h.v)}`).join(' ');
-  // 預測線
-  let fcastPts = forecast.map((f,i) => `${xPos(hist.length-1+i)},${yPos(f.v)}`).join(' ');
-  // 連接點（歷史最後 → 預測第一）
-  const joinX1 = xPos(hist.length-1);
-  const joinY1 = yPos(hist[hist.length-1].v);
-  const joinX2 = xPos(hist.length);
-  const joinY2 = yPos(forecast[0].v);
-
-  // 零線
-  const zeroY = yPos(0);
-  const showZero = zeroY > padT && zeroY < padT + iH;
-
-  // X軸標籤
-  let xlabels = '';
-  hist.forEach((h,i) => {
-    xlabels += `<text x="${xPos(i)}" y="${H-3}" text-anchor="middle" font-size="7.5" fill="#aaa">${h.q}</text>`;
-  });
-  forecast.forEach((f,i) => {
-    xlabels += `<text x="${xPos(hist.length+i)}" y="${H-3}" text-anchor="middle" font-size="7.5" fill="#185FA5">${f.y}</text>`;
-  });
-
-  // 點
-  let histDots = hist.map((h,i) => {
-    const c = h.v>=0?'#1a6b2e':'#b92b27';
-    return `<circle cx="${xPos(i)}" cy="${yPos(h.v)}" r="3.5" fill="${c}" stroke="#fff" stroke-width="1.5"/>`;
-  }).join('');
-  let fcastDots = forecast.map((f,i) => {
-    const c = f.v>=0?'#185FA5':'#c67b00';
-    return `<circle cx="${xPos(hist.length+i)}" cy="${yPos(f.v)}" r="3.5" fill="${c}" stroke="#fff" stroke-width="1.5" stroke-dasharray=""/>`;
-  }).join('');
-
-  // 預測卡
-  const fcastCards = forecast.map(f => {
-    const isPos = f.v >= 0;
-    const col = isPos ? '#185FA5' : '#c67b00';
-    const bg = isPos ? '#eef2f8' : '#fdf5e6';
-    return `<div style="flex:1;background:${bg};border-radius:8px;padding:10px 8px;text-align:center;min-width:0">
-      <div style="font-size:10px;color:#aaa;margin-bottom:4px;font-weight:500">${f.y}</div>
-      <div style="font-size:18px;font-weight:700;font-family:monospace;color:${col}">${isPos?'+':''}${f.v}</div>
-      <div style="font-size:9px;color:#aaa;margin-top:2px">EPS 預測</div>
-    </div>`;
-  }).join('');
-
-  return `<div style="background:#fafaf8;border:1px solid #e8e4dc;border-radius:10px;padding:12px 14px;margin-bottom:12px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-      <span style="font-size:11px;font-weight:600;color:#1c1c1a">EPS 歷史趨勢</span>
-      <span style="font-size:9px;color:#aaa">— 歷史  ‐ ‐ 預測</span>
-    </div>
-    <svg width="100%" viewBox="0 0 ${W} ${H}" style="display:block;margin-bottom:10px;overflow:visible">
-      ${showZero ? `<line x1="${padL}" y1="${zeroY}" x2="${W-padR}" y2="${zeroY}" stroke="#e3dfd7" stroke-width="1" stroke-dasharray="3,3"/>` : ''}
-      <polyline points="${histPts}" fill="none" stroke="#1a6b2e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
-      <line x1="${joinX1}" y1="${joinY1}" x2="${joinX2}" y2="${joinY2}" stroke="#185FA5" stroke-width="1.5" stroke-dasharray="4,3"/>
-      <polyline points="${joinX2},${joinY2} ${fcastPts}" fill="none" stroke="#185FA5" stroke-width="1.8" stroke-linejoin="round" stroke-dasharray="5,3"/>
-      ${histDots}${fcastDots}${xlabels}
-    </svg>
-    <div style="display:flex;gap:6px;">${fcastCards}</div>
-  </div>`;
-}
-
-// ── 投行目標價量尺 ──
-function targetsSVG(id) {
-  const d = FUNDAMENTALS[id];
-  if (!d) return '';
-  const targets = d.targets;
-  const fair = d.fair;
-
-  // 找最高最低目標價
-  const pts = targets.filter(t=>typeof t.pt==='number').map(t=>t.pt);
-  const minPt = Math.min(...pts);
-  const maxPt = Math.max(...pts);
-  const range = maxPt - minPt || 1;
-
-  function pct(v) { return Math.max(2, Math.min(98, ((v-minPt)/range)*100)); }
-
-  const ratingStyle = r => {
-    if (/Strong Buy|Outperform/.test(r)) return {bg:'#eef7f1',tx:'#1a6b2e',dot:'#1a6b2e'};
-    if (/Buy/.test(r)) return {bg:'#f0f7f3',tx:'#2d8a4e',dot:'#2d8a4e'};
-    if (/Hold|Neutral|Equal|Fair/.test(r)) return {bg:'#fdf5e6',tx:'#c67b00',dot:'#c67b00'};
-    return {bg:'#fdf0ef',tx:'#b92b27',dot:'#b92b27'};
-  };
-
-  // 量尺 SVG
-  const W = 340, H = 28;
-  const barY = 12, barH = 6;
-  const ticks = targets.filter(t=>typeof t.pt==='number').map(t => {
-    const s = ratingStyle(t.rating);
-    const x = (pct(t.pt)/100)*(W-20)+10;
-    return `<circle cx="${x}" cy="${barY+barH/2}" r="5" fill="${s.dot}" stroke="#fff" stroke-width="2"/>`;
-  }).join('');
-
-  const rows = targets.map(t => {
-    const s = ratingStyle(t.rating);
-    const isCons = t.firm.includes('共識') || t.firm.includes('均值');
-    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-radius:6px;margin-bottom:3px;background:${isCons?'#f0f4f8':'#fafaf8'};border:1px solid ${isCons?'#c8d8e8':'#ede9e0'}">
-      <div style="display:flex;align-items:center;gap:8px;min-width:0">
-        <span style="width:8px;height:8px;border-radius:50%;background:${s.dot};flex-shrink:0"></span>
-        <span style="font-size:11px;color:#4a4a42;font-weight:${isCons?'600':'400'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.firm}</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:7px;flex-shrink:0">
-        <span style="font-size:9px;padding:2px 7px;border-radius:20px;font-weight:600;background:${s.bg};color:${s.tx}">${t.rating}</span>
-        <span style="font-size:13px;font-weight:700;font-family:monospace;color:#1c1c1a;min-width:48px;text-align:right">${typeof t.pt==='number'?(t.pt>500?'NT$'+t.pt:'$'+t.pt):t.pt}</span>
-      </div>
-    </div>`;
-  }).join('');
-
-  return `<div style="background:#fafaf8;border:1px solid #e8e4dc;border-radius:10px;padding:12px 14px;margin-bottom:12px">
-    <div style="font-size:11px;font-weight:600;color:#1c1c1a;margin-bottom:10px">投行目標價</div>
-    ${pts.length >= 2 ? `<div style="margin-bottom:10px">
-      <svg width="100%" viewBox="0 0 ${W} ${H}" style="display:block;overflow:visible">
-        <rect x="10" y="${barY}" width="${W-20}" height="${barH}" rx="3" fill="#e8e4dc"/>
-        <text x="10" y="${H}" text-anchor="start" font-size="8" fill="#aaa">${minPt>500?'NT$'+minPt:'$'+minPt}</text>
-        <text x="${W-10}" y="${H}" text-anchor="end" font-size="8" fill="#aaa">${maxPt>500?'NT$'+maxPt:'$'+maxPt}</text>
-        ${ticks}
-      </svg>
-    </div>` : ''}
-    ${rows}
-    <div style="margin-top:8px;padding:8px 12px;background:#eef2f8;border-radius:8px;border-left:3px solid #1e3d59">
-      <span style="font-size:9px;font-weight:700;color:#1e3d59;text-transform:uppercase;letter-spacing:.06em">合理/預估區間</span>
-      <div style="font-size:11px;color:#1c1c1a;margin-top:3px;line-height:1.5">${fair}</div>
-    </div>
-  </div>`;
-}
-
-// ── 財報四格卡 ──
-function earningsSVG(id) {
-  const d = FUNDAMENTALS[id]?.earnings;
-  if (!d) return '';
-  const items = [
-    {icon:'💰',label:'最新營收',val:d.rev,accent:'#185FA5'},
-    {icon:'📊',label:'每股盈餘',val:d.eps,accent:'#1a6b2e'},
-    {icon:'📐',label:'毛利率',val:d.margin,accent:'#7F77DD'},
-    {icon:'🔭',label:'公司展望',val:d.guide,accent:'#c67b00'},
-  ];
-  const cards = items.map(item => `
-    <div style="background:#fafaf8;border:1px solid #e8e4dc;border-radius:8px;padding:10px 12px">
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
-        <span style="font-size:13px">${item.icon}</span>
-        <span style="font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:#aaa;font-weight:600">${item.label}</span>
-      </div>
-      <div style="font-size:11.5px;font-weight:600;color:#1c1c1a;line-height:1.5">${item.val}</div>
-    </div>`).join('');
-  return `<div style="margin-bottom:12px">
-    <div style="font-size:11px;font-weight:600;color:#1c1c1a;margin-bottom:8px">最新財報</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">${cards}</div>
-  </div>`;
-}
-
-// ── 基本面渲染主入口 ──
 function renderFundamentals(id) {
   const container = document.getElementById('fund-' + id);
   if (!container || !FUNDAMENTALS[id]) return;
