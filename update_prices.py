@@ -75,7 +75,7 @@ def upd(h, pid, price, pct, dl, avg_cost=0, shares=0, currency_prefix="$"):
     nxt = h.find('\n<div id="p-', idx + 10)
     b = nxt if nxt > 0 else idx + 5000
     s = h[idx:b]
-    ar = '\u25b2' if pct >= 0 else '\u25bc'
+    ar = '▲' if pct >= 0 else '▼'
     cc = 'up' if pct >= 0 else 'dn'
     sg = '+' if pct >= 0 else ''
     ps = f'${price}'
@@ -87,16 +87,16 @@ def upd(h, pid, price, pct, dl, avg_cost=0, shares=0, currency_prefix="$"):
         s, 1)
     # 2. pch-subtitle
     s = re.sub(
-        r'(<div style="font-size:11px[^>]*>)\d+/\d+[^<]*(\u6536[\u76d8\u76e4]|\u51c8\u5024|\u8ffd\u8e64)[^|<]*',
-        rf'\g<1>{dl}\u6536\u76e4 ', s, 1)
+        r'(<div style="font-size:11px[^>]*>)\d+/\d+[^<]*(收[盘盤]|凈値|追蹤)[^|<]*',
+        rf'\g<1>{dl}收盤 ', s, 1)
     # 3. 收盤 pnl-card
     bg = 'up-bg' if pct >= 0 else 'dn-bg'
     new_card = ('<div class="pnl-card ' + bg + '">'
-             + '<div class="pnl-label">' + dl + '\u6536\u76e4</div>'
+             + '<div class="pnl-label">' + dl + '收盤</div>'
              + '<div class="pnl-val ' + cc + '">' + ps + '</div>'
-             + '<div class="pnl-sub">Yahoo\u80a1\u5e02\u6628\u6536\u78ba\u8a8d</div></div>')
+             + '<div class="pnl-sub">Yahoo股市昨收確認</div></div>')
     s = re.sub(
-        r'<div class="pnl-card[^"]*"><div class="pnl-label">\d+/\d+[^<]*\u6536[\u76d8\u76e4][^<]*</div>[\s\S]*?</div>\s*</div>',
+        r'<div class="pnl-card[^"]*"><div class="pnl-label">\d+/\d+[^<]*收[盘盤][^<]*</div>[\s\S]*?</div>\s*</div>',
         new_card, s, 1)
     # 4. 浮動損益 pnl-card
     if avg_cost > 0 and shares > 0:
@@ -106,11 +106,11 @@ def upd(h, pid, price, pct, dl, avg_cost=0, shares=0, currency_prefix="$"):
         pnl_bg = 'up-bg' if pnl_val >= 0 else 'dn-bg'
         pnl_sg = '+' if pnl_val >= 0 else ''
         pnl_card = ('<div class="pnl-card ' + pnl_bg + '">'
-                  + '<div class="pnl-label">\u6d6e\u52d5\u640d\u76ca</div>'
+                  + '<div class="pnl-label">浮動損益</div>'
                   + '<div class="pnl-val ' + pnl_cc + '">' + pnl_sg + '$' + f'{abs(pnl_val):,}' + '</div>'
                   + '<div class="pnl-sub">' + pnl_sg + f'{abs(pnl_pct):.2f}' + '%</div></div>')
         s = re.sub(
-            r'<div class="pnl-card[^"]*"><div class="pnl-label">\u6d6e\u52d5\u640d\u76ca</div>[\s\S]*?</div>\s*</div>',
+            r'<div class="pnl-card[^"]*"><div class="pnl-label">浮動損益</div>[\s\S]*?</div>\s*</div>',
             pnl_card, s, 1)
     h = h[:idx] + s + h[b:]
     # 5. table row 更新
